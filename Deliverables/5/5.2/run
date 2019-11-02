@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# run.sh: runs the actual submission
+
+python3 ./src/test_driver_adv.py
