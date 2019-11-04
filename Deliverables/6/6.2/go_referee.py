@@ -55,8 +55,10 @@ class GoReferee:
             forced_equality = []
             for board in self.board_history:
                forced_equality.append(format_one_board(board))
-            if ((forced_equality[0] == forced_equality[1]) and (forced_equality[1] == forced_equality[2])):
-               self.game_over = True
+               
+            if (len(forced_equality) == 3):
+               if ((forced_equality[0] == forced_equality[1]) and (forced_equality[1] == forced_equality[2])):
+                  self.game_over = True
                #return self.get_winners()
          elif isinstance(move, Point):
                if (self.move_ref.valid_move(self.current_player, move, self.board_history, self.board_history[0])):
