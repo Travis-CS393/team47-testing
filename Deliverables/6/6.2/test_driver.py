@@ -22,6 +22,7 @@ if __name__ == "__main__":
 	referee = GoReferee(player1=objs[0], player2=objs[1])
 	output.append(BLACK_STONE)
 	output.append(WHITE_STONE)
+	hello = []
 	for obj in objs[2:]:
 		raw_out = execute_input(obj, referee)
 		output.append(format_board_if_valid(raw_out))
