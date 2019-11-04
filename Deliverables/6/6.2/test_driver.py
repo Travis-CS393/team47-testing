@@ -24,6 +24,21 @@ if __name__ == "__main__":
 	output.append(WHITE_STONE)
 	hello = []
 	for obj in objs[2:]:
+
 		raw_out = execute_input(obj, referee)
-		output.append(format_board_if_valid(raw_out))
-	print(format_pretty_json(output))
+		output.append(raw_out)
+
+		if referee.game_over:
+			if (not referee.winner_declared):
+				output.append(referee.get_winners())
+				referee.winner_declared = True
+			else:
+				break
+
+	output = list(filter(None, output))
+
+	formatted_output = []
+	for item in output:
+		formatted_output.append(format_board_if_valid(item))
+
+	print(format_pretty_json(formatted_output))

@@ -11,7 +11,8 @@ from move_referee import MoveReferee
 from score_referee import ScoreReferee
 from constants import BOARD_DIM, PASS, EMPTY_STONE
 from obj_parser import parse_board
-from output_formatter import format_board_if_valid
+from output_formatter import format_board_if_valid, format_board, format_one_board
+from play_parser import get_board
 
 
 class GoReferee:
@@ -30,7 +31,7 @@ class GoReferee:
    ## Constructors
    def __init__(self, board_size=None, board=None, player1=None, player2=None):
       self.board_size = BOARD_DIM if board_size is None else board_size
-      self.board_history = [Board([[Stone(EMPTY_STONE)] * self.board_size for row in range(self.board_size)] if board is None else board)]
+      self.board_history = [get_board([[" "] * self.board_size for row in range(self.board_size)])]
       
       self.players = {StoneEnum.BLACK: player1, StoneEnum.WHITE: player2}
       self.current_player = StoneEnum.BLACK
@@ -45,39 +46,34 @@ class GoReferee:
    ## Public Method
 
    def execute_move(self, move):
-      if self.game_over:
-         if self.winner_declared:
-            return
-         else:
-            self.winner_declared = True
-            return self.get_winners()
-         
-      old_history = deepcopy(self.board_history)
-      if move == PASS:
-         self.execute_pass()
-      elif isinstance(move, Point):
-         self.execute_place(move)
-      self.current_player = get_other_type(self.current_player)
-      return old_history
 
-   def execute_pass(self):
-      add_board = self.board_history[0]
-      self.update_history(add_board)
+      if (not self.game_over):
+         old_history = deepcopy(self.board_history)
+         if (move == PASS):
+            add_board = old_history[0]
+            self.update_history(add_board)
+            forced_equality = []
+            for board in self.board_history:
+               forced_equality.append(format_one_board(board))
+            if ((forced_equality[0] == forced_equality[1]) and (forced_equality[1] == forced_equality[2])):
+               self.game_over = True
+               #return self.get_winners()
+         elif isinstance(move, Point):
+               if (self.move_ref.valid_move(self.current_player, move, self.board_history, self.board_history[0])):
+                  add_board = self.make_move(self.current_player, move)
+                  self.update_history(add_board)
+               else:
+                  self.game_over = True
+                  self.winner = get_other_type(self.current_player)
+                  #return self.get_winners()
+         self.current_player = get_other_type(self.current_player)
+         return old_history
 
-      if ((self.board_history[0] == self.board_history[1]) and (self.board_history[1] == self.board_history[2])):
-         self.game_over = True
-
-   def execute_place(self, point):
-      if (self.move_ref.valid_move(self.current_player, point, self.board_history, self.board_history[0])):
-         add_board = self.make_move(self.current_player, point)
-         self.update_history(add_board)
-      else:
-         self.game_over = True
-         self.winner = get_other_type(self.current_player)
 
    def make_move(self, stone, point):
       last_board = deepcopy(self.board_history)[0]
-      return last_board
+      new_board = last_board.place_and_update(stone, point)
+      return new_board
 
    def update_history(self, board):
       old_history = deepcopy(self.board_history)

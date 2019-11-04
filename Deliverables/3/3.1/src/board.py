@@ -73,8 +73,8 @@ class Board():
             self._remove_component(other_type, other_point)
       if not self.reachable(point, None):
          self._remove_component(stone_type, point)
-         
-      return self.board
+      
+      return Board(self.board)
 
    @valid_point
    @valid_stone
