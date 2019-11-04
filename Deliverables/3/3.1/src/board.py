@@ -30,6 +30,18 @@ class Board():
          for j in range(self.board_dim):
             self.points[self.get_type(Point(i, j))].add((i,j))
 
+   def __setitem__(self, index, value):
+      self.board[index] = value
+
+   def __getitem__(self, index):
+      return self.board[index]
+
+   def __iter__(self):
+      return iter(self.board)
+
+   def __len__(self):
+      return self.board_dim
+
    ## Public Methods
    @valid_point
    def occupied(self, point):
@@ -61,6 +73,7 @@ class Board():
             self._remove_component(other_type, other_point)
       if not self.reachable(point, None):
          self._remove_component(stone_type, point)
+         
       return self.board
 
    @valid_point

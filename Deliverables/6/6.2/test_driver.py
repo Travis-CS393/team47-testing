@@ -5,15 +5,24 @@ from json_parser import json_parse_stdin
 from point import get_raw
 from referee_formatter import format_pretty_json
 from obj_parser import parse_boards, parse_stone
-from constants import REGISTER, RECEIVE, MOVE
-from go_player_base import GoPlayerBase
+from constants import REGISTER, RECEIVE, MOVE, PASS, BLACK_STONE, WHITE_STONE
+from play_parser import format_input
+from output_formatter import format_board_if_valid
+from go_referee import GoReferee
 
-def execute_input(play):
-   pass
+def execute_input(play, referee):
+	input_play = format_input(play)
+	return referee.execute_move(input_play)
+
+
 
 if __name__ == "__main__":
-   player = GoPlayerBase()
-   objs = json_parse_stdin()
-   output = []
-   #output = filter (lambda x: x, [execute_input(play) for obj in objs])
-   print(format_pretty_json(list(output)))
+	objs = json_parse_stdin()
+	output = []
+	referee = GoReferee(player1=objs[0], player2=objs[1])
+	output.append(BLACK_STONE)
+	output.append(WHITE_STONE)
+	for obj in objs[2:]:
+		raw_out = execute_input(obj, referee)
+		output.append(format_board_if_valid(raw_out))
+	print(format_pretty_json(output))
