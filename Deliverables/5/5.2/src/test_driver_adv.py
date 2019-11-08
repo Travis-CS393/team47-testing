@@ -15,7 +15,7 @@ if __name__ == "__main__":
    ## First recieve stone, then use threading
    output = list(map(call_exec, objs[0:2]))
    p = multiprocessing.Pool(len(objs) - 2)
-   output += list(map(call_exec, objs[2:]))
+   output = output + list(p.map(call_exec, objs[2:]))
 
    ## Filter for nulls
    filtered = filter(lambda x: x, output)

@@ -18,14 +18,14 @@ class GoPlayerBase:
    def protocol_registered(func):
       def wrapper(*args, **kwargs):
          if not args[0].name:
-            raise Exception("Invalid Protocol: must first register a player")
+            raise Exception("Invalid Protocol: Player must be registered first.")
          return func(*args, **kwargs)
       return wrapper
 
    def protocol_stone_set(func):
       def wrapper(*args, **kwargs):
          if not args[0].stone_type:
-            raise Exception("Invalid Protocol: must first receive a stone")
+            raise Exception("Invalid Protocol: Stone must be received first.")
          return func(*args, **kwargs)
       return wrapper
 
