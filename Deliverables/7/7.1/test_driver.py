@@ -13,24 +13,30 @@ if __name__ == "__main__":
    player = GoPlayerProxy()
    objs = json_parse_stdin()
    game_terminated = False
+   registered = False
+   received = False
 
    output = []
    if objs[0] != ["register"]:
       output.append("GO has gone crazy!")
       game_terminated = True
    else:
-      output.append(player.work_JSON(json.dumps(objs[0])))
+      registered = True
+      output.append(json.JSONDecoder().decode(player.work_JSON(json.JSONEncoder().encode(objs[0]))))
 
-   if (objs[1] != ["receive-stones", "B"]) and (objs[1] != "receive-stones", "W") and not game_terminated:
+   if (objs[1] != ["receive-stones", "B"]) and (objs[1] != ["receive-stones", "W"]) and not game_terminated:
       output.append("GO has gone crazy!")
       game_terminated = True 
+   else:
+      if registered:
+         output.append(player.work_JSON(json.JSONEncoder().encode(objs[1])))
 
    for input in objs[2:]:
       if not game_terminated:
-         ret_val = player.work_JSON(json.dumps(input))
-         if json.JSONDecoder.encode(ret_val) == "no name" or not json.JSONDecoder.encode(ret_val):
+         ret_val = json.JSONDecoder().decode(player.work_JSON(json.JSONEncoder().encode(input)))
+         if ret_val == "no name" or not ret_val:
             output.append("GO has gone crazy!")
-            game_terminated = True
+            break
          else:
             output.append(ret_val)
       else:
