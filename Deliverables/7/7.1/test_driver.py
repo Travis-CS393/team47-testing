@@ -23,6 +23,7 @@ if __name__ == "__main__":
 
    # NEED FUNCTIONS TO CONFIGURE SERVER SIDE SOCKET 
    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
+      server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
       server_socket.bind((HOSTNAME, PORT))
       server_socket.listen()
       client_socket, address = server_socket.accept()
@@ -59,6 +60,8 @@ if __name__ == "__main__":
                break
 
          client_socket.sendall(b'done')
+      #server_socket.shutdown(socket.SHUT_RDWR)
+      server_socket.close()
 
 
 
