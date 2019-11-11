@@ -1,5 +1,6 @@
 import sys
 import socket
+import time
 sys.path.append('../../3/3.1/src/')
 sys.path.append('../../4/4.1/src/')
 sys.path.append('../../5/5.1/src/')
@@ -84,6 +85,7 @@ class GoPlayerProxy():
 		return self.player.choose_move(board_history)
 
 if __name__ == "__main__":
+	time.sleep(5)
 	player = GoPlayerProxy()
 	HOSTNAME = '127.0.0.1'
 	PORT = 8080
