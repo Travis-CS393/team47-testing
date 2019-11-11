@@ -20,23 +20,30 @@ class GoPlayerProxy():
 		self.player = GoPlayerAdv(n)
 		self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
+
 	def turn_on_socket(self, ip_and_port:tuple):
 		self.socket.connect(ip_and_port)
 
 	def work_with_socket(self):
 		try:
-			inpt = self.socket.recv(4096)
-			output = self.make_action_from_JSON(inpt)
-			if output:
-				self.socket.sendall(output)
+			inpt = self.socket.recv(8192)
+			if inpt.decode("utf-8") == "done":
+				self.turn_off_socket()
+			else:
+				output = self.work_JSON(json.loads(inpt.decode("utf-8")))
+				if not output:
+					self.socket.sendall(bytes("None", "utf-8"))
+				else:
+					self.socket.sendall(bytes(output, "utf-8"))
 		except:
 			return "Error: no connection established"
+
 
 	def turn_off_socket(self):
 		self.socket.close()
 
 	def work_JSON(self, input):
-		obj, _ = json.JSONDecoder().raw_decode(input)
+		obj = input
 		if obj[0] == "register":
 			output = self.register("no name")
 		elif obj[0] == "receive-stones":
@@ -58,7 +65,7 @@ class GoPlayerProxy():
 		if not output: 
 			return output
 
-		return json.JSONEncoder().encode(output)
+		return output
 
 
 	def register(self, name):
@@ -76,4 +83,12 @@ class GoPlayerProxy():
 	def make_a_move(self, board_history):
 		return self.player.choose_move(board_history)
 
+if __name__ == "__main__":
+	player = GoPlayerProxy()
+	HOSTNAME = '127.0.0.1'
+	PORT = 8080
+
+	player.turn_on_socket((HOSTNAME, PORT))
+	while True:
+		player.work_with_socket()
 

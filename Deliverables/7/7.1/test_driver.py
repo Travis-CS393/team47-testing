@@ -1,4 +1,5 @@
 import sys, multiprocessing, time
+import socket
 import json
 sys.path.append('../../3/3.1/src/')
 sys.path.append('../../5/5.1/src/')
@@ -10,12 +11,59 @@ from go_player_adv import GoPlayerAdv
 from remote_player import GoPlayerProxy
 
 if __name__ == "__main__":
-   player = GoPlayerProxy()
-   objs = json_parse_stdin()
    game_terminated = False
    registered = False
    received = False
 
+   objs = json_parse_stdin()
+   output = []
+
+   HOSTNAME = '127.0.0.1'
+   PORT = 8080
+
+   # NEED FUNCTIONS TO CONFIGURE SERVER SIDE SOCKET 
+   with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
+      server_socket.bind((HOSTNAME, PORT))
+      server_socket.listen()
+      client_socket, address = server_socket.accept()
+      with client_socket:
+         if objs[0] != ["register"]:
+            output.append("GO has gone crazy!")
+            game_terminated = True
+         else:
+            registered = True
+            client_socket.sendall(bytes(json.dumps(objs[0]), "utf-8"))
+            data = client_socket.recv(8192)
+            output.append(data.decode("utf-8"))
+
+         if (objs[1] != ["receive-stones", "B"]) and (objs[1] != ["receive-stones", "W"]) and not game_terminated:
+            output.append("GO has gone crazy!")
+            game_terminated = True
+         else:
+            received = True
+            if registered:
+               client_socket.sendall(bytes(json.dumps(objs[1]), "utf-8"))
+               data = client_socket.recv(8192)
+               #output.append(data.decode("utf-8"))
+
+         for input in objs[2:]:
+            if not game_terminated:
+               client_socket.sendall(bytes(json.dumps(input), "utf-8"))
+               ret_val = client_socket.recv(8192)
+               if ret_val.decode("utf-8") == "no name" or ret_val.decode("utf-8") == "None":
+                  output.append("GO has gone crazy!")
+                  break
+               else:
+                  output.append(ret_val.decode("utf-8"))
+            else:
+               break
+
+         client_socket.sendall(b'done')
+
+
+
+   
+   """
    output = []
    if objs[0] != ["register"]:
       output.append("GO has gone crazy!")
@@ -41,6 +89,7 @@ if __name__ == "__main__":
             output.append(ret_val)
       else:
          break
+   """
    ## Filter for nulls
    filtered = list(filter(lambda x: x, output))
    print(format_pretty_json(filtered))
