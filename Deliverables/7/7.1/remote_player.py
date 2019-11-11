@@ -85,12 +85,16 @@ class GoPlayerProxy():
 		return self.player.choose_move(board_history)
 
 if __name__ == "__main__":
-	time.sleep(10)
-	player = GoPlayerProxy()
-	HOSTNAME = '127.0.0.1'
-	PORT = 8080
-
-	player.turn_on_socket((HOSTNAME, PORT))
+	#time.sleep(10)
 	while True:
-		player.work_with_socket()
+		try:
+			player = GoPlayerProxy()
+			HOSTNAME = '127.0.0.1'
+			PORT = 8080
+
+			player.turn_on_socket((HOSTNAME, PORT))
+			while True:
+				player.work_with_socket()
+		except:
+			pass
 
