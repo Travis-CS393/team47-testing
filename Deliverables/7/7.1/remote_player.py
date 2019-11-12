@@ -95,10 +95,10 @@ if __name__ == "__main__":
 
 	go_player_config = json.load(open('go-player.config'))
 	N = go_player_config['depth']
+	
 	time.sleep(10)
 	player = GoPlayerProxy(N)
 	player.turn_on_socket((HOSTNAME, PORT))
-	
 	done = "not done"
 	while done != "done":
 		done = player.work_with_socket()
