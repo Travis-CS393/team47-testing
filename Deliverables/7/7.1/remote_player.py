@@ -109,7 +109,7 @@ if __name__ == "__main__":
 				else:
 					player.socket.sendall(bytes(output, "utf-8"))
 		except:
-			raise Exception("Error: no connection established")
+			raise Exception("Error: No connection established")
 
 
 	player.turn_off_socket()
