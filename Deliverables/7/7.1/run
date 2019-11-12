@@ -1,5 +1,5 @@
-!/bin/bash
-cat - | ./test_driver.py & sleep 1 & ./remote_player.py
+#!/bin/bash
+cat - | ./test_driver.py & sleep 1 && ./remote_player.py
 
 # run.sh: runs the actual submission
 
