@@ -66,18 +66,18 @@ if __name__ == "__main__":
 
          for input in objs[2:]:
             if not game_terminated:
-               if valid_move_input(input):
-                  client_socket.sendall(bytes(json.dumps(input), "utf-8"))
-                  ret_val = client_socket.recv(8192)
-                  if ret_val.decode("utf-8") == "no name" or ret_val.decode("utf-8") == "None":
-                     output.append("GO has gone crazy!")
-                     break
-                  else:
-                     output.append(ret_val.decode("utf-8"))
-               else:
+               #if valid_move_input(input):
+               client_socket.sendall(bytes(json.dumps(input), "utf-8"))
+               ret_val = client_socket.recv(8192)
+               if ret_val.decode("utf-8") == "no name" or ret_val.decode("utf-8") == "None":
                   output.append("GO has gone crazy!")
-                  game_terminated = True
                   break
+               else:
+                  output.append(ret_val.decode("utf-8"))
+               #else:
+               #   output.append("GO has gone crazy!")
+               #   game_terminated = True
+               #   break
             else:
                break
 
