@@ -17,8 +17,9 @@ if __name__ == "__main__":
    objs = json_parse_stdin()
    output = []
 
-   HOSTNAME = '127.0.0.1'
-   PORT = 8080
+   go_config = json.load(open('go.config'))
+   HOSTNAME = go_config['IP']
+   PORT = go_config['port']
 
    # NEED FUNCTIONS TO CONFIGURE SERVER SIDE SOCKET 
    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
