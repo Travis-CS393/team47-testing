@@ -115,5 +115,5 @@ if __name__ == "__main__":
       """
    ## Filter for nulls
    filtered = list(filter(lambda x: x, output))
-   #print(format_pretty_json(filtered))
-   print(filtered)
+   print(format_pretty_json(filtered))
+   #print(filtered)

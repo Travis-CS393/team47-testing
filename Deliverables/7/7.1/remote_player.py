@@ -66,7 +66,7 @@ class GoPlayerProxy():
 		if not output: 
 			return output
 
-		return json.dumps(output)
+		return output
 
 
 	def register(self, name):
