@@ -44,7 +44,6 @@ if __name__ == "__main__":
       server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
       server_socket.bind((HOSTNAME, PORT))
       server_socket.listen()
-      print("running")
       client_socket, address = server_socket.accept()
       with client_socket:
          if objs[0] != ["register"]:
@@ -54,7 +53,7 @@ if __name__ == "__main__":
             registered = True
             client_socket.sendall(bytes(json.dumps(objs[0]), "utf-8"))
             data = client_socket.recv(8192)
-            output.append(data.decode("utf-8"))
+            output.append(json.loads(data.decode("utf-8")))
 
          if (objs[1] != ["receive-stones", "B"]) and (objs[1] != ["receive-stones", "W"]) and not game_terminated:
             output.append("GO has gone crazy!")
@@ -75,7 +74,7 @@ if __name__ == "__main__":
                      output.append("GO has gone crazy!")
                      break
                   else:
-                     output.append(ret_val.decode("utf-8"))
+                     output.append(json.loads(ret_val.decode("utf-8")))
                else:
                   output.append("GO has gone crazy!")
                   game_terminated = True

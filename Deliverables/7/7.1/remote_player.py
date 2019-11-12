@@ -29,7 +29,6 @@ class GoPlayerProxy():
 		try:
 			inpt = self.socket.recv(8192)
 			if inpt.decode("utf-8") == "done":
-				print("sto")
 				self.turn_off_socket()
 			else:
 				output = self.work_JSON(json.loads(inpt.decode("utf-8")))
@@ -89,7 +88,6 @@ if __name__ == "__main__":
 	go_config = json.load(open('go.config'))
 	HOSTNAME = go_config['IP']
 	PORT = go_config['port']
-	print("trying")
 
 	go_player_config = json.load(open('go-player.config'))
 	N = go_player_config['depth']
