@@ -37,6 +37,7 @@ class GoPlayerProxy():
 					self.socket.sendall(bytes("None", "utf-8"))
 				else:
 					self.socket.sendall(bytes(output, "utf-8"))
+				return "not done"
 		except:
 			return "Error: no connection established"
 
@@ -56,7 +57,8 @@ class GoPlayerProxy():
 				stone_e = StoneEnum.WHITE
 			else:
 				raise Exception("Invalid stone type")
-			output = self.receive_stone(stone_e)
+			self.receive_stone(stone_e)
+			output = None
 		elif obj[0] == "make-a-move":
 			boards_obj = parse_boards(obj[1])
 			output = self.make_a_move(boards_obj)
@@ -97,7 +99,7 @@ if __name__ == "__main__":
 	player = GoPlayerProxy(N)
 	player.turn_on_socket((HOSTNAME, PORT))
 	
-	done = False
+	done = "not done"
 	while done != "done":
 		done = player.work_with_socket()
 	player.turn_off_socket()
