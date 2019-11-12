@@ -24,7 +24,7 @@ def valid_move_input(input):
 
    try:
       for board in input[1]:
-         print(parse_board(board))
+         parse_board(board)
    except:
       return False
    
