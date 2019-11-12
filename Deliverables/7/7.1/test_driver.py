@@ -63,7 +63,6 @@ if __name__ == "__main__":
             if registered:
                client_socket.sendall(bytes(json.dumps(objs[1]), "utf-8"))
                data = client_socket.recv(8192)
-               #output.append(data.decode("utf-8"))
 
          for input in objs[2:]:
             if not game_terminated:
