@@ -85,7 +85,7 @@ class GoPlayerProxy():
 		return self.player.choose_move(board_history)
 
 if __name__ == "__main__":
-	print ("running")
+	print ("trying")
 	go_config = json.load(open('go.config'))
 	HOSTNAME = go_config['IP']
 	PORT = go_config['port']

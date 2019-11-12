@@ -21,7 +21,6 @@ if __name__ == "__main__":
    HOSTNAME = go_config['IP']
    PORT = go_config['port']
 
-   # NEED FUNCTIONS TO CONFIGURE SERVER SIDE SOCKET 
    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
       server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
       server_socket.bind((HOSTNAME, PORT))
@@ -68,7 +67,6 @@ if __name__ == "__main__":
 
 
 
-   
    """
    output = []
    if objs[0] != ["register"]:
@@ -95,7 +93,7 @@ if __name__ == "__main__":
             output.append(ret_val)
       else:
          break
-   """
+      """
    ## Filter for nulls
    filtered = list(filter(lambda x: x, output))
    print(format_pretty_json(filtered))
