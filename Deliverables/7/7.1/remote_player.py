@@ -22,7 +22,7 @@ class GoPlayerProxy():
 		self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 
-	def turn_on_socket(self, ip_and_port:tuple):
+	def turn_on_socket(self, ip_and_port):
 		self.socket.connect(ip_and_port)
 
 	def work_with_socket(self):
@@ -86,12 +86,17 @@ class GoPlayerProxy():
 
 if __name__ == "__main__":
 	#time.sleep(10)
+	
+	go_config = json.load(open('go.config'))
+	HOSTNAME = go_config['IP']
+	PORT = go_config['port']
+
+	go_player_config = json.load(open('go-player.config'))
+	N = go_player_config['depth']
+
 	while True:
 		try:
-			player = GoPlayerProxy()
-			HOSTNAME = '127.0.0.1'
-			PORT = 8080
-
+			player = GoPlayerProxy(N)
 			player.turn_on_socket((HOSTNAME, PORT))
 			while True:
 				player.work_with_socket()
