@@ -53,7 +53,7 @@ if __name__ == "__main__":
             registered = True
             client_socket.sendall(bytes(json.dumps(objs[0]), "utf-8"))
             data = client_socket.recv(8192)
-            output.append(json.loads(data.decode("utf-8")))
+            output.append(data.decode("utf-8"))
 
          if (objs[1] != ["receive-stones", "B"]) and (objs[1] != ["receive-stones", "W"]) and not game_terminated:
             output.append("GO has gone crazy!")
@@ -73,7 +73,7 @@ if __name__ == "__main__":
                      output.append("GO has gone crazy!")
                      break
                   else:
-                     output.append(json.loads(ret_val.decode("utf-8")))
+                     output.append(ret_val.decode("utf-8"))
                else:
                   output.append("GO has gone crazy!")
                   game_terminated = True
@@ -115,4 +115,5 @@ if __name__ == "__main__":
       """
    ## Filter for nulls
    filtered = list(filter(lambda x: x, output))
-   print(format_pretty_json(filtered))
+   #print(format_pretty_json(filtered))
+   print(filtered)
