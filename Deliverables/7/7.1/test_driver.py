@@ -2,11 +2,13 @@ import sys, multiprocessing, time
 import socket
 import json
 sys.path.append('../../3/3.1/src/')
+sys.path.append('../../4/4.1/src/')
 sys.path.append('../../5/5.1/src/')
 sys.path.append('../../5/5.2/src/')
 from json_parser import json_parse_stdin
 from constants import BOARD_DIM
 from test_driver_base import execute_input
+from referee_parser import parse_board
 from referee_formatter import format_pretty_json
 from go_player_adv import GoPlayerAdv
 from remote_player import GoPlayerProxy
@@ -16,19 +18,16 @@ def valid_move_input(input):
       return False
    if input[0] != "make-a-move":
       return False
-   if len(input[1]) != 1 and len(input[1]) != 2 and len(input[1]) != 3:
+
+   if len(input[1]) > 3 and len(input[1]) < 1:
       return False
 
-   if len(input[1]) > 3:
+   try:
+      for board in input[1]:
+         print(parse_board(board))
+   except:
       return False
-
-   for board in input[1]:
-      if len(board) != BOARD_DIM or len(board[0]) != BOARD_DIM:
-         return False
-      for i in range(len(board)):
-         for j in range(len(board[0])):
-            if board[i][j] != " " and board[i][j] != "B" and board[i][j] != "W":
-               return False
+   
    return True 
 
 if __name__ == "__main__":
