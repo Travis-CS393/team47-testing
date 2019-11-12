@@ -25,12 +25,12 @@ class GoPlayerProxy():
 	def turn_on_socket(self, ip_and_port):
 		self.socket.connect(ip_and_port)
 
-	"""
+
 	def work_with_socket(self):
 		try:
 			inpt = self.socket.recv(8192)
 			if inpt.decode("utf-8") == "done":
-				self.turn_off_socket()
+				return "done"
 			else:
 				output = self.work_JSON(json.loads(inpt.decode("utf-8")))
 				if not output:
@@ -39,7 +39,7 @@ class GoPlayerProxy():
 					self.socket.sendall(bytes(output, "utf-8"))
 		except:
 			return "Error: no connection established"
-	"""
+
 
 
 	def turn_off_socket(self):
@@ -96,19 +96,8 @@ if __name__ == "__main__":
 	time.sleep(10)
 	player = GoPlayerProxy(N)
 	player.turn_on_socket((HOSTNAME, PORT))
-	while True:
-		try:
-			inpt = player.socket.recv(8192)
-			if inpt.decode("utf-8") == "done":
-				break
-			else:
-				output = player.work_JSON(json.loads(inpt.decode("utf-8")))
-				if not output:
-					player.socket.sendall(bytes("None", "utf-8"))
-				else:
-					player.socket.sendall(bytes(output, "utf-8"))
-		except:
-			raise Exception("Error: No connection established")
-
-
+	
+	done = False
+	while done != "done":
+		done = player.work_with_socket()
 	player.turn_off_socket()

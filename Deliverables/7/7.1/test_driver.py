@@ -5,6 +5,7 @@ sys.path.append('../../3/3.1/src/')
 sys.path.append('../../5/5.1/src/')
 sys.path.append('../../5/5.2/src/')
 from json_parser import json_parse_stdin
+from constants import BOARD_DIM
 from test_driver_base import execute_input
 from referee_formatter import format_pretty_json
 from go_player_adv import GoPlayerAdv
@@ -18,10 +19,11 @@ def valid_move_input(input):
    if len(input[1]) != 1 and len(input[1]) != 2 and len(input[1]) != 3:
       return False
 
+   if len(input[1]) > 3:
+      return False
+
    for board in input[1]:
-      if len(board) != 19:
-         return False
-      if len(board[0]) != 19:
+      if len(board) != BOARD_DIM or len(board[0]) != BOARD_DIM:
          return False
       for i in range(len(board)):
          for j in range(len(board[0])):
