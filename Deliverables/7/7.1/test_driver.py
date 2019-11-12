@@ -19,7 +19,7 @@ def valid_move_input(input):
    if input[0] != "make-a-move":
       return False
 
-   if len(input[1]) > 3 and len(input[1]) < 1:
+   if len(input[1]) > 3 or len(input[1]) < 1:
       return False
 
    try:
