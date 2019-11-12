@@ -27,42 +27,39 @@ if __name__ == "__main__":
       server_socket.listen()
       print("running")
       client_socket, address = server_socket.accept()
-      while True:
-         print("connected")
-         with client_socket:
-            if objs[0] != ["register"]:
-               output.append("GO has gone crazy!")
-               game_terminated = True
-            else:
-               registered = True
-               client_socket.sendall(bytes(json.dumps(objs[0]), "utf-8"))
+      with client_socket:
+         if objs[0] != ["register"]:
+            output.append("GO has gone crazy!")
+            game_terminated = True
+         else:
+            registered = True
+            client_socket.sendall(bytes(json.dumps(objs[0]), "utf-8"))
+            data = client_socket.recv(8192)
+            output.append(data.decode("utf-8"))
+
+         if (objs[1] != ["receive-stones", "B"]) and (objs[1] != ["receive-stones", "W"]) and not game_terminated:
+            output.append("GO has gone crazy!")
+            game_terminated = True
+         else:
+            received = True
+            if registered:
+               client_socket.sendall(bytes(json.dumps(objs[1]), "utf-8"))
                data = client_socket.recv(8192)
-               output.append(data.decode("utf-8"))
+               #output.append(data.decode("utf-8"))
 
-            if (objs[1] != ["receive-stones", "B"]) and (objs[1] != ["receive-stones", "W"]) and not game_terminated:
-               output.append("GO has gone crazy!")
-               game_terminated = True
-            else:
-               received = True
-               if registered:
-                  client_socket.sendall(bytes(json.dumps(objs[1]), "utf-8"))
-                  data = client_socket.recv(8192)
-                  #output.append(data.decode("utf-8"))
-
-            for input in objs[2:]:
-               if not game_terminated:
-                  client_socket.sendall(bytes(json.dumps(input), "utf-8"))
-                  ret_val = client_socket.recv(8192)
-                  if ret_val.decode("utf-8") == "no name" or ret_val.decode("utf-8") == "None":
-                     output.append("GO has gone crazy!")
-                     break
-                  else:
-                     output.append(ret_val.decode("utf-8"))
-               else:
+         for input in objs[2:]:
+            if not game_terminated:
+               client_socket.sendall(bytes(json.dumps(input), "utf-8"))
+               ret_val = client_socket.recv(8192)
+               if ret_val.decode("utf-8") == "no name" or ret_val.decode("utf-8") == "None":
+                  output.append("GO has gone crazy!")
                   break
+               else:
+                  output.append(ret_val.decode("utf-8"))
+            else:
+               break
 
-            client_socket.sendall(b'done')
-            break
+         client_socket.sendall(b'done')
       server_socket.close()
 
 
