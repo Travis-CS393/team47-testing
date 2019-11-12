@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env python
 
 # run.sh: runs the actual submission
 
