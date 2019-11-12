@@ -10,6 +10,25 @@ from referee_formatter import format_pretty_json
 from go_player_adv import GoPlayerAdv
 from remote_player import GoPlayerProxy
 
+def valid_move_input(input):
+   if len(input) != 2:
+      return False
+   if input[0] != "make-a-move":
+      return False
+   if len(input[1]) != 1 and len(input[1]) != 2 and len(input[1]) != 3:
+      return False
+
+   for board in input[1]:
+      if len(board) != 19:
+         return False
+      if len(board[0]) != 19:
+         return False
+      for i in range(len(board)):
+         for j in range(len(board[0])):
+            if board[i][j] != " " and board[i][j] != "B" and board[i][j] != "W":
+               return False
+   return True 
+
 if __name__ == "__main__":
    game_terminated = False
    registered = False
@@ -49,13 +68,18 @@ if __name__ == "__main__":
 
          for input in objs[2:]:
             if not game_terminated:
-               client_socket.sendall(bytes(json.dumps(input), "utf-8"))
-               ret_val = client_socket.recv(8192)
-               if ret_val.decode("utf-8") == "no name" or ret_val.decode("utf-8") == "None":
-                  output.append("GO has gone crazy!")
-                  break
+               if valid_move_input(input):
+                  client_socket.sendall(bytes(json.dumps(input), "utf-8"))
+                  ret_val = client_socket.recv(8192)
+                  if ret_val.decode("utf-8") == "no name" or ret_val.decode("utf-8") == "None":
+                     output.append("GO has gone crazy!")
+                     break
+                  else:
+                     output.append(ret_val.decode("utf-8"))
                else:
-                  output.append(ret_val.decode("utf-8"))
+                  output.append("GO has gone crazy!")
+                  game_terminated = True
+                  break
             else:
                break
 

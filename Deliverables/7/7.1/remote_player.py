@@ -93,26 +93,25 @@ if __name__ == "__main__":
 
 	go_player_config = json.load(open('go-player.config'))
 	N = go_player_config['depth']
+	time.sleep(10)
 	while True:
+		player = GoPlayerProxy(N)
+		player.turn_on_socket((HOSTNAME, PORT))
+		#while True:
+		#	player.work_with_socket()
 		try:
-			player = GoPlayerProxy(N)
-			player.turn_on_socket((HOSTNAME, PORT))
-			#while True:
-			#	player.work_with_socket()
-			try:
-				inpt = player.socket.recv(8192)
-				if inpt.decode("utf-8") == "done":
-					#self.turn_off_socket()
-					break
+			inpt = player.socket.recv(8192)
+			if inpt.decode("utf-8") == "done":
+				#self.turn_off_socket()
+				break
+			else:
+				output = player.work_JSON(json.loads(inpt.decode("utf-8")))
+				if not output:
+					player.socket.sendall(bytes("None", "utf-8"))
 				else:
-					output = player.work_JSON(json.loads(inpt.decode("utf-8")))
-					if not output:
-						player.socket.sendall(bytes("None", "utf-8"))
-					else:
-						player.socket.sendall(bytes(output, "utf-8"))
-			except:
-				raise Exception("Error: no connection established")
+					player.socket.sendall(bytes(output, "utf-8"))
 		except:
-			time.sleep(1)
+			raise Exception("Error: no connection established")
+
 
 	player.turn_off_socket()
