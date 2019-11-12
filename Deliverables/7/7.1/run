@@ -2,4 +2,4 @@
 
 # run.sh: runs the actual submission
 
-python3 python3 test_driver.py
+python3 test_driver.py
