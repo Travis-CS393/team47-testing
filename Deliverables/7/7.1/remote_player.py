@@ -92,7 +92,6 @@ if __name__ == "__main__":
 
 	go_player_config = json.load(open('go-player.config'))
 	N = go_player_config['depth']
-	time.sleep(2)
 	while True:
 		try:
 			player = GoPlayerProxy(N)
