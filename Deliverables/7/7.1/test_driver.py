@@ -26,7 +26,9 @@ if __name__ == "__main__":
       server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
       server_socket.bind((HOSTNAME, PORT))
       server_socket.listen()
+      print("running")
       client_socket, address = server_socket.accept()
+      print("connected")
       with client_socket:
          if objs[0] != ["register"]:
             output.append("GO has gone crazy!")
