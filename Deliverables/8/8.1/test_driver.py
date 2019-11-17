@@ -85,6 +85,36 @@ if __name__ == "__main__":
          client_socket.sendall(b'done')
       server_socket.close()
 
+
+
+   """
+   output = []
+   if objs[0] != ["register"]:
+      output.append("GO has gone crazy!")
+      game_terminated = True
+   else:
+      registered = True
+      output.append(json.JSONDecoder().decode(player.work_JSON(json.JSONEncoder().encode(objs[0]))))
+
+   if (objs[1] != ["receive-stones", "B"]) and (objs[1] != ["receive-stones", "W"]) and not game_terminated:
+      output.append("GO has gone crazy!")
+      game_terminated = True 
+   else:
+      if registered:
+         output.append(player.work_JSON(json.JSONEncoder().encode(objs[1])))
+
+   for input in objs[2:]:
+      if not game_terminated:
+         ret_val = json.JSONDecoder().decode(player.work_JSON(json.JSONEncoder().encode(input)))
+         if ret_val == "no name" or not ret_val:
+            output.append("GO has gone crazy!")
+            break
+         else:
+            output.append(ret_val)
+      else:
+         break
+      """
    ## Filter for nulls
    filtered = list(filter(lambda x: x, output))
    print(format_pretty_json(filtered))
+   #print(filtered)
