@@ -71,8 +71,10 @@ class GoAdmin():
 				#self.play_white_move(client_socket)
 				client_socket.sendall(bytes(json.dumps(["make-a-move", format_board(self.go_ref.board_history)]), "utf-8"))
 				p2_move = client_socket.recv(8192)
-				if p2_move.decode("utf-8") != "This history makes no sense!" and p2_move != "GO has gone crazy!":
+				if p2_move.decode("utf-8") != "This history makes no sense!" and p2_move.decode("utf-8") != "GO has gone crazy!" and p2_move.decode("utf-8") != "pass":
 					self.go_ref.execute_move(str_to_point(p2_move.decode("utf-8")))
+				elif p2_move.decode("utf-8") == "pass":
+					self.go_ref.execute_move(p2_move.decode("utf-8"))
 				else:
 					valid_response = False
 					break
@@ -104,8 +106,10 @@ class GoAdmin():
 		# Get next move from Remote Player
 		client_socket.sendall(bytes(json.dumps(["make-a-move", format_board(self.go_ref.board_history)]), "utf-8"))
 		p2_move = client_socket.recv(8192)
-		if p2_move.decode("utf-8") != "This history makes no sense!" and p2_move != "GO has gone crazy!":
+		if p2_move.decode("utf-8") != "This history makes no sense!" and p2_move.decode("utf-8") != "GO has gone crazy!" and p2_move.decode("utf-8") != "pass":
 			self.go_ref.execute_move(str_to_point(p2_move.decode("utf-8")))
+		elif p2_move.decode("utf-8") == "pass":
+			self.go_ref.execute_move(p2_move.decode("utf-8"))
 		else:
 			valid_response = False
 
