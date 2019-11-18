@@ -4,6 +4,7 @@ sys.path.append('../../4/4.1/src/')
 from stone import StoneEnum
 from move_referee import MoveReferee
 from point import Point
+from output_formatter import format_board
 
 class GoPlayerBase:
 
@@ -49,6 +50,7 @@ class GoPlayerBase:
    @protocol_stone_set
    def choose_move(self, boards):
       if not self.move_referee.valid_history(self.stone_type, boards):
+         print(format_board(boards))
          return "This history makes no sense!"
       for x, y in sorted(list(boards[0].get_points(None))):
          if self.move_referee.valid_move(self.stone_type, Point(x, y), boards, boards[0]):

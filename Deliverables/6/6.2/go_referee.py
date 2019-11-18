@@ -68,6 +68,8 @@ class GoReferee:
                   self.game_over = True
                   self.winner = get_other_type(self.current_player)
                   #return self.get_winners()
+         else:
+            raise Exception("Not a valid move.")
          self.current_player = get_other_type(self.current_player)
          return old_history
 
