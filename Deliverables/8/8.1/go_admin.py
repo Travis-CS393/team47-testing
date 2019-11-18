@@ -71,13 +71,24 @@ class GoAdmin():
 				#self.play_white_move(client_socket)
 				client_socket.sendall(bytes(json.dumps(["make-a-move", format_board(self.go_ref.board_history)]), "utf-8"))
 				p2_move = client_socket.recv(8192)
-				if p2_move.decode("utf-8") != "This history makes no sense!" and p2_move.decode("utf-8") != "GO has gone crazy!" and p2_move.decode("utf-8") != "pass":
-					self.go_ref.execute_move(str_to_point(p2_move.decode("utf-8")))
-				elif p2_move.decode("utf-8") == "pass":
-					self.go_ref.execute_move(p2_move.decode("utf-8"))
+				check_response = p2_move.decode("utf-8")
+				if check_response == "pass":
+					self.go_ref.execute_move(check_response)
 				else:
-					valid_response = False
-					break
+					check_response_tmp = check_response.split("-")
+					if len(check_response_tmp) != 2:
+						valid_response = False
+						break
+					elif int(check_response_tmp[0]) < 1 or int(check_response_tmp[0]) > 9:
+						valid_response = False
+						break
+					elif int(check_response_tmp[0]) < 1 or int(check_response_tmp[0]) > 9:
+						valid_response = False
+						break
+					else:
+						self.go_ref.execute_move(str_to_point(check_response))
+
+
 			except socket_error:
 				connected = False
 				break
