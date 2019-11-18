@@ -58,6 +58,7 @@ class GoAdmin():
 		player2_name = client_socket.recv(8192)
 		self.go_ref.players[StoneEnum.WHITE] = player2_name.decode("utf-8")
 		client_socket.sendall(bytes(json.dumps(["receive-stones, W"]), "utf-8"))
+		print("received and registered")
 
 		# Play game
 		while not self.go_ref.game_over and connected and valid_response:
@@ -96,9 +97,8 @@ class GoAdmin():
 		# Get next move from Remote Player
 		client_socket.sendall(bytes(json.dumps(["make-a-move", format_board(self.go_ref.board_history)]), "utf-8"))
 		p2_move = client_socket.recv(8192)
-		try:
+		if p2_move.decode("utf-8") != "This history makes no sense!" and p2_move != "GO has gone crazy!":
 			self.go_ref.execute_move(str_to_point(p2_move.decode("utf-8")))
-		except:
+		else:
 			valid_response = False
-		
 
