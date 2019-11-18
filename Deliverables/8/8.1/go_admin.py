@@ -96,6 +96,7 @@ class GoAdmin():
 		# Get next move from Remote Player
 		client_socket.sendall(bytes(json.dumps(["make-a-move", format_board(self.go_ref.board_history)]), "utf-8"))
 		p2_move = client_socket.recv(8192)
-		self.go_ref.execute_move(str_to_point(p2_move.decode("utf-8")))
+		print(p2_move)
+		self.go_ref.execute_move(p2_move.decode("utf-8"))
 		
 
