@@ -19,7 +19,7 @@ import json
 class GoPlayerProxy():
 
 	def __init__(self, n=1):
-		self.player = GoPlayerBase()
+		self.player = GoPlayerBase("default-player")
 		self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 

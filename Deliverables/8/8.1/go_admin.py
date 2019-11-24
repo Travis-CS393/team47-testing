@@ -8,7 +8,6 @@ sys.path.append('../../3/3.1/src/')
 sys.path.append('../../4/4.1/src/')
 sys.path.append('../../6/6.2/src/')
 sys.path.append('../../7/7.1/src/')
-sys.path.append('../../9/9.1/src')
 from go_referee import GoReferee
 from remote_player_proxy import RemotePlayerProxy
 
@@ -26,8 +25,8 @@ class GoAdmin():
 		self.IP = IP
 		self.port = port
 		self.default_name = default_name
-		self.local_player = GoPlayerBase()
-		self.remote_player = RemotePlayerProxy()
+		self.local_player = GoPlayerBase(self.default_name)
+		self.remote_player = None
 		self.go_ref = GoReferee(board_size=9)
 
 	
@@ -55,13 +54,15 @@ class GoAdmin():
 		server_socket.listen()
 		client_socket, address = server_socket.accept()
 
-		self.remote_player.connection = client_socket
+		self.remote_player = RemotePlayerProxy(connection=client_socket)
 		
 		#Set Player 2
 		self.go_ref.players[StoneEnum.WHITE] = self.remote_player
 		player2_name = self.remote_player.register()
+		print("come output_formatter")
 		self.remote_player.receive_stone(StoneEnum.WHITE)
 
+		print("received and registered")
 		# Play game
 		while not self.go_ref.game_over and connected and valid_response:
 			try:

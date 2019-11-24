@@ -4,7 +4,7 @@ sys.path.append('../../4/4.1/src/')
 sys.path.append('../../5/5.1/src/')
 sys.path.append('../../5/5.2/src/')
 from stone import Stone, StoneEnum, get_other_type
-from board import Board, equal
+from board import Board
 from point import Point
 from copy import deepcopy
 from move_referee import MoveReferee
