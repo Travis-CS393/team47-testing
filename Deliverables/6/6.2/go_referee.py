@@ -95,7 +95,7 @@ class GoReferee:
             if self.board_history[0].equal(self.board_history[1]) and self.board_history[1].equal(self.board_history[2]):
                self.game_over = True
          elif isinstance(move, Point):
-            if (self.move_ref.valid_move(self, current_player, move, self.board_history, self.board_history[0])):
+            if (self.move_ref.valid_move(self.current_player, move, self.board_history, self.board_history[0])):
                add_board = self.make_move(self.current_player, move)
                self.update_history(add_board)
             else:
