@@ -63,8 +63,8 @@ class GoReferee:
 
    def play_white_move(self):
       p = self.players[StoneEnum.WHITE].choose_move(self.board_history)
+      print(p)
       if self.validate_player_move(p):
-         print(p)
          self.execute_move(Point(p[0], p[1]))
       else:
          raise TypeError("Invalid responded move")
@@ -75,7 +75,7 @@ class GoReferee:
       elif isinstance(check_response, tuple):
          return True
       elif isinstance(check_response, str):
-         check_response_tmp = check_response.replace("\"", "").replace("\n","").split("-")
+         check_response_tmp = check_response.split("-")
          print(check_response_tmp)
          check_response_tmp = 
          if len(check_response_tmp) != 2:
@@ -86,8 +86,6 @@ class GoReferee:
             return False
          else:
             return True
-         else:
-            raise TypeError("Invalid responded move.")
 
    def execute_move(self, move):
       if (not self.game_over):
