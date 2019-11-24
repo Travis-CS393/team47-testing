@@ -7,7 +7,7 @@ sys.path.append('../../4/4.1/src')
 sys.path.append('../../5/5.1/src')
 sys.path.append('../../5/5.2/src')
 from constants import BOARD_DIM, EMPTY_STONE, WHITE_STONE, BLACK_STONE
-from stone import StoneEnum, Stone
+from stone import StoneEnum, Stone, make_stone
 from point import get_raw, str_to_point
 from obj_parser import parse_stone, parse_boards
 from go_player_base import GoPlayerBase 
@@ -25,9 +25,7 @@ class RemotePlayerProxy():
 		return player_name.decode("utf-8") 
 
 	def receive_stone(self, stone_type):
-		print("start")
-		self.connection.sendall(bytes(json.dumps(["receive-stones", stone_type.get_raw()]), "utf-8"))
-		print("finish")
+		self.connection.sendall(bytes(json.dumps(["receive-stones", make_stone(stone_type).get_raw()]), "utf-8"))
 
 	def choose_move(self, boards):
 		self.connection.sendall(bytes(json.dumps(["make-a-move", format_board(boards)]), "utf-8"))
