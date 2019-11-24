@@ -8,7 +8,9 @@ sys.path.append('../../3/3.1/src/')
 sys.path.append('../../4/4.1/src/')
 sys.path.append('../../6/6.2/src/')
 sys.path.append('../../7/7.1/src/')
+sys.path.append('../../9/9.1/src')
 from go_referee import GoReferee
+from remote_player_proxy import RemotePlayerProxy
 
 #import local player
 go_config = json.load(open('go.config'))
@@ -25,6 +27,7 @@ class GoAdmin():
 		self.port = port
 		self.default_name = default_name
 		self.local_player = GoPlayerBase()
+		self.remote_player = RemotePlayerProxy()
 		self.go_ref = GoReferee(board_size=9)
 
 	
@@ -41,60 +44,34 @@ class GoAdmin():
 		valid_response = True
 		
 		#Set Player 1
-		player1_name = self.local_player.register(self.default_name)
-		self.go_ref.players[StoneEnum.BLACK] = player1_name
+		self.go_ref.players[StoneEnum.BLACK] = self.local_player
+		player1_name = self.local_player.register()
 		self.local_player.receive_stone(StoneEnum.BLACK)
 		
 		#Server Creation
-		#client_socket = self.create_server(self.IP, self.port)
 		server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 		server_socket.bind((self.IP, self.port))
 		server_socket.listen()
 		client_socket, address = server_socket.accept()
+
+		self.remote_player.connection = client_socket
 		
 		#Set Player 2
-		client_socket.sendall(bytes(json.dumps(["register"]), "utf-8"))
-		player2_name = client_socket.recv(8192)
-		self.go_ref.players[StoneEnum.WHITE] = player2_name.decode("utf-8")
-		client_socket.sendall(bytes(json.dumps(["receive-stones, W"]), "utf-8"))
-		print("received and registered")
+		self.go_ref.players[StoneEnum.WHITE] = self.remote_player
+		player2_name = self.remote_player.register()
+		self.remote_player.receive_stone(StoneEnum.WHITE)
 
 		# Play game
 		while not self.go_ref.game_over and connected and valid_response:
-			print(format_board(self.go_ref.board_history))
-			self.play_black_move()
-			
-			if self.go_ref.game_over: break
-
 			try:
-				#self.play_white_move(client_socket)
-				client_socket.sendall(bytes(json.dumps(["make-a-move", format_board(self.go_ref.board_history)]), "utf-8"))
-				p2_move = client_socket.recv(8192)
-				check_response = p2_move.decode("utf-8")
-				if check_response == "pass":
-					self.go_ref.execute_move(check_response)
-				else:
-					check_response_tmp = check_response.split("-")
-					if len(check_response_tmp) != 2:
-						valid_response = False
-						break
-					elif int(check_response_tmp[0]) < 1 or int(check_response_tmp[0]) > 9:
-						valid_response = False
-						break
-					elif int(check_response_tmp[0]) < 1 or int(check_response_tmp[0]) > 9:
-						valid_response = False
-						break
-					else:
-						self.go_ref.execute_move(str_to_point(check_response))
-
-
+				self.go_ref.referee_game()
 			except socket_error:
 				connected = False
 				break
-			#except TypeError:
-			#	valid_response = False
-			#	break
+			except TypeError:
+				valid_response = False
+				break
 
 		if self.go_ref.game_over and connected and valid_response:
 			winner = self.go_ref.get_winners()
@@ -105,22 +82,4 @@ class GoAdmin():
 
 		return winner
 
-
-
-	def play_black_move(self):
-		# Default Player makes a move
-		p = self.local_player.choose_move(self.go_ref.board_history)
-		self.go_ref.execute_move(Point(p[0], p[1]))
-
-
-	def play_white_move(self, client_socket):
-		# Get next move from Remote Player
-		client_socket.sendall(bytes(json.dumps(["make-a-move", format_board(self.go_ref.board_history)]), "utf-8"))
-		p2_move = client_socket.recv(8192)
-		if p2_move.decode("utf-8") != "This history makes no sense!" and p2_move.decode("utf-8") != "GO has gone crazy!" and p2_move.decode("utf-8") != "pass":
-			self.go_ref.execute_move(str_to_point(p2_move.decode("utf-8")))
-		elif p2_move.decode("utf-8") == "pass":
-			self.go_ref.execute_move(p2_move.decode("utf-8"))
-		else:
-			valid_response = False
 

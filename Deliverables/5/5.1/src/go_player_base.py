@@ -31,15 +31,17 @@ class GoPlayerBase:
       return wrapper
 
    ## Constructor
-   def __init__(self):
+   def __init__(self, name):
       self.name = None
+      self.default_name = "default_player"
       self.stone_type = None
       self.move_referee = MoveReferee()
 
    ## Public Methods
-   def register(self, name="no name"):
-      self.name = name
-      return name
+   def register(self):
+      if not self.name:
+         self.name = self.default_name
+      return self.name
 
    @valid_stone
    @protocol_registered
