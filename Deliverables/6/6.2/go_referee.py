@@ -71,7 +71,7 @@ class GoReferee:
    def validate_player_move(self, check_response):
       if check_response == "pass":
          return True
-      elif isinstance(p, str):
+      elif isinstance(check_response, str):
          check_response_tmp = check_response.split("-")
          if len(check_response_tmp) != 2:
             return False
@@ -81,7 +81,7 @@ class GoReferee:
             return False
          else:
             return True
-      elif isinstance(p, tuple):
+      elif isinstance(check_response, tuple):
          return True
 
    def execute_move(self, move):
