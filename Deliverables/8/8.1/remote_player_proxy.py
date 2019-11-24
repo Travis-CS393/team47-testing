@@ -29,7 +29,7 @@ class RemotePlayerProxy():
 
 	def choose_move(self, boards):
 		self.connection.sendall(bytes(json.dumps(["make-a-move", format_board(boards)]), "utf-8"))
-		player_move = client.socket.recv(8192)
+		player_move = self.connection.recv(8192)
 		return player_move.decode("utf-8")
 
 
