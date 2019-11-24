@@ -77,7 +77,6 @@ class GoReferee:
       elif isinstance(check_response, str):
          check_response_tmp = check_response.split("-")
          print(check_response_tmp)
-         check_response_tmp = 
          if len(check_response_tmp) != 2:
             return False
          elif int(check_response_tmp[0]) < 1 or int(check_response_tmp[0]) > 9:
