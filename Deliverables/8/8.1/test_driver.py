@@ -9,6 +9,7 @@ sys.path.append('../../6/6.2/')
 sys.path.append('../../8/8.1/')
 from go_referee import GoReferee
 from go_admin import GoAdmin
+from remote_player_proxy import RemotePlayerProxy
 
 #remote player import
 go_config = json.load(open('go.config'))
