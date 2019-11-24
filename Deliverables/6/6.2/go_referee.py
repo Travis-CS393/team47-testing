@@ -68,7 +68,7 @@ class GoReferee:
       else:
          raise TypeError("Invalid responded move")
 
-   def validate_player_move(self, move):
+   def validate_player_move(self, check_response):
       if check_response == "pass":
          return True
       else:
