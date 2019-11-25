@@ -59,10 +59,8 @@ class GoAdmin():
 		#Set Player 2
 		self.go_ref.players[StoneEnum.WHITE] = self.remote_player
 		player2_name = self.remote_player.register()
-		print("come output_formatter")
 		self.remote_player.receive_stone(StoneEnum.WHITE)
 
-		print("received and registered")
 		# Play game
 		while not self.go_ref.game_over and connected and valid_response:
 			try:
