@@ -30,6 +30,7 @@ class GoTournAdmin():
 		self.n = n
 		self.players = {}
 		self.standings = {}
+		self.threads = []
 
 	# Tournaments must have number of total players as powers of 2
 	def get_num_default_players(self, n):
@@ -53,7 +54,10 @@ class GoTournAdmin():
 		while True:
 			client_socket, address = server_socket.accept()
 			try:
-				Thread(target=remote_player_registration, args=(client_socket, IP, port)).start()
+				#Thread(target=remote_player_registration, args=(client_socket, IP, port)).start()
+				new_thread = Thread(target=remote_player_registration, args=(client_socket, IP, port))
+				self.threads.append(new_thread)
+				new_thread.start()
 			except:
 				print("Failed to start thread")
 
