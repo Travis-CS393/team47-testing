@@ -31,7 +31,9 @@ class GoReferee:
       self.board_size = BOARD_DIM if board_size is None else board_size
       self.board_history = [get_board([[" "] * self.board_size for row in range(self.board_size)])]
 
-      self.players = {StoneEnum.BLACK: player1, StoneEnum.WHITE: player2}
+      self.player1 = player1
+      self.player2 = player2
+      self.players = {StoneEnum.BLACK: None, StoneEnum.WHITE: None}
       self.current_player = StoneEnum.BLACK
 
       self.move_ref = MoveReferee()
