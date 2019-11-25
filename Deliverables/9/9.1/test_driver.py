@@ -7,8 +7,10 @@ from point import Point, str_to_point
 sys.path.append('../../4/4.1/src/')
 sys.path.append('../../6/6.2/')
 sys.path.append('../../8/8.1/')
+sys.path.append('../../9/9.1/')
 from go_referee import GoReferee
 from go_admin import GoAdmin
+from go_tournament_admin import GoTournAdmin
 
 #player import
 go_config = json.load(open('go.config'))
