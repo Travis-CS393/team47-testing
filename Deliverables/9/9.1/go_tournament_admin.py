@@ -11,7 +11,9 @@ sys.path.append('../../3/3.1/src/')
 sys.path.append('../../4/4.1/src/')
 sys.path.append('../../6/6.2/src/')
 sys.path.append('../../7/7.1/src/')
+sys.path.append('../../8/8.1')
 from go_referee import GoReferee
+from remote_player_proxy import RemotePlayerProxy
 
 #import local player
 go_config = json.load(open('go.config'))
@@ -67,9 +69,12 @@ class GoTournAdmin():
 
 	def remote_player_registration(self, client_socket, IP, port):
 		# Append all remote players, register names, and store client sockets 
+		print("fail")
 		new_remote_player = RemotePlayerProxy(client_socket)
+		print("fail0")
 		player_name = new_remote_player.register()
 		self.players[player_name] = new_remote_player
+		print("fail2")
 
 	
 	def run_tournament(self):
