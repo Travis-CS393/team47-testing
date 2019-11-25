@@ -57,7 +57,7 @@ class GoTournAdmin():
 				#Thread(target=remote_player_registration, args=(client_socket, IP, port)).start()
 				new_thread = Thread(target=remote_player_registration, args=(client_socket, IP, port))
 				self.threads.append(new_thread)
-				new_thread.start()
+				#new_thread.start()
 			except:
 				print("Failed to start thread")
 
@@ -70,8 +70,11 @@ class GoTournAdmin():
 	
 	def run_tournament(self):
 		self.create_server(self.IP, self.port, self.n)
-		defaults = self.get_num_default_players(self.n)
 
+		for i in range(len(self.threads)):
+			self.threads[i].start()
+
+		defaults = self.get_num_default_players(self.n)
 		# Append all default players and register their names 
 		for i in range(len(defaults)):
 			new_default_player = GoPlayerBase(name="defaults")
