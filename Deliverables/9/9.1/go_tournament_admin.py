@@ -57,14 +57,14 @@ class GoTournAdmin():
 			except:
 				print("Failed to start thread")
 
-	def remote_player_registration(client_socket, IP, port):
+	def remote_player_registration(self, client_socket, IP, port):
 		# Append all remote players, register names, and store client sockets 
 		new_remote_player = RemotePlayerProxy(client_socket)
 		player_name = new_remote_player.register()
 		self.players[player_name] = new_remote_player
 
 	
-	def run_tournament():
+	def run_tournament(self):
 		self.create_server(self.IP, self.port, self.n)
 		defaults = self.get_num_default_players(self.n)
 
