@@ -17,8 +17,9 @@ PORT = go_config['port']
 
 #tournament import
 tourney_details = sys.argv
-TOURNAMENT = sys.argv[1]
-REMOTES = sys.argv[2]
+print(tourney_details)
+TOURNAMENT = tourney_details[1]
+REMOTES = tourney_details[2]
 
 if __name__ == "__main__":
 	print("on")
