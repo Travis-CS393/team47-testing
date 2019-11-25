@@ -95,6 +95,7 @@ class GoTournAdmin():
 			return all_players_names[0]
 		elif self.tourney == "-league":
 			# run round robin 
+			print("oops")
 		else:
 			raise Exception("Not a valid type of Go tournament.")
 
