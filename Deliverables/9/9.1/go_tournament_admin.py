@@ -54,10 +54,13 @@ class GoTournAdmin():
 		while True:
 			client_socket, address = server_socket.accept()
 			try:
+				# TODO HOW TO THREAD
 				#Thread(target=remote_player_registration, args=(client_socket, IP, port)).start()
 				#new_thread = Thread(args=(client_socket, IP, port))
 				#self.threads.append(new_thread)
 				#new_thread.start()
+
+				# If only I could just do this to save the client_socket 
 				self.remote_player_registration(client_socket, IP, port)
 			except:
 				print("Failed to start thread")
@@ -71,7 +74,7 @@ class GoTournAdmin():
 	
 	def run_tournament(self):
 		self.create_server(self.IP, self.port, self.n)
-		
+
 		defaults = self.get_num_default_players(self.n)
 		# Append all default players and register their names 
 		for i in range(len(defaults)):
@@ -97,12 +100,35 @@ class GoTournAdmin():
 						all_players_names.remove(player2_name)
 					else:
 						all_players_names.remove(player1_name)
-			return all_players_names[0]
 		elif self.tourney == "-league":
-			# run round robin 
-			print("oops")
+			all_players_names = []
+			for player in self.players:
+				all_players_names.append(player)
+			RR_pairings = self.get_RR_pairings(all_players_names)
+			for rr_round in range(len(RR_pairings)):
+				for pair in range(len(RR_pairings[0])):
+					player1_name = pair[0]
+					player2_name = pair[1]
+					winner = self.run_game(self.players[pair[0]], self.players[pair[1]])
+					self.standings[winner] += 1
 		else:
 			raise Exception("Not a valid type of Go tournament.")
+
+		standings = self.format_standings(self.standings)
+		return standings
+
+	def get_RR_pairings(self, players):
+		total = len(players)
+		pairs = total - 1
+		mid = total / 2
+		RR_pairings = []
+		for pair in range(pairs):
+			pairings = []
+			for i in range(mid):
+				pairings.append(players[i], players[count-i-1])
+			players.insert(1, players.pop())
+			RR_pairings.append(pairings)
+		return RR_pairings
 
 	def run_game(self, player1, player2):
 		go_ref = GoReferee(player1=player1, player2=player2)
@@ -126,10 +152,14 @@ class GoTournAdmin():
 				valid_response = False
 				break
 
+		# Validate game over over network
+
 		if self.go_ref.game_over and connected and valid_response:
 			winner = self.go_ref.get_winners()
 		elif not connected or not valid_response:
 			winner = [self.local_player.name]
+			# Replace cheating player with a default
+			# Update standings 
 		else:
 			raise Exception("Game ended unexpectedly.")
 
