@@ -145,35 +145,35 @@ class GoTournAdmin():
 		return RR_pairings
 
 	def run_game(self, player1, player2):
-		go_ref = GoReferee(board_size=9, player1=player1, player2=player2)
+		go_ref = GoReferee(player1=player1, player2=player2)
 		connected = True
 		valid_response = True
 		
-		self.go_ref.players[StoneEnum.BLACK] = player1.name
+		go_ref.players[StoneEnum.BLACK] = player1.name
 		player1.receive_stone(StoneEnum.BLACK)
 		
-		self.go_ref.players[StoneEnum.WHITE] = player2_name
+		go_ref.players[StoneEnum.WHITE] = player2.name
 		player2.receive_stone(StoneEnum.WHITE)
 
 		while not go_ref.game_over and connected and valid_response:
 			try:
-				self.go_ref.referee_game()
+				go_ref.referee_game()
 			except socket_error:
 				connected = False
 				break
 			except TypeError:
 				valid_response = False
-				self.go_ref.winner = self.go_ref.players[get_other_type(self.current_player)]
+				go_ref.winner = go_ref.players[get_other_type(go_ref.current_player)]
 				break
 
 		# Validate game over over network
 
-		if self.go_ref.game_over and connected and valid_response:
-			winner = self.go_ref.get_winners()
+		if go_ref.game_over and connected and valid_response:
+			winner = go_ref.get_winners()
 		elif not connected or not valid_response:
-			winner = self.go_ref.get_winners()
+			winner = go_ref.get_winners()
 			self.num_cheaters += 1
-			self.replace_cheaters(self.go_ref.players[self.current_player].name)
+			self.replace_cheaters(go_ref.players[go_ref.current_player].name)
 		else:
 			raise Exception("Game ended unexpectedly.")
 
