@@ -63,7 +63,7 @@ class GoTournAdmin():
 			tries += 1
 			client_socket, address = server_socket.accept()
 			try:
-				self.remote_player_registration(client_socket, IP, port)
+				self.remote_player_registration(client_socket)
 				count += 1
 			except:
 				pass
@@ -149,6 +149,7 @@ class GoTournAdmin():
 						all_players_names.remove(player1_name)
 						self.beaten_opponents[winner].append[player1_name]
 			"""
+			"""
 			while len(all_players_names != 1):
 				i = 0
 				player1_name = all_players_names[i]
@@ -161,6 +162,25 @@ class GoTournAdmin():
 				else:
 					all_players_names.remove(player1_name)
 					self.beaten_opponents[winner].append[player1_name]
+			"""
+			if self.tourney == "-cup":
+			all_players_names = []
+			for player in self.players:
+				all_players_names.append(player)
+			i = 0
+			while len(all_players_names != 1):
+				player1_name = all_players_names[i]
+				player2_name = all_players_names[i + 1]
+				winner = self.run_game(self.players[all_players_names[i]], self.players[all_players_names[i+1]])
+				self.standings[winner] += 1	
+				if winner == player1_name:
+					all_players_names.remove(player2_name)
+					self.beaten_opponents[winner].append[player2_name]
+				else:
+					all_players_names.remove(player1_name)
+					self.beaten_opponents[winner].append[player1_name]
+				i += 1
+				i = i % (len(all_players_names) -1)
 
 		elif self.tourney == "-league":
 			all_players_names = []
