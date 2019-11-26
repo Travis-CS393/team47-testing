@@ -54,7 +54,7 @@ class GoTournAdmin():
 	def create_server(self, IP, port, n):
 		server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-		server_socket.setblocking(0)
+		#server_socket.setblocking(0)
 		server_socket.bind((IP, port))
 		server_socket.listen(n)
 		base_time = time.time()
@@ -136,7 +136,7 @@ class GoTournAdmin():
 			self.beaten_opponents[element] = []
 
 		print("Starting Tournament")
-		if self.tourney == "-league":
+		if self.tourney == "-cup":
 			all_players_names = []
 			for player in self.players.keys():
 				all_players_names.append(player)
@@ -183,7 +183,7 @@ class GoTournAdmin():
 				i += 1
 				i = i % len(all_players_names)
 
-		elif self.tourney == "-cup":
+		elif self.tourney == "-league":
 			all_players_names = []
 			for player in self.players.keys():
 				all_players_names.append(player)
