@@ -164,7 +164,7 @@ class GoTournAdmin():
 					self.beaten_opponents[winner].append[player1_name]
 			"""
 			if self.tourney == "-cup":
-			all_players_names = []
+				all_players_names = []
 			for player in self.players:
 				all_players_names.append(player)
 			i = 0
