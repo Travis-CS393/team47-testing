@@ -14,12 +14,12 @@ from go_player_base import GoPlayerBase
 from go_player_adv import GoPlayerAdv
 from output_formatter import format_board
 import json
-
+import random
 
 class GoPlayerProxy():
 
 	def __init__(self, n=1):
-		self.player = GoPlayerBase("default-player")
+		self.player = GoPlayerBase("player-no{}".format(random.randint(0, 750)))
 		self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 
@@ -30,15 +30,19 @@ class GoPlayerProxy():
 	def work_with_socket(self):
 		try:
 			inpt = self.socket.recv(8192)
-			print(inpt.decode("utf-8"))
 			if inpt.decode("utf-8") == "done":
 				return "done"
 			else:
 				output = self.work_JSON(json.loads(inpt.decode("utf-8")))
+				print(output)
 				if not output:
-					self.socket.sendall(bytes("None", "utf-8"))
+					pass
+					#self.socket.sendall(bytes("None", "utf-8"))
 				else:
+					print('sending')
+					print(output)
 					self.socket.sendall(bytes(output, "utf-8"))
+					print('sent')
 				return "not done"
 		except:
 			return "Error: no connection established"
@@ -50,9 +54,12 @@ class GoPlayerProxy():
 
 	def work_JSON(self, input):
 		obj = input
-		if obj[0] == "register":
+		print("working with socket")
+		print(obj)
+		if obj[0] == 'register':
 			output = self.register("no name")
-		elif obj[0] == "receive-stones":
+		
+		elif obj[0] == 'receive-stones':
 			if obj[1] == BLACK_STONE:
 				stone_e = StoneEnum.BLACK
 			elif obj[1] == WHITE_STONE:
@@ -61,6 +68,7 @@ class GoPlayerProxy():
 				raise Exception("Invalid stone type")
 			self.receive_stone(stone_e)
 			output = None
+		
 		elif obj[0] == "make-a-move":
 			boards_obj = parse_boards(obj[1])
 			print("trying")
@@ -69,20 +77,18 @@ class GoPlayerProxy():
 			y = random.randrange(1,9)
 			output = (x, y)
 			print("found one")
-			if isinstance(output, tuple):
-				output = get_raw(output)
+			output = get_raw(output)
 		else:
 			raise Exception("Invalid JSON input")
-
-		if not output: 
-			return output
-
-		return output
+		print("hello this is the things")
+		print(output)
+		print('yeh')
+		return output		
 
 
 	def register(self, name):
 		if isinstance(name, str):
-			return self.player.register(name)
+			return self.player.register()
 		else:
 			raise Exception("Not a proper player name.")
 			
@@ -95,7 +101,7 @@ class GoPlayerProxy():
 	def make_a_move(self, board_history):
 		return self.player.choose_move(board_history)
 
-if __name__ == "__main__":
+if _name_ == "_main_":
 	print("launched")
 	go_config = json.load(open('go.config'))
 	HOSTNAME = go_config['IP']
