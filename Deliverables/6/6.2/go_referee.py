@@ -29,7 +29,7 @@ class GoReferee:
    ## Constructors 
    def __init__(self, board_size=None, board=None, player1=None, player2=None):
       self.board_size = BOARD_DIM if board_size is None else board_size
-      self.board_history = [get_board([[" "] * self.board_size for row in range(self.board_size)])]
+      self.board_history = [get_board([[" "] * self.board_size for row in range(self.board_size)], self.board_size)]
 
       self.player1 = player1
       self.player2 = player2
