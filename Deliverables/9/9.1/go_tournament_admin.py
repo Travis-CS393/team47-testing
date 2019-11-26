@@ -63,7 +63,6 @@ class GoTournAdmin():
 			try:
 				print(self.players.keys())
 				client_socket, address = server_socket.accept()
-				server_socket.setblocking(0)
 				self.remote_player_registration(client_socket)
 			except:
 				pass
