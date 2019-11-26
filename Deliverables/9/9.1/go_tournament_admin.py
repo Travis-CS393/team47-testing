@@ -59,9 +59,8 @@ class GoTournAdmin():
 		base_time = time.time()
 		time_elapsed = 0
 		#while count != n and tries < 10 * n:
-		while len(self.players.keys()) < n and time_elapsed < 55:
+		while len(self.players.keys()) < n and time_elapsed < 400:
 			try:
-				print(self.players.keys())
 				client_socket, address = server_socket.accept()
 				self.remote_player_registration(client_socket)
 			except:
@@ -164,7 +163,7 @@ class GoTournAdmin():
 					self.beaten_opponents[winner].append[player1_name]
 			"""
 			i = 0
-			while len(all_players_names) != 1:
+			while len(all_players_names != 1):
 				player1_name = all_players_names[i]
 				player2_name = all_players_names[i + 1]
 				winner = self.run_game(self.players[all_players_names[i]], self.players[all_players_names[i+1]])
