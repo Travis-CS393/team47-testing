@@ -125,7 +125,7 @@ class GoReferee:
 
    def get_winners(self):
       if (self.winner != None):
-         return [self.players[self.winner]]
+         return [self.players[self.winner].name]
       else:
          final_score = self.score_ref.get_score(self.board_history[0])
          black_score = final_score[StoneEnum.BLACK]

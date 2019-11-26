@@ -26,12 +26,14 @@ from output_formatter import format_board
 class GoTournAdmin():
 
 	def __init__(self, IP, port, tourney="-cup", n=1):
+		self.num_cheaters = 0
 		self.IP = IP
 		self.port = port
 		self.tourney = tourney
 		self.n = n
 		self.players = {}
 		self.standings = {}
+		self.beaten_opponents = {}
 		self.threads = []
 
 	# Tournaments must have number of total players as powers of 2
@@ -49,11 +51,14 @@ class GoTournAdmin():
 			return total_players - n
 
 	def create_server(self, IP, port, n):
+		count = 0 
+		tries = 0
 		server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 		server_socket.bind((IP, port))
 		server_socket.listen(n)
-		while True:
+		while count != n and tries < 30:
+			tries++
 			client_socket, address = server_socket.accept()
 			try:
 				# TODO HOW TO THREAD
@@ -61,35 +66,42 @@ class GoTournAdmin():
 				#new_thread = Thread(args=(client_socket, IP, port))
 				#self.threads.append(new_thread)
 				#new_thread.start()
-
-				# If only I could just do this to save the client_socket 
 				self.remote_player_registration(client_socket, IP, port)
+				count++
 			except:
 				print("Failed to start thread")
+		self.n = count
 
 	def remote_player_registration(self, client_socket, IP, port):
 		# Append all remote players, register names, and store client sockets 
-		print("fail")
 		new_remote_player = RemotePlayerProxy(client_socket)
-		print("fail0")
 		player_name = new_remote_player.register()
 		self.players[player_name] = new_remote_player
-		print("fail2")
 
-	
+	def replace_cheaters(self, cheater):
+		self.standings[cheater] = 0
+		for opponent in self.beaten_opponents[cheater]:
+			self.standings[opponent] += 1
+
+		# Replace cheating players with default players 
+		new_default_player = GoPlayerBase("cheater" + str(self.num_cheaters))
+		self.players[new_default_player.name] = new_default_player
+
+
 	def run_tournament(self):
 		self.create_server(self.IP, self.port, self.n)
 
 		defaults = self.get_num_default_players(self.n)
 		# Append all default players and register their names 
 		for i in range(len(defaults)):
-			new_default_player = GoPlayerBase(name="defaults")
+			new_default_player = GoPlayerBase(name="defaults" + str(i))
 			default_name = new_default_player.register()
 			self.players[default_name] = new_default_player
 
 		# Initialize tournament points 
 		for element in self.players:
 			self.standings[element] = 0
+			self.beaten_opponents[element] = []
 
 		if self.tourney == "-cup":
 			all_players_names = []
@@ -103,8 +115,10 @@ class GoTournAdmin():
 					self.standings[winner] += 1
 					if winner == player1_name:
 						all_players_names.remove(player2_name)
+						self.beaten_opponents[winner].append[player2_name]
 					else:
 						all_players_names.remove(player1_name)
+						self.beaten_opponents[winner].append[player1_name]
 		elif self.tourney == "-league":
 			all_players_names = []
 			for player in self.players:
@@ -146,7 +160,6 @@ class GoTournAdmin():
 		self.go_ref.players[StoneEnum.WHITE] = player2_name
 		player2.receive_stone(StoneEnum.WHITE)
 
-		# Play game
 		while not go_ref.game_over and connected and valid_response:
 			try:
 				self.go_ref.referee_game()
@@ -155,6 +168,7 @@ class GoTournAdmin():
 				break
 			except TypeError:
 				valid_response = False
+				self.go_ref.winner = self.go_ref.players[get_other_type(self.current_player)]
 				break
 
 		# Validate game over over network
@@ -162,13 +176,38 @@ class GoTournAdmin():
 		if self.go_ref.game_over and connected and valid_response:
 			winner = self.go_ref.get_winners()
 		elif not connected or not valid_response:
-			winner = [self.local_player.name]
-			# Replace cheating player with a default
-			# Update standings 
+			winner = self.go_ref.get_winners()
+			self.num_cheaters += 1
+			self.replace_cheaters(self.go_ref.players[self.current_player].name)
 		else:
 			raise Exception("Game ended unexpectedly.")
 
 		return winner[0]
 
 	def format_standings(self, standings):
-		pass
+		points_list = list(dict.fromkeys(standings.values()))
+		by_points = {}
+		for point in points_list:
+			by_points[point] = []
+
+		for player in standings:
+			by_points[standings[player]].append(player)
+
+		place = 1
+		final_output = "_________Final Standings__________\n"
+		for score in sorted(by_points.keys(), reverse=True):
+			line = str(place) + ". " + self.list_players(by_points[score]) + "\n"
+			final_output += line
+			place += 1
+		return final_output
+
+	def list_players(self, players_arr):
+		output = ""
+		for i in range(len(players_arr)):
+			if i == len(players_arr) - 1:
+				output += str(players_arr[i])
+			else:
+				output += str(players_arr[i]) + ", "
+		return output
+
+
