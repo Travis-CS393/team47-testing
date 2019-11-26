@@ -68,14 +68,15 @@ class GoTournAdmin():
 		for i in range(10 * n):
 			client_socket, address = server_socket.accept()
 			try: 
-				self.remote_player_registration(client_socket, IP, port)
+				print("connection made" + str(count))
+				self.remote_player_registration(client_socket)
 				count += 1
 			except:
 				pass
 		self.n = count
 
 
-	def remote_player_registration(self, client_socket, IP, port):
+	def remote_player_registration(self, client_socket):
 		# Append all remote players, register names, and store client sockets 
 		new_remote_player = RemotePlayerProxy(client_socket)
 		player_name = new_remote_player.register()
@@ -94,7 +95,9 @@ class GoTournAdmin():
 
 
 	def run_tournament(self):
+		print("Creating Server")
 		self.create_server(self.IP, self.port, self.n)
+		print("Server Created, Remotes Registered")
 
 		defaults = self.get_num_default_players(self.n)
 		# Append all default players and register their names 
@@ -103,11 +106,13 @@ class GoTournAdmin():
 			default_name = new_default_player.register()
 			self.players[default_name] = new_default_player
 
+		print("Defaults Registered")
 		# Initialize tournament points 
 		for element in self.players:
 			self.standings[element] = 0
 			self.beaten_opponents[element] = []
 
+		print("Starting Tournament")
 		if self.tourney == "-cup":
 			all_players_names = []
 			for player in self.players:
@@ -138,6 +143,7 @@ class GoTournAdmin():
 		else:
 			raise Exception("Not a valid type of Go tournament.")
 
+		print("Outputting Standings")
 		standings = self.format_standings(self.standings)
 		return standings
 
@@ -187,7 +193,12 @@ class GoTournAdmin():
 		else:
 			raise Exception("Game ended unexpectedly.")
 
-		return winner[0]
+		# Randomly break ties if two winners
+		if len(winner) == 1:
+			return winner[0]
+		else:
+			rand_idx = random.randInt(0, 1)
+			return winner[rand_idx]
 
 	def format_standings(self, standings):
 		points_list = list(dict.fromkeys(standings.values()))
