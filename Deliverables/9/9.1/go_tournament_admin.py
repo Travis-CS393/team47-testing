@@ -58,18 +58,13 @@ class GoTournAdmin():
 		server_socket.bind((IP, port))
 		server_socket.listen(n)
 		while count != n and tries < 30:
-			tries++
+			tries += 1
 			client_socket, address = server_socket.accept()
 			try:
-				# TODO HOW TO THREAD
-				#Thread(target=remote_player_registration, args=(client_socket, IP, port)).start()
-				#new_thread = Thread(args=(client_socket, IP, port))
-				#self.threads.append(new_thread)
-				#new_thread.start()
 				self.remote_player_registration(client_socket, IP, port)
-				count++
+				count += 1
 			except:
-				print("Failed to start thread")
+				pass
 		self.n = count
 
 	def remote_player_registration(self, client_socket, IP, port):
