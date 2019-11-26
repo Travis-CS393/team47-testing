@@ -58,23 +58,21 @@ class GoReferee:
 
    def play_black_move(self):
       p = self.players[StoneEnum.BLACK].choose_move(self.board_history)
-      print(p)
       if self.validate_player_move(p):
-         if isinstance(p, tuple):
-            self.execute_move(Point(p[0], p[1]))
-         elif isinstance(p, str):
+         if isinstance(p, str):
             self.execute_move(str_to_point(p))
+         elif isinstance(p, tuple):
+            self.execute_move(Point(p[0], p[1]))
       else:
          raise TypeError("Invalid responded move")
 
    def play_white_move(self):
       p = self.players[StoneEnum.WHITE].choose_move(self.board_history)
-      print(p)
       if self.validate_player_move(p):
-         if isinstance(p, tuple):
-            self.execute_move(Point(p[0], p[1]))
-         elif isinstance(p, str):
+         if isinstance(p, str):
             self.execute_move(str_to_point(p))
+         elif isinstance(p, tuple):
+            self.execute_move(Point(p[0], p[1]))
       else:
          raise TypeError("Invalid responded move")
 

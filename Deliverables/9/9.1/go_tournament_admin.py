@@ -188,8 +188,8 @@ class GoTournAdmin():
 			for player in self.players.keys():
 				all_players_names.append(player)
 			RR_pairings = self.get_RR_pairings(all_players_names)
-			for rr_round in (RR_pairings):
-				for pair in (rr_round):
+			for rr_round in RR_pairings:
+				for pair in rr_round:
 					player1_name = pair[0]
 					player2_name = pair[1]
 					winner = self.run_game(self.players[pair[0]], self.players[pair[1]])
@@ -233,24 +233,23 @@ class GoTournAdmin():
 				break
 			except TypeError:
 				valid_response = False
-				go_ref.winner = go_ref.players[get_other_type(go_ref.current_player)]
+				go_ref.winner = get_other_type(go_ref.current_player)
 				break
 
 		# Validate Game Over for both players
 		try:
 			ack_1 = player1.game_over(["end-game"])
 			if ack_1 != "OK":
-				go_ref.winner = get_other_type(go_ref.current_player)
+				go_ref.winner = StoneEnum.WHITE
 		except:
-			go_ref.winner = get_other_type(go_ref.current_player)
+			go_ref.winner = StoneEnum.WHITE
 
 		try: 
 			ack_2 = player2.game_over(["end-game"])
 			if ack_2 != "OK":
-				go_ref.winner = get_other_type(go_ref.current_player)
+				go_ref.winner = StoneEnum.BLACK
 		except:
-			go_ref.winner = get_other_type(go_ref.current_player)
-
+			go_ref.winner = StoneEnum.BLACK
 
 		if go_ref.game_over and connected and valid_response:
 			winner = go_ref.get_winners()
