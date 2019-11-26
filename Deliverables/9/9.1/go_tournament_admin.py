@@ -58,10 +58,11 @@ class GoTournAdmin():
 		base_time = time.time()
 		time_elapsed = 0
 		#while count != n and tries < 10 * n:
-		while len(self.players.keys()) < n and time_elapsed < 120:
+		while len(self.players.keys()) < n and time_elapsed < 55:
 			try:
+				print(self.players.keys())
 				client_socket, address = server_socket.accept()
-				server_socket.setblocking(1)
+				server_socket.setblocking(0)
 				self.remote_player_registration(client_socket)
 			except:
 				pass
@@ -118,7 +119,7 @@ class GoTournAdmin():
 
 		defaults = self.get_num_default_players(self.n)
 		# Append all default players and register their names 
-		for i in range(len(defaults)):
+		for i in range(defaults):
 			new_default_player = GoPlayerBase(name="defaults" + str(i))
 			default_name = new_default_player.register()
 			self.players[default_name] = new_default_player
@@ -167,7 +168,7 @@ class GoTournAdmin():
 			for player in self.players:
 				all_players_names.append(player)
 			i = 0
-			while len(all_players_names != 1):
+			while len(all_players_names) != 1:
 				player1_name = all_players_names[i]
 				player2_name = all_players_names[i + 1]
 				winner = self.run_game(self.players[all_players_names[i]], self.players[all_players_names[i+1]])
