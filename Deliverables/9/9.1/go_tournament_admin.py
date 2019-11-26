@@ -128,7 +128,7 @@ class GoTournAdmin():
 		print("Starting Tournament")
 		if self.tourney == "-cup":
 			all_players_names = []
-			for player in self.players:
+			for player in self.players.keys():
 				all_players_names.append(player)
 			while len(all_players_names != 1):
 				for i in range(len(all_players_names)-1):
