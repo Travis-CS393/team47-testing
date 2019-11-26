@@ -3,6 +3,7 @@ import json
 import socket
 import math 
 import time
+import random
 from socket import error as socket_error
 from stone import StoneEnum, get_other_type
 from point import Point, str_to_point
@@ -197,6 +198,7 @@ class GoTournAdmin():
 		else:
 			raise Exception("Not a valid type of Go tournament.")
 
+		print(self.standings)
 		print("Outputting Standings")
 		standings = self.format_standings(self.standings)
 		return standings
@@ -270,7 +272,7 @@ class GoTournAdmin():
 		if len(winner) == 1:
 			return winner[0]
 		else:
-			rand_idx = random.randInt(0, 1)
+			rand_idx = random.randint(0, 1)
 			return winner[rand_idx]
 
 	def format_standings(self, standings):
