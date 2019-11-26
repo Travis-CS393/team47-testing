@@ -64,7 +64,7 @@ class GoTournAdmin():
 			except:
 				pass
 			time_elapsed = time.time() - base_time
-		self.n = count
+		self.n = len(self.players.keys())
 		"""
 		while count != n and tries < 10 * n:
 			tries += 1
