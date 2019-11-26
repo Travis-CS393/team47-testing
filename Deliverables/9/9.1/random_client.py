@@ -101,7 +101,7 @@ class GoPlayerProxy():
 	def make_a_move(self, board_history):
 		return self.player.choose_move(board_history)
 
-if _name_ == "_main_":
+if __name__ == "__main__":
 	print("launched")
 	go_config = json.load(open('go.config'))
 	HOSTNAME = go_config['IP']

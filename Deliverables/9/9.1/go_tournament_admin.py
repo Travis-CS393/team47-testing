@@ -169,7 +169,7 @@ class GoTournAdmin():
 					self.beaten_opponents[winner].append[player1_name]
 			"""
 			i = 0
-			while len(all_players_names != 1):
+			while len(all_players_names) != 1:
 				player1_name = all_players_names[i]
 				player2_name = all_players_names[i + 1]
 				winner = self.run_game(self.players[all_players_names[i]], self.players[all_players_names[i+1]])
