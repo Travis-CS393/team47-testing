@@ -51,7 +51,6 @@ class RemotePlayerProxy():
 			self.connection.sendall(bytes(json.dumps(["make-a-move", format_board(boards)]), "utf-8"))
 			time.sleep(.01)
 			player_move = self.connection.recv(8192)
-			print(player_move)
 			return player_move.decode("utf-8")
 		except:
 			raise socket.error("socket connection broken")

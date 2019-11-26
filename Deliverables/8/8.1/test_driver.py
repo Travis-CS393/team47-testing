@@ -17,7 +17,6 @@ HOSTNAME = go_config['IP']
 PORT = go_config['port']
 
 if __name__ == "__main__":
-	print("on")
 	go_admin = GoAdmin(IP=HOSTNAME, port=PORT)
 	winner = go_admin.run_game()
 	print(winner)

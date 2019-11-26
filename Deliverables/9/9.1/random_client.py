@@ -30,11 +30,11 @@ class GoPlayerProxy():
 	def work_with_socket(self):
 		try:
 			inpt = self.socket.recv(8192)
+			print(inpt)
 			if inpt.decode("utf-8") == "done":
 				return "done"
 			else:
 				output = self.work_JSON(json.loads(inpt.decode("utf-8")))
-				print(output)
 				if not output:
 					pass
 					#self.socket.sendall(bytes("None", "utf-8"))
@@ -55,7 +55,6 @@ class GoPlayerProxy():
 	def work_JSON(self, input):
 		obj = input
 		print("working with socket")
-		print(obj)
 		if obj[0] == 'register':
 			output = self.register("no name")
 		
@@ -80,9 +79,6 @@ class GoPlayerProxy():
 			output = get_raw(output)
 		else:
 			raise Exception("Invalid JSON input")
-		print("hello this is the things")
-		print(output)
-		print('yeh')
 		return output		
 
 

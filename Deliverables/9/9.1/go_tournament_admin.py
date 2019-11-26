@@ -47,7 +47,6 @@ class GoTournAdmin():
 			return 0
 		else:
 			total_players = math.pow(2, math.ceil(math.log(n, 2)))
-			print(n, total_players)
 			return int(total_players) - len(self.players.keys())
 
 
@@ -92,7 +91,6 @@ class GoTournAdmin():
 
 	def run_tournament(self):
 		print("Creating Server")
-		print(self.n)
 		self.create_server(self.IP, self.port, self.n)
 		print("Server Created, Remotes Registered")
 

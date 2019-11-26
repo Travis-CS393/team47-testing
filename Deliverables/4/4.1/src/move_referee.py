@@ -73,7 +73,6 @@ class MoveReferee:
 
    def _check_history_prog(self, boards, stone_type):
       if not self._valid_start(boards, stone_type):
-         print(2)
          return False
       passes = int(len(boards) == 3 and boards[2].empty() and stone_type == StoneEnum.WHITE)
       max_passes = passes
@@ -98,7 +97,6 @@ class MoveReferee:
             return False
       if len(boards) == 2:
          if stone_type != StoneEnum.WHITE:
-            print(stone_type)
             return False
          elif not boards[1].empty():
             return False

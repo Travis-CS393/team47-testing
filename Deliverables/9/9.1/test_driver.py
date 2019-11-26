@@ -24,7 +24,6 @@ TOURNAMENT = tourney_details[1]
 REMOTES = tourney_details[2]
 
 if __name__ == "__main__":
-	print("on")
 	go_tournament_admin = GoTournAdmin(IP=HOSTNAME, port=PORT, tourney=TOURNAMENT, n=int(REMOTES))
 	ranks = go_tournament_admin.run_tournament()
 	print(ranks)
