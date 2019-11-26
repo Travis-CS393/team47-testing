@@ -107,8 +107,9 @@ class GoReferee:
             self.update_history(add_board)
 
             # Check for both players consecutive passes 
-            if self.board_history[0].equal(self.board_history[1]) and self.board_history[1].equal(self.board_history[2]):
-               self.game_over = True
+            if len(self.board_history) == 3:
+               if self.board_history[0].equal(self.board_history[1]) and self.board_history[1].equal(self.board_history[2]):
+                  self.game_over = True
          elif isinstance(move, Point):
             if (self.move_ref.valid_move(self.current_player, move, self.board_history, self.board_history[0])):
                add_board = self.make_move(self.current_player, move)
