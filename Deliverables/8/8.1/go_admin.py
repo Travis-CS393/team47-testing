@@ -48,11 +48,7 @@ class GoAdmin():
 		self.local_player.receive_stone(StoneEnum.BLACK)
 		
 		#Server Creation
-		server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-		server_socket.bind((self.IP, self.port))
-		server_socket.listen()
-		client_socket, address = server_socket.accept()
+		client_socket = self.create_server(self.IP, self.port)
 
 		self.remote_player = RemotePlayerProxy(connection=client_socket)
 		
