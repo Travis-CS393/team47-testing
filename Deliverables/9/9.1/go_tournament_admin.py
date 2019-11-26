@@ -168,10 +168,6 @@ class GoTournAdmin():
 					all_players_names.remove(player1_name)
 					self.beaten_opponents[winner].append[player1_name]
 			"""
-			if self.tourney == "-cup":
-				all_players_names = []
-			for player in self.players:
-				all_players_names.append(player)
 			i = 0
 			while len(all_players_names) != 1:
 				player1_name = all_players_names[i]
