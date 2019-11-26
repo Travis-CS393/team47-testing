@@ -51,7 +51,7 @@ class GoPlayerProxy():
 	def work_JSON(self, input):
 		obj = input
 		if obj[0] == "register":
-			output = self.register("no name")
+			output = self.register()
 		elif obj[0] == "receive-stones":
 			if obj[1] == BLACK_STONE:
 				stone_e = StoneEnum.BLACK

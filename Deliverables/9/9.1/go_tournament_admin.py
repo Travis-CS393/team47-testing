@@ -53,6 +53,7 @@ class GoTournAdmin():
 	def create_server(self, IP, port, n):
 		server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+		server_socket.setblocking(0)
 		server_socket.bind((IP, port))
 		server_socket.listen(n)
 		base_time = time.time()
@@ -61,7 +62,6 @@ class GoTournAdmin():
 		while len(self.players.keys()) < n and time_elapsed < 400:
 			try:
 				client_socket, address = server_socket.accept()
-				server_socket.setblocking(0)
 				self.remote_player_registration(client_socket)
 			except:
 				pass
