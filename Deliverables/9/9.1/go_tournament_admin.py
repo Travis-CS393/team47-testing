@@ -65,7 +65,9 @@ class GoTournAdmin():
 			except:
 				pass
 		"""
-		for i in range(10 * n):
+		print("reached attempt")
+		#for i in range(10 * n):
+		while True:
 			client_socket, address = server_socket.accept()
 			try: 
 				print("connection made" + str(count))
