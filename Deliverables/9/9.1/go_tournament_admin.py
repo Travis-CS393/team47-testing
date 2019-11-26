@@ -118,6 +118,7 @@ class GoTournAdmin():
 
 	def run_tournament(self):
 		print("Creating Server")
+		print(self.n)
 		self.create_server(self.IP, self.port, self.n)
 		print("Server Created, Remotes Registered")
 
