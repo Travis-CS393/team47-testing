@@ -1,12 +1,10 @@
 import sys
 import json
 import socket
-import traceback
 import math 
 from socket import error as socket_error
 from stone import StoneEnum
 from point import Point, str_to_point
-from threading import Thread
 sys.path.append('../../3/3.1/src/')
 sys.path.append('../../4/4.1/src/')
 sys.path.append('../../6/6.2/src/')
@@ -14,14 +12,15 @@ sys.path.append('../../7/7.1/src/')
 sys.path.append('../../8/8.1')
 from go_referee import GoReferee
 from remote_player_proxy import RemotePlayerProxy
+from output_formatter import format_board
 
 #import local player
 go_config = json.load(open('go.config'))
 default_player_path = go_config['default-player']
 sys.path.append(default_player_path)
+from constants import ADMIN_BOARD_DIM
 from go_player_base import GoPlayerBase
 
-from output_formatter import format_board
 
 class GoTournAdmin():
 
@@ -50,6 +49,7 @@ class GoTournAdmin():
 			total_players = math.pow(2, math.ceil(math.log(n, 2)))
 			return total_players - n
 
+
 	def create_server(self, IP, port, n):
 		count = 0 
 		tries = 0
@@ -67,11 +67,13 @@ class GoTournAdmin():
 				pass
 		self.n = count
 
+
 	def remote_player_registration(self, client_socket, IP, port):
 		# Append all remote players, register names, and store client sockets 
 		new_remote_player = RemotePlayerProxy(client_socket)
 		player_name = new_remote_player.register()
 		self.players[player_name] = new_remote_player
+
 
 	def replace_cheaters(self, cheater):
 		self.standings[cheater] = 0
@@ -145,7 +147,7 @@ class GoTournAdmin():
 		return RR_pairings
 
 	def run_game(self, player1, player2):
-		go_ref = GoReferee(player1=player1, player2=player2)
+		go_ref = GoReferee(board_size=ADMIN_BOARD_DIM, player1=player1, player2=player2)
 		connected = True
 		valid_response = True
 		

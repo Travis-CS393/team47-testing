@@ -1,6 +1,7 @@
 ## Board
 #BOARD_DIM = 19
 BOARD_DIM = 9
+ADMIN_BOARD_DIM = 9
 ## Stone
 WHITE_STONE = "W"
 BLACK_STONE = "B"
