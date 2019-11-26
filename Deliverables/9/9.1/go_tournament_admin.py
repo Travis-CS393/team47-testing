@@ -18,7 +18,7 @@ from output_formatter import format_board
 go_config = json.load(open('go.config'))
 default_player_path = go_config['default-player']
 sys.path.append(default_player_path)
-from constants import ADMIN_BOARD_DIM
+from constants import BOARD_DIM
 from go_player_base import GoPlayerBase
 
 
@@ -147,7 +147,7 @@ class GoTournAdmin():
 		return RR_pairings
 
 	def run_game(self, player1, player2):
-		go_ref = GoReferee(board_size=ADMIN_BOARD_DIM, player1=player1, player2=player2)
+		go_ref = GoReferee(board_size=BOARD_DIM, player1=player1, player2=player2)
 		connected = True
 		valid_response = True
 		
