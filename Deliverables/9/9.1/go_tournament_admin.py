@@ -2,6 +2,7 @@ import sys
 import json
 import socket
 import math 
+import time
 from socket import error as socket_error
 from stone import StoneEnum
 from point import Point, str_to_point
@@ -50,11 +51,20 @@ class GoTournAdmin():
 
 
 	def create_server(self, IP, port, n):
-		count = 0
 		server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 		server_socket.bind((IP, port))
 		server_socket.listen(n)
+		base_time = time.time()
+		time_elapsed = 0
+		while len(self.players.keys()) < n and time_elapsed < 120:
+			try: 
+				client_socket, address = server_socket.accept()
+				self.remote_player_registration(client_socket, IP, port)
+			except:
+				pass
+			time_elapsed = time.time() - base_time
+		self.n = count
 		"""
 		while count != n and tries < 10 * n:
 			tries += 1
@@ -64,7 +74,7 @@ class GoTournAdmin():
 				count += 1
 			except:
 				pass
-		"""
+		
 		print("reached attempt")
 		#for i in range(10 * n):
 		while True:
@@ -76,6 +86,7 @@ class GoTournAdmin():
 			except:
 				pass
 		self.n = count
+		"""
 
 
 	def remote_player_registration(self, client_socket):
