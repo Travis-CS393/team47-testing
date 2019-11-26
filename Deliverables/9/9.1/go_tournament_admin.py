@@ -62,7 +62,7 @@ class GoTournAdmin():
 		while count != n and tries < 10 * n:
 			tries += 1
 			client_socket, address = server_socket.accept()
-			server.socket.setblocking(1)
+			server_socket.setblocking(1)
 			try:
 				self.remote_player_registration(client_socket)
 				count += 1
