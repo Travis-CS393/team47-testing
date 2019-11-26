@@ -4,7 +4,7 @@ import socket
 import math 
 import time
 from socket import error as socket_error
-from stone import StoneEnum
+from stone import StoneEnum, get_other_type
 from point import Point, str_to_point
 sys.path.append('../../3/3.1/src/')
 sys.path.append('../../4/4.1/src/')
@@ -53,6 +53,7 @@ class GoTournAdmin():
 	def create_server(self, IP, port, n):
 		server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+		server_socket.setblocking(0)
 		server_socket.bind((IP, port))
 		server_socket.listen(n)
 		base_time = time.time()
