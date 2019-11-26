@@ -34,7 +34,6 @@ class GoTournAdmin():
 		self.players = {}
 		self.standings = {}
 		self.beaten_opponents = {}
-		self.threads = []
 
 	# Tournaments must have number of total players as powers of 2
 	def get_num_default_players(self, n):
@@ -60,42 +59,16 @@ class GoTournAdmin():
 		server_socket.listen(n)
 		base_time = time.time()
 		time_elapsed = 0
-		#while count != n and tries < 10 * n:
-		while len(self.players.keys()) < n and time_elapsed < 30:
+		while len(self.players.keys()) < n: #and time_elapsed < 30:
 			try:
 				client_socket, address = server_socket.accept()
 				print('adding')
-				#server_socket.setblocking(0)
 				self.remote_player_registration(client_socket)
 				print("added")
 			except:
 				pass
 			
 			time_elapsed = time.time() - base_time
-		"""
-		while len(self.players.keys()) < n and time_elapsed < 120:
-			try: 
-				client_socket, address = server_socket.accept()
-				self.remote_player_registration(client_socket)
-			except:
-				pass
-			time_elapsed = time.time() - base_time
-		self.n = len(self.players.keys())
-	
-		
-		
-		print("reached attempt")
-		#for i in range(10 * n):
-		while True:
-			client_socket, address = server_socket.accept()
-			try: 
-				print("connection made" + str(count))
-				self.remote_player_registration(client_socket)
-				count += 1
-			except:
-				pass
-		self.n = count
-		"""
 
 
 	def remote_player_registration(self, client_socket):
@@ -141,34 +114,6 @@ class GoTournAdmin():
 			all_players_names = []
 			for player in self.players.keys():
 				all_players_names.append(player)
-			"""
-			while len(all_players_names != 1):
-				for i in range(len(all_players_names)-1):
-					player1_name = all_players_names[i]
-					player2_name = all_players_names[i + 1]
-					winner = self.run_game(self.players[all_players_names[i]], self.players[all_players_names[i + 1]])
-					self.standings[winner] += 1
-					if winner == player1_name:
-						all_players_names.remove(player2_name)
-						self.beaten_opponents[winner].append[player2_name]
-					else:
-						all_players_names.remove(player1_name)
-						self.beaten_opponents[winner].append[player1_name]
-			"""
-			"""
-			while len(all_players_names != 1):
-				i = 0
-				player1_name = all_players_names[i]
-				player2_name = all_players_names[i + 1]
-				winner = self.run_game(self.players[all_players_names[i]], self.players[all_players_names[i + 1]])
-				self.standings[winner] += 1
-				if winner == player1_name:
-					all_players_names.remove(player2_name)
-					self.beaten_opponents[winner].append[player2_name]
-				else:
-					all_players_names.remove(player1_name)
-					self.beaten_opponents[winner].append[player1_name]
-			"""
 			i = 0
 			while len(all_players_names) != 1:
 				player1_name = all_players_names[i]
@@ -238,6 +183,7 @@ class GoTournAdmin():
 				go_ref.referee_game()
 			except socket_error:
 				connected = False
+				go_ref.winner = get_other_type(go_ref.current_player)
 				break
 			except TypeError:
 				valid_response = False
