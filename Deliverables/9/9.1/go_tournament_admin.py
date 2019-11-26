@@ -71,6 +71,7 @@ class GoTournAdmin():
 		# Append all remote players, register names, and store client sockets 
 		new_remote_player = RemotePlayerProxy(client_socket)
 		player_name = new_remote_player.register()
+		print(1)
 		self.players[player_name] = new_remote_player
 
 
