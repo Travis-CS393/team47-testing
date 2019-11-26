@@ -31,8 +31,8 @@ class GoPlayerBase:
       return wrapper
 
    ## Constructor
-   def __init__(self, name):
-      self.name = None
+   def __init__(self, name=None):
+      self.name = name
       self.default_name = "default_player"
       self.stone_type = None
       self.move_referee = MoveReferee()

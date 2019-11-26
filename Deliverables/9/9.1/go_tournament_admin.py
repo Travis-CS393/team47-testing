@@ -47,7 +47,8 @@ class GoTournAdmin():
 			return 0
 		else:
 			total_players = math.pow(2, math.ceil(math.log(n, 2)))
-			return total_players - n
+			print(n, total_players)
+			return int(total_players) - n
 
 
 	def create_server(self, IP, port, n):
@@ -59,14 +60,16 @@ class GoTournAdmin():
 		base_time = time.time()
 		time_elapsed = 0
 		#while count != n and tries < 10 * n:
-		while len(self.players.keys()) < n and time_elapsed < 55:
+		while len(self.players.keys()) < n and time_elapsed < 15:
 			try:
-				print(self.players.keys())
 				client_socket, address = server_socket.accept()
-				server_socket.setblocking(0)
+				print('adding')
+				#server_socket.setblocking(0)
 				self.remote_player_registration(client_socket)
+				print("added")
 			except:
 				pass
+			
 			time_elapsed = time.time() - base_time
 		self.n = len(self.players.keys())
 		"""
@@ -98,10 +101,11 @@ class GoTournAdmin():
 	def remote_player_registration(self, client_socket):
 		# Append all remote players, register names, and store client sockets 
 		new_remote_player = RemotePlayerProxy(client_socket)
+		print('registering')
 		player_name = new_remote_player.register()
-		print(1)
+		
 		self.players[player_name] = new_remote_player
-
+		print(len(self.players.keys()))
 
 	def replace_cheaters(self, cheater):
 		self.standings[cheater] = 0
@@ -176,10 +180,10 @@ class GoTournAdmin():
 				self.standings[winner] += 1	
 				if winner == player1_name:
 					all_players_names.remove(player2_name)
-					self.beaten_opponents[winner].append[player2_name]
+					self.beaten_opponents[winner].append(player2_name)
 				else:
 					all_players_names.remove(player1_name)
-					self.beaten_opponents[winner].append[player1_name]
+					self.beaten_opponents[winner].append(player1_name)
 				i += 1
 				i = i % len(all_players_names)
 
@@ -188,8 +192,8 @@ class GoTournAdmin():
 			for player in self.players.keys():
 				all_players_names.append(player)
 			RR_pairings = self.get_RR_pairings(all_players_names)
-			for rr_round in range(len(RR_pairings)):
-				for pair in range(len(rr_round)):
+			for rr_round in (RR_pairings):
+				for pair in (rr_round):
 					player1_name = pair[0]
 					player2_name = pair[1]
 					winner = self.run_game(self.players[pair[0]], self.players[pair[1]])
@@ -204,12 +208,12 @@ class GoTournAdmin():
 	def get_RR_pairings(self, players):
 		total = len(players)
 		pairs = total - 1
-		mid = total / 2
+		mid = total // 2
 		RR_pairings = []
 		for pair in range(pairs):
 			pairings = []
 			for i in range(mid):
-				pairings.append(players[i], players[total - i - 1])
+				pairings.append([players[i], players[total - i - 1]])
 			players.insert(1, players.pop())
 			RR_pairings.append(pairings)
 		return RR_pairings
@@ -219,10 +223,10 @@ class GoTournAdmin():
 		connected = True
 		valid_response = True
 		
-		go_ref.players[StoneEnum.BLACK] = player1.name
+		go_ref.players[StoneEnum.BLACK] = player1
 		player1.receive_stone(StoneEnum.BLACK)
 		
-		go_ref.players[StoneEnum.WHITE] = player2.name
+		go_ref.players[StoneEnum.WHITE] = player2
 		player2.receive_stone(StoneEnum.WHITE)
 
 		while not go_ref.game_over and connected and valid_response:
@@ -240,16 +244,16 @@ class GoTournAdmin():
 		try:
 			ack_1 = player1.game_over(["end-game"])
 			if ack_1 != "OK":
-				go_ref.winner = player2.name
+				go_ref.winner = get_other_type(go_ref.current_player)
 		except:
-			go_ref.winner = player2.name
+			go_ref.winner = get_other_type(go_ref.current_player)
 
 		try: 
 			ack_2 = player2.game_over(["end-game"])
 			if ack_2 != "OK":
-				go_ref.winner = player1.name
+				go_ref.winner = get_other_type(go_ref.current_player)
 		except:
-			go_ref.winner = player1.name
+			go_ref.winner = get_other_type(go_ref.current_player)
 
 
 		if go_ref.game_over and connected and valid_response:

@@ -5,7 +5,7 @@ sys.path.append('../../5/5.1/src/')
 sys.path.append('../../5/5.2/src/')
 from stone import Stone, StoneEnum, get_other_type
 from board import Board
-from point import Point
+from point import Point, str_to_point
 from copy import deepcopy
 from move_referee import MoveReferee
 from score_referee import ScoreReferee
@@ -58,8 +58,12 @@ class GoReferee:
 
    def play_black_move(self):
       p = self.players[StoneEnum.BLACK].choose_move(self.board_history)
+      print(p)
       if self.validate_player_move(p):
-         self.execute_move(Point(p[0], p[1]))
+         if isinstance(p, tuple):
+            self.execute_move(Point(p[0], p[1]))
+         elif isinstance(p, str):
+            self.execute_move(str_to_point(p))
       else:
          raise TypeError("Invalid responded move")
 
@@ -67,11 +71,15 @@ class GoReferee:
       p = self.players[StoneEnum.WHITE].choose_move(self.board_history)
       print(p)
       if self.validate_player_move(p):
-         self.execute_move(Point(p[0], p[1]))
+         if isinstance(p, tuple):
+            self.execute_move(Point(p[0], p[1]))
+         elif isinstance(p, str):
+            self.execute_move(str_to_point(p))
       else:
          raise TypeError("Invalid responded move")
 
    def validate_player_move(self, check_response):
+      print(check_response)
       if check_response == "pass":
          return True
       elif isinstance(check_response, tuple):
