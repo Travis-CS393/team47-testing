@@ -4,7 +4,7 @@ import socket
 import math 
 import time
 from socket import error as socket_error
-from stone import StoneEnum
+from stone import StoneEnum, get_other_type
 from point import Point, str_to_point
 sys.path.append('../../3/3.1/src/')
 sys.path.append('../../4/4.1/src/')
@@ -58,10 +58,10 @@ class GoTournAdmin():
 		base_time = time.time()
 		time_elapsed = 0
 		#while count != n and tries < 10 * n:
-		while len(self.players.keys()) < n and time_elapsed < 120:
+		while len(self.players.keys()) < n and time_elapsed < 400:
 			try:
 				client_socket, address = server_socket.accept()
-				server_socket.setblocking(1)
+				server_socket.setblocking(0)
 				self.remote_player_registration(client_socket)
 			except:
 				pass
