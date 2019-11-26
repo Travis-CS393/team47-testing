@@ -56,12 +56,20 @@ class GoTournAdmin():
 		server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 		server_socket.bind((IP, port))
 		server_socket.listen(n)
+		"""
 		while count != n and tries < 10 * n:
 			tries += 1
 			client_socket, address = server_socket.accept()
 			try:
 				self.remote_player_registration(client_socket, IP, port)
 				count += 1
+			except:
+				pass
+		"""
+		for i in range(n+1):
+			client_socket, address = server_socket.accept()
+			try: 
+				self.remote_player_registration(client_socket, IP, port)
 			except:
 				pass
 		self.n = count
