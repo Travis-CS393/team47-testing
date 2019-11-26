@@ -118,7 +118,7 @@ class GoTournAdmin():
 
 		defaults = self.get_num_default_players(self.n)
 		# Append all default players and register their names 
-		for i in range(len(defaults)):
+		for i in range(defaults):
 			new_default_player = GoPlayerBase(name="defaults" + str(i))
 			default_name = new_default_player.register()
 			self.players[default_name] = new_default_player
@@ -162,10 +162,6 @@ class GoTournAdmin():
 					all_players_names.remove(player1_name)
 					self.beaten_opponents[winner].append[player1_name]
 			"""
-			if self.tourney == "-cup":
-				all_players_names = []
-			for player in self.players:
-				all_players_names.append(player)
 			i = 0
 			while len(all_players_names != 1):
 				player1_name = all_players_names[i]
