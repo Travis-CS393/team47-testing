@@ -31,6 +31,7 @@ class GoPlayerProxy():
 		try:
 			inpt = self.socket.recv(8192)
 			print(inpt.decode("utf-8"))
+			print("HI")
 			if inpt.decode("utf-8") == "done":
 				return "done"
 			else:
@@ -50,9 +51,12 @@ class GoPlayerProxy():
 
 	def work_JSON(self, input):
 		obj = input
-		if obj[0] == "register":
-			output = self.register()
-		elif obj[0] == "receive-stones":
+		print("working with socket")
+		print(obj)
+		if obj[0] == 'register':
+			output = self.register("no name")
+		
+		elif obj[0] == 'receive-stones':
 			if obj[1] == BLACK_STONE:
 				stone_e = StoneEnum.BLACK
 			elif obj[1] == WHITE_STONE:
@@ -73,16 +77,14 @@ class GoPlayerProxy():
 				output = get_raw(output)
 		else:
 			raise Exception("Invalid JSON input")
-
-		if not output: 
-			return output
-
-		return output
+		
+		print(output)
+		return output		
 
 
 	def register(self, name):
 		if isinstance(name, str):
-			return self.player.register(name)
+			return self.player.register()
 		else:
 			raise Exception("Not a proper player name.")
 			
