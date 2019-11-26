@@ -60,7 +60,10 @@ class GoReferee:
       p = self.players[StoneEnum.BLACK].choose_move(self.board_history)
       if self.validate_player_move(p):
          if isinstance(p, str):
-            self.execute_move(str_to_point(p))
+            if p == "pass":
+               self.execute_move(p)
+            else:            
+               self.execute_move(str_to_point(p))
          elif isinstance(p, tuple):
             self.execute_move(Point(p[0], p[1]))
       else:
@@ -70,7 +73,10 @@ class GoReferee:
       p = self.players[StoneEnum.WHITE].choose_move(self.board_history)
       if self.validate_player_move(p):
          if isinstance(p, str):
-            self.execute_move(str_to_point(p))
+            if p == "pass":
+               self.execute_move(p)
+            else:            
+               self.execute_move(str_to_point(p))
          elif isinstance(p, tuple):
             self.execute_move(Point(p[0], p[1]))
       else:
