@@ -18,7 +18,6 @@ from output_formatter import format_board
 go_config = json.load(open('go.config'))
 default_player_path = go_config['default-player']
 sys.path.append(default_player_path)
-from constants import BOARD_DIM
 from go_player_base import GoPlayerBase
 
 
@@ -57,7 +56,7 @@ class GoTournAdmin():
 		server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 		server_socket.bind((IP, port))
 		server_socket.listen(n)
-		while count != n and tries < 10 * n:
+		while count != n and tries < 30:
 			tries += 1
 			client_socket, address = server_socket.accept()
 			try:
@@ -147,7 +146,7 @@ class GoTournAdmin():
 		return RR_pairings
 
 	def run_game(self, player1, player2):
-		go_ref = GoReferee(board_size=BOARD_DIM, player1=player1, player2=player2)
+		go_ref = GoReferee(board_size=9, player1=player1, player2=player2)
 		connected = True
 		valid_response = True
 		
