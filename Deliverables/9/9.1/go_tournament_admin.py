@@ -51,21 +51,14 @@ class GoTournAdmin():
 
 
 	def create_server(self, IP, port, n):
+		count = 0
+		tries = 0
 		server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 		server_socket.bind((IP, port))
 		server_socket.listen(n)
 		base_time = time.time()
 		time_elapsed = 0
-		while len(self.players.keys()) < n and time_elapsed < 120:
-			try: 
-				client_socket, address = server_socket.accept()
-				self.remote_player_registration(client_socket)
-			except:
-				pass
-			time_elapsed = time.time() - base_time
-		self.n = len(self.players.keys())
-		"""
 		while count != n and tries < 10 * n:
 			tries += 1
 			client_socket, address = server_socket.accept()
@@ -74,6 +67,18 @@ class GoTournAdmin():
 				count += 1
 			except:
 				pass
+		self.n = count
+		"""
+		while len(self.players.keys()) < n and time_elapsed < 120:
+			try: 
+				client_socket, address = server_socket.accept()
+				self.remote_player_registration(client_socket)
+			except:
+				pass
+			time_elapsed = time.time() - base_time
+		self.n = len(self.players.keys())
+	
+		
 		
 		print("reached attempt")
 		#for i in range(10 * n):
@@ -130,11 +135,12 @@ class GoTournAdmin():
 			all_players_names = []
 			for player in self.players.keys():
 				all_players_names.append(player)
+			"""
 			while len(all_players_names != 1):
 				for i in range(len(all_players_names)-1):
 					player1_name = all_players_names[i]
 					player2_name = all_players_names[i + 1]
-					winner = self.run_game(self.players[all_players[i]], self.players[all_players[i + 1]])
+					winner = self.run_game(self.players[all_players_names[i]], self.players[all_players_names[i + 1]])
 					self.standings[winner] += 1
 					if winner == player1_name:
 						all_players_names.remove(player2_name)
@@ -142,6 +148,20 @@ class GoTournAdmin():
 					else:
 						all_players_names.remove(player1_name)
 						self.beaten_opponents[winner].append[player1_name]
+			"""
+			while len(all_players_names != 1):
+				i = 0
+				player1_name = all_players_names[i]
+				player2_name = all_players_names[i + 1]
+				winner = self.run_game(self.players[all_players_names[i]], self.players[all_players_names[i + 1]])
+				self.standings[winner] += 1
+				if winner == player1_name:
+					all_players_names.remove(player2_name)
+					self.beaten_opponents[winner].append[player2_name]
+				else:
+					all_players_names.remove(player1_name)
+					self.beaten_opponents[winner].append[player1_name]
+
 		elif self.tourney == "-league":
 			all_players_names = []
 			for player in self.players.keys():
