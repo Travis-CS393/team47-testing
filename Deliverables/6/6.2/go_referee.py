@@ -32,7 +32,7 @@ class GoReferee:
       print("HI")
       print(self.board_size)
       print("NOO")
-      self.board_history = [get_board([[" "] * self.board_size for row in range(self.board_size)], self.board_size)]
+      self.board_history = [get_board([[" "] * self.board_size for row in range(self.board_size)])]
 
       self.player1 = player1
       self.player2 = player2

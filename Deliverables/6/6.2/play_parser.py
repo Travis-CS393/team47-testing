@@ -11,8 +11,5 @@ def format_input(string):
 	else:
 		return str_to_point(string)
 
-def get_board(board_matr, board_size):
-	print("Wow")
-	print(board_size)
-	print("Whoooooo")
-	return Board([[Stone(board_matr[i][j]) for i in range(board_size)] for j in range(board_size)])
+def get_board(board_matr):
+	return Board([[Stone(board_matr[i][j]) for i in range(len(board_matr))] for j in range(len(board_matr))])
