@@ -48,7 +48,7 @@ class GoTournAdmin():
 		else:
 			total_players = math.pow(2, math.ceil(math.log(n, 2)))
 			print(n, total_players)
-			return int(total_players) - n
+			return int(total_players) - len(self.players.keys())
 
 
 	def create_server(self, IP, port, n):
@@ -71,7 +71,6 @@ class GoTournAdmin():
 				pass
 			
 			time_elapsed = time.time() - base_time
-		self.n = len(self.players.keys())
 		"""
 		while len(self.players.keys()) < n and time_elapsed < 120:
 			try: 
