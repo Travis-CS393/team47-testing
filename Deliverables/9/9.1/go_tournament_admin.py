@@ -35,8 +35,6 @@ class GoTournAdmin():
 		self.beaten_opponents = {}
 		self.threads = []
 
-		self.client_sockets = []
-
 	# Tournaments must have number of total players as powers of 2
 	def get_num_default_players(self, n):
 		if n < 0:
@@ -56,27 +54,24 @@ class GoTournAdmin():
 	def create_server(self, IP, port, n):
 		server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-		#server_socket.setblocking(0)
+		server_socket.setblocking(0)
 		server_socket.bind((IP, port))
 		server_socket.listen(n)
 		base_time = time.time()
 		time_elapsed = 0
 		#while count != n and tries < 10 * n:
-		#while len(self.players.keys()) < n and time_elapsed < 15:
-		while time_elapsed < 120:
+		while len(self.players.keys()) < n and time_elapsed < 30:
 			try:
 				client_socket, address = server_socket.accept()
 				print('adding')
 				#server_socket.setblocking(0)
-				#self.remote_player_registration(client_socket)
-				self.client_sockets.append(client_socket)
+				self.remote_player_registration(client_socket)
 				print("added")
 			except:
 				pass
 			
 			time_elapsed = time.time() - base_time
-		#self.n = len(self.players.keys())
-		self.n = len(self.client_sockets)
+		self.n = len(self.players.keys())
 		"""
 		while len(self.players.keys()) < n and time_elapsed < 120:
 			try: 
@@ -125,12 +120,7 @@ class GoTournAdmin():
 	def run_tournament(self):
 		print("Creating Server")
 		self.create_server(self.IP, self.port, self.n)
-		print("Server Created")
-
-		for i in range(len(self.client_sockets)):
-			self.remote_player_registration(client_sockets[i])
-
-		print("Remotes Registered")
+		print("Server Created, Remotes Registered")
 
 		defaults = self.get_num_default_players(self.n)
 		# Append all default players and register their names 
