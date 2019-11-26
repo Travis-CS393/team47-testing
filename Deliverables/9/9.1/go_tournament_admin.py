@@ -51,7 +51,6 @@ class GoTournAdmin():
 
 	def create_server(self, IP, port, n):
 		count = 0
-		tries = 0
 		server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 		server_socket.bind((IP, port))
@@ -66,10 +65,11 @@ class GoTournAdmin():
 			except:
 				pass
 		"""
-		for i in range(n+1):
+		for i in range(10 * n):
 			client_socket, address = server_socket.accept()
 			try: 
 				self.remote_player_registration(client_socket, IP, port)
+				count += 1
 			except:
 				pass
 		self.n = count
@@ -130,7 +130,7 @@ class GoTournAdmin():
 				all_players_names.append(player)
 			RR_pairings = self.get_RR_pairings(all_players_names)
 			for rr_round in range(len(RR_pairings)):
-				for pair in range(len(RR_pairings[0])):
+				for pair in range(len(rr_round)):
 					player1_name = pair[0]
 					player2_name = pair[1]
 					winner = self.run_game(self.players[pair[0]], self.players[pair[1]])
@@ -149,7 +149,7 @@ class GoTournAdmin():
 		for pair in range(pairs):
 			pairings = []
 			for i in range(mid):
-				pairings.append(players[i], players[count-i-1])
+				pairings.append(players[i], players[total - i - 1])
 			players.insert(1, players.pop())
 			RR_pairings.append(pairings)
 		return RR_pairings
