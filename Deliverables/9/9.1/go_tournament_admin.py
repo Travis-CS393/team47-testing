@@ -144,7 +144,7 @@ class GoTournAdmin():
 						self.beaten_opponents[winner].append[player1_name]
 		elif self.tourney == "-league":
 			all_players_names = []
-			for player in self.players:
+			for player in self.players.keys():
 				all_players_names.append(player)
 			RR_pairings = self.get_RR_pairings(all_players_names)
 			for rr_round in range(len(RR_pairings)):
