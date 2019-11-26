@@ -136,7 +136,7 @@ class GoTournAdmin():
 			self.beaten_opponents[element] = []
 
 		print("Starting Tournament")
-		if self.tourney == "-cup":
+		if self.tourney == "-league":
 			all_players_names = []
 			for player in self.players.keys():
 				all_players_names.append(player)
@@ -183,7 +183,7 @@ class GoTournAdmin():
 				i += 1
 				i = i % len(all_players_names)
 
-		elif self.tourney == "-league":
+		elif self.tourney == "-cup":
 			all_players_names = []
 			for player in self.players.keys():
 				all_players_names.append(player)
