@@ -32,4 +32,9 @@ class RemotePlayerProxy():
 		player_move = self.connection.recv(8192)
 		return player_move.decode("utf-8")
 
+	def game_over(self, end_tag):
+		self.connection.sendall(bytes(json.dumps(end_tag), "utf-8"))
+		response = self.connection.recv(8192)
+		return response.decode("utf-8")
+
 

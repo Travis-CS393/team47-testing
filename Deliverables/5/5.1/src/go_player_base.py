@@ -58,3 +58,9 @@ class GoPlayerBase:
          if self.move_referee.valid_move(self.stone_type, Point(x, y), boards, boards[0]):
             return (x, y)
       return "pass"
+
+   def game_over(self, end_tag):
+      # Reset default player for next game
+      self.stone_type = None
+      self.move_referee = MoveReferee()
+      return "OK"

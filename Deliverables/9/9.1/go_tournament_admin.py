@@ -182,7 +182,21 @@ class GoTournAdmin():
 				go_ref.winner = go_ref.players[get_other_type(go_ref.current_player)]
 				break
 
-		# Validate game over over network
+		# Validate Game Over for both players
+		try:
+			ack_1 = player1.game_over(["end-game"])
+			if ack_1 != "OK":
+				go_ref.winner = player2.name
+		except:
+			go_ref.winner = player2.name
+
+		try: 
+			ack_2 = player2.game_over(["end-game"])
+			if ack_2 != "OK":
+				go_ref.winner = player1.name
+		except:
+			go_ref.winner = player1.name
+
 
 		if go_ref.game_over and connected and valid_response:
 			winner = go_ref.get_winners()
