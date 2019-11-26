@@ -60,7 +60,7 @@ class GoTournAdmin():
 		while len(self.players.keys()) < n and time_elapsed < 120:
 			try: 
 				client_socket, address = server_socket.accept()
-				self.remote_player_registration(client_socket, IP, port)
+				self.remote_player_registration(client_socket)
 			except:
 				pass
 			time_elapsed = time.time() - base_time
