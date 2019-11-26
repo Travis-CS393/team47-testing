@@ -16,7 +16,6 @@ go_config = json.load(open('go.config'))
 default_player_path = go_config['default-player']
 sys.path.append(default_player_path)
 from go_player_base import GoPlayerBase
-from constants import ADMIN_BOARD_DIM
 from output_formatter import format_board
 
 class GoAdmin():
@@ -27,7 +26,7 @@ class GoAdmin():
 		self.default_name = default_name
 		self.local_player = GoPlayerBase(self.default_name)
 		self.remote_player = None
-		self.go_ref = GoReferee(board_size=ADMIN_BOARD_DIM)
+		self.go_ref = GoReferee()
 
 	
 	def create_server(self, IP, port):
