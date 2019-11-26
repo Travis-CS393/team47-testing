@@ -60,7 +60,7 @@ class GoTournAdmin():
 		base_time = time.time()
 		time_elapsed = 0
 		#while count != n and tries < 10 * n:
-		while len(self.players.keys()) < n and time_elapsed < 120:
+		while len(self.players.keys()) < n: #and time_elapsed < 120:
 			try:
 				client_socket, address = server_socket.accept()
 				print('adding')
