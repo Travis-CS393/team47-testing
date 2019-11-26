@@ -180,7 +180,7 @@ class GoTournAdmin():
 					all_players_names.remove(player1_name)
 					self.beaten_opponents[winner].append[player1_name]
 				i += 1
-				i = i % (len(all_players_names) -1)
+				i = i % len(all_players_names)
 
 		elif self.tourney == "-league":
 			all_players_names = []
