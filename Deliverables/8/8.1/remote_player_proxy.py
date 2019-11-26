@@ -29,6 +29,8 @@ class RemotePlayerProxy():
 
 	def receive_stone(self, stone_type):
 		self.connection.sendall(bytes(json.dumps(["receive-stones", make_stone(stone_type).get_raw()]), "utf-8"))
+		response = self.connection.recv(8192)
+		return response.decode("utf-8")
 
 	def choose_move(self, boards):
 		self.connection.sendall(bytes(json.dumps(["make-a-move", format_board(boards)]), "utf-8"))
