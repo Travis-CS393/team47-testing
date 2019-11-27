@@ -36,6 +36,7 @@ class GoTournAdmin():
 		self.beaten_opponents = {}
 
 		self.num_cheaters = 0
+		self.cheaters = []
 
 
 	# Tournaments must have number of total players as powers of 2
@@ -117,6 +118,7 @@ class GoTournAdmin():
 				player2_name = all_players_names[i + 1]
 				print(player1_name + " v.s " + player2_name)
 				winner = self.run_game(self.players[all_players_names[i]], self.players[all_players_names[i + 1]])
+				print(self.cheaters)
 				print(winner + " wins!")
 				self.standings[winner] += 1	
 				if winner == player1_name:
@@ -140,6 +142,7 @@ class GoTournAdmin():
 					player2_name = pair[1]
 					print(player1_name + " v.s " + player2_name)
 					winner = self.run_game(self.players[pair[0]], self.players[pair[1]])
+					print(self.cheaters)
 					print(winner + " wins!")
 					self.standings[winner] += 1
 		else:
@@ -218,6 +221,7 @@ class GoTournAdmin():
 		elif not connected or not valid_response:
 			winner = go_ref.get_winners()
 			self.num_cheaters += 1
+			self.cheaters.append(go_ref.players[go_ref.current_player].name)
 			self.replace_cheaters(go_ref.players[go_ref.current_player].name)
 		else:
 			raise Exception("Game ended unexpectedly.")
