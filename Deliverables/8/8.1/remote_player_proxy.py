@@ -27,7 +27,7 @@ class RemotePlayerProxy():
 			player_name = self.connection.recv(8192)
 			self.name = player_name.decode("utf-8")
 			return player_name.decode("utf-8") 
-		except BrokenPipeError:
+		except:
 			raise socket.error("socket connection broken")
 
 	def receive_stone(self, stone_type):
@@ -43,7 +43,7 @@ class RemotePlayerProxy():
 				return response
 			else:
 				return response.decode("utf-8")
-		except BrokenPipeError:
+		except:
 			raise socket.error("socket connection broken")
 
 	def choose_move(self, boards):
@@ -52,7 +52,7 @@ class RemotePlayerProxy():
 			time.sleep(.01)
 			player_move = self.connection.recv(8192)
 			return player_move.decode("utf-8")
-		except BrokenPipeError:
+		except:
 			raise socket.error("socket connection broken")
 
 	def game_over(self, end_tag):
@@ -61,7 +61,7 @@ class RemotePlayerProxy():
 			time.sleep(.01)
 			response = self.connection.recv(8192)
 			return response.decode("utf-8")
-		except BrokenPipeError:
+		except:
 			raise socket.error("socket connection broken")
 
 

@@ -118,7 +118,7 @@ class GoTournAdmin():
 				player1_name = all_players_names[i]
 				player2_name = all_players_names[i + 1]
 				print(player1_name + " v.s " + player2_name)
-				winner = self.run_game(self.players[all_players_names[i]], self.players[all_players_names[i+1]])
+				winner = self.run_game(self.players[all_players_names[i]], self.players[all_players_names[i + 1]])
 				print(winner + " wins!")
 				self.standings[winner] += 1	
 				if winner == player1_name:
@@ -146,7 +146,7 @@ class GoTournAdmin():
 					self.standings[winner] += 1
 		else:
 			raise Exception("Not a valid type of Go tournament.")
-			
+
 		print("Tournament Over")
 		print(self.standings)
 		print("Outputting Standings")
