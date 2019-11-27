@@ -86,7 +86,7 @@ class GoTournAdmin():
 			self.standings[opponent] += 1
 
 		# Replace cheating players with default players 
-		new_default_player = GoPlayerBase("cheater" + str(self.num_cheaters))
+		new_default_player = GoPlayerBase("cheater-replacement" + str(self.num_cheaters))
 		self.players[new_default_player.name] = new_default_player
 
 	def run_tournament(self):
@@ -112,6 +112,26 @@ class GoTournAdmin():
 
 		if self.tourney == "--league":
 			print("Running RR")
+			all_players_names = []
+			for player in self.players.keys():
+				all_players_names.append(player)
+			for i in range(len(all_players_names) - 1):
+				for j in range(i + 1, len(all_players_names)):
+					player1_name = all_players_names[i]
+					player2_name = all_players_names[j]
+					print(player1_name + " v.s " + player2_name)
+					winner, cheater = self.run_game(self.players[all_players_names[i]], self.players[all_players_names[j]])
+					print(winner + " wins!")
+					self.standings[winner] += 1
+					if cheater == player1_name:
+						new_default_player = GoPlayerBase("cheater-replacement" + str(self.num_cheaters))
+						self.players[new_default_player.name] = new_default_player
+						all_players_names[i] = new_default_player.name
+					elif cheater == player2_name:
+						new_default_player = GoPlayerBase("cheater-replacement" + str(self.num_cheaters))
+						self.players[new_default_player.name] = new_default_player
+						all_players_names[j] = new_default_player.name
+
 		elif self.tourney == "--cup":
 			print("Running SE")
 			all_players_names = []
@@ -122,7 +142,7 @@ class GoTournAdmin():
 				player1_name = all_players_names[i]
 				player2_name = all_players_names[i + 1]
 				print(player1_name + " v.s. " + player2_name)
-				winner = self.run_game(self.players[all_players_names[i]], self.players[all_players_names[i + 1]])
+				winner, cheater = self.run_game(self.players[all_players_names[i]], self.players[all_players_names[i + 1]])
 				print(winner + " wins!")
 				self.standings[winner] += 1
 				if winner == player1_name:
@@ -160,7 +180,7 @@ class GoTournAdmin():
 		print("Outputting Standings")
 		standings = self.format_standings(self.standings)		
 		return standings
-
+	"""
 	def get_RR_pairings(self, players):
 		total = len(players)
 		pairs = total - 1
@@ -173,11 +193,13 @@ class GoTournAdmin():
 			players.insert(1, players.pop())
 			RR_pairings.append(pairings)
 		return RR_pairings
+	"""
 
 	def run_game(self, player1, player2):
 		go_ref = GoReferee(player1=player1, player2=player2)
 		connected = True
 		valid_response = True
+		cheater = None
 		
 		go_ref.players[StoneEnum.BLACK] = player1
 		try:
@@ -197,19 +219,27 @@ class GoTournAdmin():
 			try:
 				go_ref.referee_game()
 			except OSError:
+				go_ref.game_over = True
 				connected = False
+				cheater = go_ref.players[go_ref.current_player].name
 				if self.tourney == "--league":
 					self.num_cheaters += 1
-					self.cheaters.append(go_ref.players[go_ref.current_player].name)
-					self.replace_cheaters(go_ref.players[go_ref.current_player].name)
+					self.cheaters.append(cheater)
+					self.replace_cheaters(cheater)
+				elif self.tourney == "--cup":
+					self.standings[cheater] = 0
 				go_ref.winner = get_other_type(go_ref.current_player)
 				break
 			except TypeError:
+				go_ref.game_over = True
 				valid_response = False
+				cheater = go_ref.players[go_ref.current_player].name
 				if self.tourney == "--league":
 					self.num_cheaters += 1
-					self.cheaters.append(go_ref.players[go_ref.current_player].name)
-					self.replace_cheaters(go_ref.players[go_ref.current_player].name)
+					self.cheaters.append(cheater)
+					self.replace_cheaters(cheater)
+				elif self.tourney == "--cup":
+					self.standings[cheater] = 0
 				go_ref.winner = get_other_type(go_ref.current_player)
 				break
 
@@ -219,7 +249,7 @@ class GoTournAdmin():
 		print(connected)
 		print("valid_response")
 		print(valid_response)
-		
+
 		# Validate Game Over for both players
 		if go_ref.game_over and connected and valid_response:
 			try:
@@ -259,10 +289,10 @@ class GoTournAdmin():
 
 		# Randomly break ties if two winners
 		if len(winner) == 1:
-			return winner[0]
+			return winner[0], cheater
 		else:
 			rand_idx = random.randint(0, 1)
-			return winner[rand_idx]
+			return winner[rand_idx], cheater
 
 	def format_standings(self, standings):
 		points_list = list(dict.fromkeys(standings.values()))
