@@ -107,7 +107,6 @@ class GoTournAdmin():
 			self.standings[element] = 0
 			self.beaten_opponents[element] = []
 
-		"""
 		print("Starting Tournament")
 		if self.tourney == "--cup":
 			all_players_names = []
@@ -141,7 +140,7 @@ class GoTournAdmin():
 					self.standings[winner] += 1
 		else:
 			raise Exception("Not a valid type of Go tournament.")
-		"""
+
 		print(self.standings)
 		print("Outputting Standings")
 		standings = self.format_standings(self.standings)
@@ -180,7 +179,7 @@ class GoTournAdmin():
 		while not go_ref.game_over and connected and valid_response:
 			try:
 				go_ref.referee_game()
-			except socket_error:
+			except OSError:
 				connected = False
 				go_ref.winner = get_other_type(go_ref.current_player)
 				break
