@@ -26,14 +26,17 @@ from go_player_base import GoPlayerBase
 class GoTournAdmin():
 
 	def __init__(self, IP, port, tourney="-cup", n=1):
-		self.num_cheaters = 0
 		self.IP = IP
 		self.port = port
 		self.tourney = tourney
 		self.n = n
+
 		self.players = {}
 		self.standings = {}
 		self.beaten_opponents = {}
+
+		self.num_cheaters = 0
+
 
 	# Tournaments must have number of total players as powers of 2
 	def get_num_default_players(self, n):
@@ -56,28 +59,24 @@ class GoTournAdmin():
 		server_socket.setblocking(0)
 		server_socket.bind((IP, port))
 		server_socket.listen(n)
+		
 		base_time = time.time()
 		time_elapsed = 0
 		while len(self.players.keys()) < n: #and time_elapsed < 30:
 			try:
 				client_socket, address = server_socket.accept()
-				print('adding')
 				self.remote_player_registration(client_socket)
-				print("added")
+				print("Added Remote, Remotes: {}", len(self.players.keys()))
 			except:
 				pass
-			
 			time_elapsed = time.time() - base_time
 
 
 	def remote_player_registration(self, client_socket):
 		# Append all remote players, register names, and store client sockets 
 		new_remote_player = RemotePlayerProxy(client_socket)
-		print('registering')
 		player_name = new_remote_player.register()
-		
 		self.players[player_name] = new_remote_player
-		print(len(self.players.keys()))
 
 	def replace_cheaters(self, cheater):
 		self.standings[cheater] = 0
@@ -87,7 +86,6 @@ class GoTournAdmin():
 		# Replace cheating players with default players 
 		new_default_player = GoPlayerBase("cheater" + str(self.num_cheaters))
 		self.players[new_default_player.name] = new_default_player
-
 
 	def run_tournament(self):
 		print("Creating Server")
@@ -186,6 +184,11 @@ class GoTournAdmin():
 		while not go_ref.game_over and connected and valid_response:
 			try:
 				go_ref.referee_game()
+			except:
+				connected = False
+				valid_response = False
+				go_ref.winner = get_other_type(go_ref.current_player)
+			"""
 			except OSError:
 				connected = False
 				go_ref.winner = get_other_type(go_ref.current_player)
@@ -194,23 +197,23 @@ class GoTournAdmin():
 				valid_response = False
 				go_ref.winner = get_other_type(go_ref.current_player)
 				break
+			"""
 
 		# Validate Game Over for both players
-		try:
-			ack_1 = player1.game_over(["end-game"])
-			if ack_1 != "OK":
-				go_ref.winner = StoneEnum.WHITE
-		except:
-			go_ref.winner = StoneEnum.WHITE
-
-		try: 
-			ack_2 = player2.game_over(["end-game"])
-			if ack_2 != "OK":
-				go_ref.winner = StoneEnum.BLACK
-		except:
-			go_ref.winner = StoneEnum.BLACK
-
 		if go_ref.game_over and connected and valid_response:
+			try:
+				ack_1 = player1.game_over(["end-game"])
+				if ack_1 != "OK":
+					go_ref.winner = StoneEnum.WHITE
+			except:
+				go_ref.winner = StoneEnum.WHITE
+
+			try: 
+				ack_2 = player2.game_over(["end-game"])
+				if ack_2 != "OK":
+					go_ref.winner = StoneEnum.BLACK
+			except:
+				go_ref.winner = StoneEnum.BLACK
 			winner = go_ref.get_winners()
 		elif not connected or not valid_response:
 			winner = go_ref.get_winners()
@@ -236,7 +239,7 @@ class GoTournAdmin():
 			by_points[standings[player]].append(player)
 
 		place = 1
-		final_output = "_________Final Standings__________\n"
+		final_output = "_____________________Final Standings____________________\n"
 		for score in sorted(by_points.keys(), reverse=True):
 			line = str(place) + ". " + self.list_players(by_points[score]) + "\n"
 			final_output += line
