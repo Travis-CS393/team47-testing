@@ -126,10 +126,14 @@ class GoTournAdmin():
 					if cheater == player1_name:
 						new_default_player = GoPlayerBase("cheater-replacement" + str(self.num_cheaters))
 						self.players[new_default_player.name] = new_default_player
+						self.standings[new_default_player.name] = 0
+						self.beaten_opponents[new_default_player.name] = []
 						all_players_names[i] = new_default_player.name
 					elif cheater == player2_name:
 						new_default_player = GoPlayerBase("cheater-replacement" + str(self.num_cheaters))
 						self.players[new_default_player.name] = new_default_player
+						self.standings[new_default_player.name] = 0
+						self.beaten_opponents[new_default_player.name] = []
 						all_players_names[j] = new_default_player.name
 
 		elif self.tourney == "--cup":
