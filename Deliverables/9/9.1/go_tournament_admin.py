@@ -85,10 +85,6 @@ class GoTournAdmin():
 		for opponent in self.beaten_opponents[cheater]:
 			self.standings[opponent] += 1
 
-		# Replace cheating players with default players 
-		new_default_player = GoPlayerBase("cheater-replacement" + str(self.num_cheaters))
-		self.players[new_default_player.name] = new_default_player
-
 	def run_tournament(self):
 		print("Creating Server")
 		server_socket = self.create_server(self.IP, self.port, self.n)
@@ -228,8 +224,6 @@ class GoTournAdmin():
 				cheater = go_ref.players[go_ref.current_player].name
 				if self.tourney == "--league":
 					self.num_cheaters += 1
-					self.cheaters.append(cheater)
-					self.replace_cheaters(cheater)
 				elif self.tourney == "--cup":
 					self.standings[cheater] = 0
 				go_ref.winner = get_other_type(go_ref.current_player)
@@ -240,8 +234,6 @@ class GoTournAdmin():
 				cheater = go_ref.players[go_ref.current_player].name
 				if self.tourney == "--league":
 					self.num_cheaters += 1
-					self.cheaters.append(cheater)
-					self.replace_cheaters(cheater)
 				elif self.tourney == "--cup":
 					self.standings[cheater] = 0
 				go_ref.winner = get_other_type(go_ref.current_player)
