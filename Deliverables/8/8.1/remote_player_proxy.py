@@ -56,7 +56,7 @@ class RemotePlayerProxy():
 			raise socket.error("socket connection broken")
 
 	def game_over(self, end_tag):
-		try BrokenPipeError:
+		try:
 			self.connection.sendall(bytes(json.dumps(end_tag), "utf-8"))
 			time.sleep(.01)
 			response = self.connection.recv(8192)
