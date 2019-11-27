@@ -269,7 +269,7 @@ class GoTournAdmin():
 					go_ref.winner = StoneEnum.BLACK
 			except:
 				go_ref.winner = StoneEnum.BLACK
-				winner = go_ref.get_winners()
+			winner = go_ref.get_winners()
 		elif not connected:
 			winner = go_ref.get_winners()
 		elif not valid_response:
@@ -286,7 +286,6 @@ class GoTournAdmin():
 					go_ref.winner = StoneEnum.BLACK
 			except:
 				go_ref.winner = StoneEnum.BLACK
-				winner = go_ref.get_winners()
 			winner = go_ref.get_winners()
 		else:
 			raise Exception("Game ended unexpectedly.")
