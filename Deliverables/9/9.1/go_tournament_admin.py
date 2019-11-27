@@ -215,22 +215,22 @@ class GoTournAdmin():
 				go_ref.winner = get_other_type(go_ref.current_player)
 				break
 			"""
+		try:
+			ack_1 = player1.game_over(["end-game"])
+			if ack_1 != "OK":
+				go_ref.winner = StoneEnum.WHITE
+		except:
+			go_ref.winner = StoneEnum.WHITE
+
+		try: 
+			ack_2 = player2.game_over(["end-game"])
+			if ack_2 != "OK":
+				go_ref.winner = StoneEnum.BLACK
+		except:
+			go_ref.winner = StoneEnum.BLACK
 
 		# Validate Game Over for both players
 		if go_ref.game_over and connected and valid_response:
-			try:
-				ack_1 = player1.game_over(["end-game"])
-				if ack_1 != "OK":
-					go_ref.winner = StoneEnum.WHITE
-			except:
-				go_ref.winner = StoneEnum.WHITE
-
-			try: 
-				ack_2 = player2.game_over(["end-game"])
-				if ack_2 != "OK":
-					go_ref.winner = StoneEnum.BLACK
-			except:
-				go_ref.winner = StoneEnum.BLACK
 			winner = go_ref.get_winners()
 		elif not connected or not valid_response:
 			winner = go_ref.get_winners()
