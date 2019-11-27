@@ -108,6 +108,14 @@ class GoTournAdmin():
 
 		print("Starting Tournament")
 		print(self.tourney)
+
+		if self.tourney == "--league":
+			print("Running RR")
+		elif self.tourney == "--cup":
+			print("Running SE")
+			#all_players_names = []
+		else:
+			raise Exception("Not a valid type of Go Tournament".)
 		"""
 		if self.tourney == "--cup":
 			print("Running SE")
@@ -201,9 +209,10 @@ class GoTournAdmin():
 			except:
 				connected = False
 				valid_response = False
-				self.num_cheaters += 1
-				self.cheaters.append(go_ref.players[go_ref.current_player].name)
-				self.replace_cheaters(go_ref.players[go_ref.current_player].name)
+				if self.tourney == "--league":
+					self.num_cheaters += 1
+					self.cheaters.append(go_ref.players[go_ref.current_player].name)
+					self.replace_cheaters(go_ref.players[go_ref.current_player].name)
 				go_ref.winner = get_other_type(go_ref.current_player)
 
 			"""
