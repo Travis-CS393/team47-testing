@@ -67,7 +67,7 @@ class GoTournAdmin():
 			try:
 				client_socket, address = server_socket.accept()
 				self.remote_player_registration(client_socket)
-				print("Added Remote, Remotes: {}".format(len(self.players.keys())))
+				print("Added Remote {}".format(len(self.players.keys())))
 			except:
 				pass
 			time_elapsed = time.time() - base_time
@@ -104,8 +104,6 @@ class GoTournAdmin():
 			self.beaten_opponents[element] = []
 
 		print("Starting Tournament")
-		print(self.tourney)
-
 		if self.tourney == "--league":
 			print("Running RR")
 			all_players_names = []
@@ -117,8 +115,14 @@ class GoTournAdmin():
 					player2_name = all_players_names[j]
 					print(player1_name + " v.s " + player2_name)
 					winner, cheater = self.run_game(self.players[all_players_names[i]], self.players[all_players_names[j]])
+					if cheater:
+						print(cheater + " cheated :(")
 					print(winner + " wins!")
 					self.standings[winner] += 1
+					if winner == player1_name:
+						self.beaten_opponents[winner].append(player2_name)
+					else:
+						self.beaten_opponents[winner].append(player1_name)
 					if cheater == player1_name:
 						new_default_player = GoPlayerBase("cheater-replacement" + str(self.num_cheaters))
 						self.players[new_default_player.name] = new_default_player
@@ -143,6 +147,8 @@ class GoTournAdmin():
 				player2_name = all_players_names[i + 1]
 				print(player1_name + " v.s. " + player2_name)
 				winner, cheater = self.run_game(self.players[all_players_names[i]], self.players[all_players_names[i + 1]])
+				if cheater:
+					print(cheater + " cheated :(")
 				print(winner + " wins!")
 				self.standings[winner] += 1
 				if winner == player1_name:
@@ -155,24 +161,7 @@ class GoTournAdmin():
 				i = i % len(all_players_names)
 		else:
 			raise Exception("Not a valid type of Go Tournament.")
-		"""
-		elif self.tourney == "--league":
-			print("Running RR")
-			all_players_names = []
-			for player in self.players.keys():
-				all_players_names.append(player)
-			RR_pairings = self.get_RR_pairings(all_players_names)
-			for rr_round in RR_pairings:
-				for pair in rr_round:
-					player1_name = pair[0]
-					player2_name = pair[1]
-					print(player1_name + " v.s " + player2_name)
-					winner = self.run_game(self.players[pair[0]], self.players[pair[1]])
-					print(self.cheaters)
-					print(winner + " wins!")
-					self.standings[winner] += 1
-		"""
-
+	
 		print("Tournament Over")
 		server_socket.close()
 		
@@ -180,20 +169,7 @@ class GoTournAdmin():
 		print("Outputting Standings")
 		standings = self.format_standings(self.standings)		
 		return standings
-	"""
-	def get_RR_pairings(self, players):
-		total = len(players)
-		pairs = total - 1
-		mid = total // 2
-		RR_pairings = []
-		for pair in range(pairs):
-			pairings = []
-			for i in range(mid):
-				pairings.append([players[i], players[total - i - 1]])
-			players.insert(1, players.pop())
-			RR_pairings.append(pairings)
-		return RR_pairings
-	"""
+	
 
 	def run_game(self, player1, player2):
 		go_ref = GoReferee(player1=player1, player2=player2)
@@ -238,13 +214,6 @@ class GoTournAdmin():
 					self.standings[cheater] = 0
 				go_ref.winner = get_other_type(go_ref.current_player)
 				break
-
-		print("game_over")
-		print(go_ref.game_over)
-		print("connected")
-		print(connected)
-		print("valid_response")
-		print(valid_response)
 
 		# Validate Game Over for both players
 		if go_ref.game_over and connected and valid_response:

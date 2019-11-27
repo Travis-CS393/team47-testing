@@ -85,7 +85,6 @@ class GoReferee:
          raise TypeError("Invalid responded move")
 
    def validate_player_move(self, check_response):
-      print(type(check_response))
       if check_response == "pass":
          return True
       elif isinstance(check_response, tuple):
