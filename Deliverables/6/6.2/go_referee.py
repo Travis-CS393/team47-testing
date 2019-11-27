@@ -63,6 +63,7 @@ class GoReferee:
             if p == "pass":
                self.execute_move(p)
             else:            
+               p = p.replace("\"","").replace("\n","")
                self.execute_move(str_to_point(p))
          elif isinstance(p, tuple):
             self.execute_move(Point(p[0], p[1]))
@@ -75,7 +76,8 @@ class GoReferee:
          if isinstance(p, str):
             if p == "pass":
                self.execute_move(p)
-            else:            
+            else:
+               p = p.replace("\"","").replace("\n","")
                self.execute_move(str_to_point(p))
          elif isinstance(p, tuple):
             self.execute_move(Point(p[0], p[1]))
