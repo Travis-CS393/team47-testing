@@ -173,14 +173,22 @@ class GoTournAdmin():
 		valid_response = True
 		
 		go_ref.players[StoneEnum.BLACK] = player1
-		response1 = player1.receive_stone(StoneEnum.BLACK)
-		if response1 != None:
+		try:
+			response1 = player1.receive_stone(StoneEnum.BLACK)
+			if response1 != None:
+				go_ref.winner = StoneEnum.WHITE
+				valid_response = False
+		except:
 			go_ref.winner = StoneEnum.WHITE
 			valid_response = False
 		
 		go_ref.players[StoneEnum.WHITE] = player2
-		response2 = player2.receive_stone(StoneEnum.WHITE)
-		if response2 != None:
+		try:
+			response2 = player2.receive_stone(StoneEnum.WHITE)
+			if response2 != None:
+				go_ref.winner = StoneEnum.BLACK
+				valid_response = False
+		except:
 			go_ref.winner = StoneEnum.BLACK
 			valid_response = False
 
