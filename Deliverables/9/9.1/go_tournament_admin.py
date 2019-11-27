@@ -196,43 +196,56 @@ class GoTournAdmin():
 		while not go_ref.game_over and connected and valid_response:
 			try:
 				go_ref.referee_game()
-			except:
+			except OSError:
 				connected = False
+				if self.tourney == "--league":
+					self.num_cheaters += 1
+					self.cheaters.append(go_ref.players[go_ref.current_player].name)
+					self.replace_cheaters(go_ref.players[go_ref.current_player].name)
+				go_ref.winner = get_other_type(go_ref.current_player)
+				break
+			except TypeError:
 				valid_response = False
 				if self.tourney == "--league":
 					self.num_cheaters += 1
 					self.cheaters.append(go_ref.players[go_ref.current_player].name)
 					self.replace_cheaters(go_ref.players[go_ref.current_player].name)
 				go_ref.winner = get_other_type(go_ref.current_player)
-
-			"""
-			except OSError:
-				connected = False
-				go_ref.winner = get_other_type(go_ref.current_player)
 				break
-			except TypeError:
-				valid_response = False
-				go_ref.winner = get_other_type(go_ref.current_player)
-				break
-			"""
-		try:
-			ack_1 = player1.game_over(["end-game"])
-			if ack_1 != "OK":
-				go_ref.winner = StoneEnum.WHITE
-		except:
-			go_ref.winner = StoneEnum.WHITE
-
-		try: 
-			ack_2 = player2.game_over(["end-game"])
-			if ack_2 != "OK":
-				go_ref.winner = StoneEnum.BLACK
-		except:
-			go_ref.winner = StoneEnum.BLACK
 
 		# Validate Game Over for both players
 		if go_ref.game_over and connected and valid_response:
+			try:
+				ack_1 = player1.game_over(["end-game"])
+				if ack_1 != "OK":
+					go_ref.winner = StoneEnum.WHITE
+			except:
+				go_ref.winner = StoneEnum.WHITE
+
+			try: 
+				ack_2 = player2.game_over(["end-game"])
+				if ack_2 != "OK":
+					go_ref.winner = StoneEnum.BLACK
+			except:
+				go_ref.winner = StoneEnum.BLACK
+				winner = go_ref.get_winners()
+		elif not connected:
 			winner = go_ref.get_winners()
-		elif not connected or not valid_response:
+		elif not valid_response:
+			try:
+				ack_1 = player1.game_over(["end-game"])
+				if ack_1 != "OK":
+					go_ref.winner = StoneEnum.WHITE
+			except:
+				go_ref.winner = StoneEnum.WHITE
+
+			try: 
+				ack_2 = player2.game_over(["end-game"])
+				if ack_2 != "OK":
+					go_ref.winner = StoneEnum.BLACK
+			except:
+				go_ref.winner = StoneEnum.BLACK
+				winner = go_ref.get_winners()
 			winner = go_ref.get_winners()
 		else:
 			raise Exception("Game ended unexpectedly.")
