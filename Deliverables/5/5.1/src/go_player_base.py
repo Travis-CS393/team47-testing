@@ -47,7 +47,6 @@ class GoPlayerBase:
    @protocol_registered
    def receive_stone(self, stone_type):
       self.stone_type = stone_type
-      return None
 
    @protocol_registered
    @protocol_stone_set
