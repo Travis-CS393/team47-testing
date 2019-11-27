@@ -25,7 +25,7 @@ from go_player_base import GoPlayerBase
 
 class GoTournAdmin():
 
-	def __init__(self, IP, port, tourney="--cup", n=1):
+	def __init__(self, IP, port, tourney=None, n=None):
 		self.IP = IP
 		self.port = port
 		self.tourney = tourney
