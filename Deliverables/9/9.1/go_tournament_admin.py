@@ -115,7 +115,7 @@ class GoTournAdmin():
 			print("Running SE")
 			#all_players_names = []
 		else:
-			raise Exception("Not a valid type of Go Tournament".)
+			raise Exception("Not a valid type of Go Tournament.")
 		"""
 		if self.tourney == "--cup":
 			print("Running SE")
