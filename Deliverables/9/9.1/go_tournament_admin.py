@@ -71,6 +71,7 @@ class GoTournAdmin():
 			except:
 				pass
 			time_elapsed = time.time() - base_time
+		return server_socket
 
 
 	def remote_player_registration(self, client_socket):
@@ -90,7 +91,7 @@ class GoTournAdmin():
 
 	def run_tournament(self):
 		print("Creating Server")
-		self.create_server(self.IP, self.port, self.n)
+		server_socket = self.create_server(self.IP, self.port, self.n)
 		print("Server Created, Remotes Registered")
 
 		defaults = self.get_num_default_players(self.n)
@@ -113,7 +114,25 @@ class GoTournAdmin():
 			print("Running RR")
 		elif self.tourney == "--cup":
 			print("Running SE")
-			#all_players_names = []
+			all_players_names = []
+			for player in self.players.keys():
+				all_players_names.append(player)
+			i = 0
+			while len(all_players_names) != 1:
+				player1_name = all_players_names[i]
+				player2_name = all_players_names[i + 1]
+				print(player1_name + " v.s. " + player2_name)
+				winner = self.run_game(self.players[all_players_names[i]], self.players[all_players_names[i + 1]])
+				print(winner + " wins!")
+				self.standings[winner] += 1
+				if winner == player1_name:
+					all_players_names.remove(player2_name)
+					self.beaten_opponents[winner].append(player2_name)
+				else:
+					all_players_names.remove(player1_name)
+					self.beaten_opponents[winner].append(player1_name)
+				i += 1
+				i = i % len(all_players_names)
 		else:
 			raise Exception("Not a valid type of Go Tournament.")
 		"""
@@ -160,9 +179,11 @@ class GoTournAdmin():
 		"""
 
 		print("Tournament Over")
+		server_socket.close()
+		
 		print(self.standings)
 		print("Outputting Standings")
-		standings = self.format_standings(self.standings)
+		standings = self.format_standings(self.standings)		
 		return standings
 
 	def get_RR_pairings(self, players):
