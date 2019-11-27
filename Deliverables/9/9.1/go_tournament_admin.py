@@ -190,7 +190,11 @@ class GoTournAdmin():
 			except:
 				connected = False
 				valid_response = False
+				self.num_cheaters += 1
+				self.cheaters.append(go_ref.players[go_ref.current_player].name)
+				self.replace_cheaters(go_ref.players[go_ref.current_player].name)
 				go_ref.winner = get_other_type(go_ref.current_player)
+
 			"""
 			except OSError:
 				connected = False
@@ -220,9 +224,6 @@ class GoTournAdmin():
 			winner = go_ref.get_winners()
 		elif not connected or not valid_response:
 			winner = go_ref.get_winners()
-			self.num_cheaters += 1
-			self.cheaters.append(go_ref.players[go_ref.current_player].name)
-			self.replace_cheaters(go_ref.players[go_ref.current_player].name)
 		else:
 			raise Exception("Game ended unexpectedly.")
 
