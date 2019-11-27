@@ -213,6 +213,13 @@ class GoTournAdmin():
 				go_ref.winner = get_other_type(go_ref.current_player)
 				break
 
+		print("game_over")
+		print(go_ref.game_over)
+		print("connected")
+		print(connected)
+		print("valid_response")
+		print(valid_response)
+		
 		# Validate Game Over for both players
 		if go_ref.game_over and connected and valid_response:
 			try:
