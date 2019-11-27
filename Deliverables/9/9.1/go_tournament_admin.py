@@ -109,6 +109,7 @@ class GoTournAdmin():
 
 		print("Starting Tournament")
 		if self.tourney == "--cup":
+			print("Running SE")
 			all_players_names = []
 			for player in self.players.keys():
 				all_players_names.append(player)
@@ -116,7 +117,9 @@ class GoTournAdmin():
 			while len(all_players_names) != 1:
 				player1_name = all_players_names[i]
 				player2_name = all_players_names[i + 1]
+				print(player1_name + " v.s " + player2_name)
 				winner = self.run_game(self.players[all_players_names[i]], self.players[all_players_names[i+1]])
+				print(winner + " wins!")
 				self.standings[winner] += 1	
 				if winner == player1_name:
 					all_players_names.remove(player2_name)
@@ -128,6 +131,7 @@ class GoTournAdmin():
 				i = i % len(all_players_names)
 
 		elif self.tourney == "--league":
+			print("Running RR")
 			all_players_names = []
 			for player in self.players.keys():
 				all_players_names.append(player)
@@ -136,11 +140,14 @@ class GoTournAdmin():
 				for pair in rr_round:
 					player1_name = pair[0]
 					player2_name = pair[1]
+					print(player1_name + " v.s " + player2_name)
 					winner = self.run_game(self.players[pair[0]], self.players[pair[1]])
+					print(winner + " wins!")
 					self.standings[winner] += 1
 		else:
 			raise Exception("Not a valid type of Go tournament.")
-
+			
+		print("Tournament Over")
 		print(self.standings)
 		print("Outputting Standings")
 		standings = self.format_standings(self.standings)
