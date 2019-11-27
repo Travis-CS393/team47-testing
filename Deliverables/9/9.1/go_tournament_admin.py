@@ -107,6 +107,7 @@ class GoTournAdmin():
 			self.beaten_opponents[element] = []
 
 		print("Starting Tournament")
+		"""
 		if self.tourney == "--cup":
 			print("Running SE")
 			all_players_names = []
@@ -147,6 +148,7 @@ class GoTournAdmin():
 					self.standings[winner] += 1
 		else:
 			raise Exception("Not a valid type of Go tournament.")
+		"""
 
 		print("Tournament Over")
 		print(self.standings)
