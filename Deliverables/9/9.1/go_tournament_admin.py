@@ -25,7 +25,7 @@ from go_player_base import GoPlayerBase
 
 class GoTournAdmin():
 
-	def __init__(self, IP, port, tourney="-cup", n=1):
+	def __init__(self, IP, port, tourney="--cup", n=1):
 		self.IP = IP
 		self.port = port
 		self.tourney = tourney
@@ -107,6 +107,7 @@ class GoTournAdmin():
 			self.beaten_opponents[element] = []
 
 		print("Starting Tournament")
+		print(self.tourney)
 		"""
 		if self.tourney == "--cup":
 			print("Running SE")
