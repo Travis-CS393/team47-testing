@@ -115,7 +115,15 @@ class GoTournAdmin():
 	def penalize_cheaters(self, cheater):
 		self.standings[cheater] = 0
 
-
+	# Round Robin: All players play everyone else once
+	# EX: [a, b, c, d, e, f, g, h]
+	# a plays b, c, d, e, f, g, h
+	# b plays c, d, e, f, g, h
+	# c plays d, e, f, g, h
+	# d plays e, f, g, h
+	# e plays f, g, h
+	# f plays g, h
+	# g plays h 
 	def run_round_robin(self):
 		print("Running Round Robin")
 		all_players_names = list(self.players.keys())
@@ -141,6 +149,18 @@ class GoTournAdmin():
 				else:
 					self.beaten_opponents[winner].append(player1_name)
 
+	
+	# Single Elimination: Player eliminated from tournament upon losing
+	# EX: [a, b, c, d, e, f, g, h]
+	# a plays b, a wins
+	# c plays d, c wins
+	# e plays f, f wins
+	# g plays h, h wins
+	# [a, c, f, h]
+	# a plays c, c wins
+	# f plays h, h wins
+	#[c, h]
+	# c plays h, h wins 
 	def run_single_elimination(self):
 		print("Running Single Elimination")
 		all_players_names = list(self.players.keys())

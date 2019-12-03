@@ -43,9 +43,6 @@ class GoReferee:
       self.winner_declared = False
       self.winner = None
 
-   def decide_stones(self):
-      pass
-
    ## Public Methods
    def referee_game(self):
       # Play game after registration complete 
