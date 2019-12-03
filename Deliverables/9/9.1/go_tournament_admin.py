@@ -102,11 +102,12 @@ class GoTournAdmin():
 				if cheater:
 					print(cheater + " cheated :(")
 					self.penalize_cheaters(cheater)
-					self.default_player_registration(name="cheater-replacement-{}".format(cheater))
+					replacement_name = "cheater-replacement-{}".format(cheater)
+					self.default_player_registration(name=replacement_name)
 					if cheater == player1_name:
-						all_players_names[i] = new_default_player.name
+						all_players_names[i] = replacement_name
 					elif cheater == player2_name:
-						all_players_names[j] = new_default_player.name
+						all_players_names[j] = replacement_name
 				print(winner + " wins!")
 				self.standings[winner] += 1
 				if winner == player1_name:
