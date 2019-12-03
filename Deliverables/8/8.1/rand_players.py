@@ -1,19 +1,13 @@
-import sys
-import socket
-import time
-import random
+import sys, json, socket, time, random
 sys.path.append('../../3/3.1/src/')
-sys.path.append('../../4/4.1/src/')
-sys.path.append('../../5/5.1/src/')
-sys.path.append('../../5/5.2/src/')
 from constants import EMPTY_STONE, WHITE_STONE, BLACK_STONE
 from stone import StoneEnum, Stone, make_stone
 from point import get_raw
 from obj_parser import parse_stone, parse_boards
-from go_player_base import GoPlayerBase
-from go_player_adv import GoPlayerAdv
 from output_formatter import format_board
-import json
+
+sys.path.append('../../5/5.1/src/')
+from go_player_base import GoPlayerBase
 
 
 class GoPlayerProxy():
@@ -100,9 +94,6 @@ if __name__ == "__main__":
 	go_config = json.load(open('go.config'))
 	HOSTNAME = go_config['IP']
 	PORT = go_config['port']
-
-	#go_player_config = json.load(open('go-player.config'))
-	#N = go_player_config['depth']
 	
 	time.sleep(1)
 	print("running")

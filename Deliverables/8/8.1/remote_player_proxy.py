@@ -1,17 +1,6 @@
-import sys 
-import socket 
-import time 
-import json
+import sys, socket, time, json
 sys.path.append('../../3/3.1/src')
-sys.path.append('../../4/4.1/src')
-sys.path.append('../../5/5.1/src')
-sys.path.append('../../5/5.2/src')
-from constants import BOARD_DIM, EMPTY_STONE, WHITE_STONE, BLACK_STONE
-from stone import StoneEnum, Stone, make_stone
-from point import get_raw, str_to_point
-from obj_parser import parse_stone, parse_boards
-from go_player_base import GoPlayerBase 
-from go_player_adv import GoPlayerAdv 
+from stone import Stone, make_stone
 from output_formatter import format_board
 
 class RemotePlayerProxy():

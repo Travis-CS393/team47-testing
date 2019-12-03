@@ -27,6 +27,32 @@ class GoTournAdmin():
 		self.beaten_opponents = {}
 
 
+	def run_tournament(self):
+		print("Tournament SetUp")
+		server_socket = self.create_server(self.IP, self.port, self.n)
+
+		num_defaults = self.get_num_default_players(self.n)
+		for i in range(num_defaults):
+			self.default_player_registration("default-player-{}".format(i))
+		print("Default Players Registered")
+		
+		print("Starting Tournament")
+		if self.tourney == "--league":
+			self.run_round_robin()
+		elif self.tourney == "--cup":
+			self.run_single_elimination()
+		else:
+			raise Exception("Not a valid type of Go Tournament.")
+		print("Tournament Over")
+		
+		server_socket.close()
+		
+		print(self.standings)
+		print("Outputting Standings")
+		standings = self.format_standings(self.standings)		
+		return standings
+
+
 	# Number of total players in tournament must be power of 2
 	# Total = Remotes + Defaults
 	def get_num_default_players(self, n):
@@ -138,6 +164,7 @@ class GoTournAdmin():
 			i += 1
 			i = i % len(all_players_names)
 
+
 	def run_game(self, player1, player2):
 		go_ref = GoReferee(player1=player1, player2=player2)
 		connected = True
@@ -204,32 +231,6 @@ class GoTournAdmin():
 		else:
 			rand_idx = random.randint(0, 1)
 			return winner[rand_idx], cheater
-
-
-	def run_tournament(self):
-		print("Tournament SetUp")
-		server_socket = self.create_server(self.IP, self.port, self.n)
-
-		num_defaults = self.get_num_default_players(self.n)
-		for i in range(num_defaults):
-			self.default_player_registration("default-player-{}".format(i))
-		print("Default Players Registered")
-		
-		print("Starting Tournament")
-		if self.tourney == "--league":
-			self.run_round_robin()
-		elif self.tourney == "--cup":
-			self.run_single_elimination()
-		else:
-			raise Exception("Not a valid type of Go Tournament.")
-		print("Tournament Over")
-		
-		server_socket.close()
-		
-		print(self.standings)
-		print("Outputting Standings")
-		standings = self.format_standings(self.standings)		
-		return standings
 
 
 	def format_standings(self, standings):
