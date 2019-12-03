@@ -11,3 +11,5 @@ PASS = "pass"
 REGISTER = "register"
 RECEIVE = "receive-stones"
 MOVE = "make-a-move"
+
+REGISTER_TIMEOUT = 300
