@@ -1,6 +1,6 @@
 import sys
-sys.path.append('../../3/3.1/src/')
 from copy import copy, deepcopy
+sys.path.append('../../3/3.1/src/')
 from constants import PASS
 from board import Board
 from stone import StoneEnum, get_other_type
@@ -12,9 +12,10 @@ class MoveReferee:
    def validate_stone(func):
       def wrapper(*args, **kwargs):
          if not args[1]:
-            raise Exception("Invalid stone passed")
+            raise Exception("Invalid stone passed.")
          return func(*args, **kwargs)
       return wrapper
+
 
    ## Public Methods
    @validate_stone
@@ -25,7 +26,6 @@ class MoveReferee:
       current_board = boards[0]
       return self.valid_move(stone_type, point, boards, current_board) and \
              self.valid_history(stone_type, boards)
-
 
    @validate_stone
    def valid_move(self, stone_type, point, boards, current_board):
@@ -38,6 +38,7 @@ class MoveReferee:
       return self._check_ko(boards, stone_type) and \
              self._check_history_prog(boards, stone_type) and \
              self._check_history_states(boards)
+
 
    ## Private Methods
    def _check_valid_point(self, board, point):

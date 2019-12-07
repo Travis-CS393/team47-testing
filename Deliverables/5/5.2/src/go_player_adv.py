@@ -1,16 +1,23 @@
 import sys
-sys.path.append('../../3/3.1/src/')
-sys.path.append('../../4/4.1/src/')
-sys.path.append('../5.1/src/')
 from copy import deepcopy
+sys.path.append('../../../3/3.1/src/')
 from stone import get_other_type
 from point import Point
-from go_player_base import GoPlayerBase
+sys.path.append('../../../4/4.1/src/')
 from move_referee import MoveReferee
+sys.path.append('../../../5/5.1/src/')
+from go_player_base import GoPlayerBase
+
 
 class GoPlayerAdv(GoPlayerBase):
 
    def __init__(self, n = 1):
+      """
+      This class implements a Go Player who chooses
+      moves using a less dumb strategy of the first move
+      to capture a piece within n moves or if not possible, 
+      the first valid minimum column, minimum row position on the board.
+      """
       super().__init__()
       self.n = n
    

@@ -1,4 +1,5 @@
 ## Board
+#BOARD_DIM = 19 # Used for testing 3.1, 4.1
 BOARD_DIM = 9
 
 ## Stone
@@ -12,4 +13,5 @@ REGISTER = "register"
 RECEIVE = "receive-stones"
 MOVE = "make-a-move"
 
+## Networked Play
 REGISTER_TIMEOUT = 300

@@ -9,7 +9,7 @@ class Board():
       def wrapper(*args, **kwargs):
          for arg in args:
             if isinstance(arg, Point) and not args[0].point_valid(arg):
-               raise Exception("Invalid point passed")
+               raise Exception("Invalid point passed.")
          return func(*args, **kwargs)
       return wrapper
    
@@ -17,14 +17,21 @@ class Board():
       def wrapper(*args, **kwargs):
          for arg in args:
             if not arg:
-               raise Exception("Cannot call this funciton with the empty stone")
+               raise Exception("Cannot call this funciton with the empty stone.")
          return func(*args, **kwargs)
       return wrapper
 
+
    ## Constructor
    def __init__(self, board_matr, dim = BOARD_DIM):
-      self.board_dim = dim
+      """
+      This class implements a Go Board component of board size dim x dim. 
+      
+      self.points is a dictionary that maps StoneEnum type keys to the points that 
+      they occupy on the Go Board component.
+      """
       self.board = board_matr
+      self.board_dim = dim
       self.points = {StoneEnum.WHITE: set(), StoneEnum.BLACK: set(), None: set()}
       for i in range(self.board_dim):
          for j in range(self.board_dim):
@@ -41,6 +48,7 @@ class Board():
 
    def __len__(self):
       return self.board_dim
+
 
    ## Public Methods
    @valid_point
@@ -121,6 +129,7 @@ class Board():
    def empty(self):
       return len(self.get_points(None)) == self.board_dim ** 2
 
+
    ## Private Methods
    def _get_stone(self, point):
       return self.board[point.x][point.y]
@@ -166,9 +175,12 @@ class Board():
          if (same_point.x, same_point.y) not in component:
             self._get_liberties(same_point, component, liberties)
 
-   ## Board Related Point Functions
+
+   ## Board Related Point Helper Functions
    def point_valid(self, point):
       return self.coord_valid(point.x) and self.coord_valid(point.y)
 
    def coord_valid(self, coord):
       return 0 <= coord and coord < self.board_dim
+
+      

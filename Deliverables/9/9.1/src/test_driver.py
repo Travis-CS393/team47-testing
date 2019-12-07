@@ -1,5 +1,5 @@
 import sys, json
-sys.path.append('../../9/9.1/')
+sys.path.append('../../../9/9.1/src')
 from go_tournament_admin import GoTournAdmin
 
 #player import

@@ -6,6 +6,8 @@ from stone import Stone
 from point import str_to_point
 from move_referee import MoveReferee
 
+# Referee Parser converts from python representation to game object representation
+
 def is_board(arr):
    return len(arr) == BOARD_DIM
 

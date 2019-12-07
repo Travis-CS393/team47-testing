@@ -14,6 +14,7 @@ class ScoreReferee:
          return func(*args, **kwargs)
       return wrapper
 
+
    ## Public Methods
    @validate_board
    def get_score(self, board):
@@ -22,6 +23,7 @@ class ScoreReferee:
       self._update_score_basic(board, score, StoneEnum.BLACK)
       self._update_score_empty_stones(board, score)
       return score
+
 
    ## Private Methods
    def _update_score_basic(self, board, score, stone_type):

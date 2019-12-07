@@ -1,8 +1,10 @@
 import json
-#from point import get_raw
+from point import get_raw
 from stone import Stone
 
+# Formats from game object representation to raw python representation
 
+# Fix naming since format board takes in a matr of len 3 for board history
 def format_one_board(matr):
 	return [[matr[i][j].get_raw() for i in range(len(matr))] for j in range(len(matr))]
 
@@ -26,10 +28,7 @@ def format_board(matr):
 			return matr
 
 	else:
-		raise Exception("Board history can have length from 1 to 3")
-
-
-
+		raise Exception("Board history can have length from 1 to 3.")
 
 def format_board_if_valid(inpt):
 	if isinstance(inpt, str):
@@ -42,3 +41,5 @@ def format_points(pts_set):
 def format_pretty_json(objects):
 	joined = ',\n  '.join(json.JSONEncoder().encode(obj) for obj in objects)
 	return "[\n  {}\n]".format(joined).replace('"],', '"],\n  ').replace("  \n", "")
+
+	

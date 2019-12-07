@@ -1,10 +1,12 @@
 import sys
 sys.path.append('../../3/3.1/src/')
-sys.path.append('../../4/4.1/src/')
 from stone import StoneEnum
-from move_referee import MoveReferee
 from point import Point
 from output_formatter import format_board
+sys.path.append('../../4/4.1/src/')
+from move_referee import MoveReferee
+
+
 
 class GoPlayerBase:
 
@@ -12,7 +14,7 @@ class GoPlayerBase:
    def valid_stone(func):
       def wrapper(*args, **kwargs):
          if not args[1] or not isinstance(args[1], StoneEnum):
-            raise Exception("Invalid Parameter: bad stone passed")
+            raise Exception("Invalid Parameter: Bad stone passed.")
          return func(*args, **kwargs)
       return wrapper
 
@@ -30,12 +32,19 @@ class GoPlayerBase:
          return func(*args, **kwargs)
       return wrapper
 
+
    ## Constructor
    def __init__(self, name=None):
+      """
+      This class implements a Go Player who chooses
+      moves using a dumb strategy of the first valid
+      minimum column, minimum row position on the board.
+      """
       self.name = name
       self.default_name = "default_player"
       self.stone_type = None
       self.move_referee = MoveReferee()
+
 
    ## Public Methods
    def register(self):
@@ -51,22 +60,26 @@ class GoPlayerBase:
    @protocol_registered
    @protocol_stone_set
    def choose_move(self, boards):
-      import random
-      epsilon = 0.3
-      roll = random.random()
+      #import random
+      #epsilon = 0.3
+      #roll = random.random()
 
-      if roll > epsilon:
-         if not self.move_referee.valid_history(self.stone_type, boards):
-            print(format_board(boards))
-            return "This history makes no sense!"
-         for x, y in sorted(list(boards[0].get_points(None))):
-            if self.move_referee.valid_move(self.stone_type, Point(x, y), boards, boards[0]):
-               return (x, y)
+      #if roll > epsilon:
+      if not self.move_referee.valid_history(self.stone_type, boards):
+         print(format_board(boards))
+         return "This history makes no sense!"
+      for x, y in sorted(list(boards[0].get_points(None))):
+         if self.move_referee.valid_move(self.stone_type, Point(x, y), boards, boards[0]):
+            print((x, y))
+            return (x, y)
       else:   
-         return "pass"
+         return "\"pass\""
 
    def game_over(self, end_tag):
       # Reset default player for next game
-      self.stone_type = None
-      self.move_referee = MoveReferee()
-      return "OK"
+      if end_tag == ["end-game"]:
+         self.stone_type = None
+         self.move_referee = MoveReferee()
+         return "OK"
+      else:
+         raise Exception("Invalid end_tag to end game.")

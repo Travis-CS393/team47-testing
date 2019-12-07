@@ -1,5 +1,4 @@
-import unittest
-import sys
+import sys, unittest
 sys.path.append('../src/')
 from point import Point, str_to_point, get_raw
 

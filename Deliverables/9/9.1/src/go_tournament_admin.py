@@ -1,21 +1,27 @@
 import sys, socket, math, time, random
-
-sys.path.append('../../3/3.1/src/')
+sys.path.append('../../../3/3.1/src/')
 from stone import StoneEnum, get_other_type
 from point import Point, str_to_point
 from output_formatter import format_board
 from constants import REGISTER_TIMEOUT
-
-sys.path.append('../../6/6.2')
+sys.path.append('../../../4/4.1/src/')
+sys.path.append('../../../5/5.1/src/')
+sys.path.append('../../../6/6.2/src')
 from go_referee import GoReferee
-
-sys.path.append('../../8/8.1')
+sys.path.append('../../../8/8.1/src')
 from remote_player_proxy import RemotePlayerProxy
 
 
 class GoTournAdmin():
 
 	def __init__(self, default_player_type, IP, port, tourney, n):
+		"""
+		This class implements a Go tournament administration
+		that can run a round robin or single elimination tournament
+		with total number of players being a power of two where n
+		players are remote players and the rest are local default
+		players. It outputs tournament standings after run.
+		"""
 		self.default_player_type = default_player_type
 		self.IP = IP
 		self.port = port
@@ -84,6 +90,7 @@ class GoTournAdmin():
 		while len(self.players.keys()) < n and time_elapsed < REGISTER_TIMEOUT:
 			try:
 				client_socket, address = server_socket.accept()
+				print("Got you.")
 				self.remote_player_registration(client_socket)
 				print("Added Remote {}".format(len(self.players.keys())))
 			except:
@@ -99,6 +106,7 @@ class GoTournAdmin():
 		# Append all remote players, register names, and store client sockets 
 		new_remote_player = RemotePlayerProxy(client_socket)
 		player_name = new_remote_player.register()
+		print(player_name + " registered")
 		self.players[player_name] = new_remote_player
 		self.standings[player_name] = 0
 		self.beaten_opponents[player_name] = []
@@ -107,6 +115,7 @@ class GoTournAdmin():
 	def default_player_registration(self, name):
 		new_default_player = self.default_player_type(name=name)
 		default_name = new_default_player.register()
+		print(default_name + " registered")
 		self.players[default_name] = new_default_player
 		self.standings[default_name] = 0
 		self.beaten_opponents[default_name] = []
@@ -205,7 +214,6 @@ class GoTournAdmin():
 		except:
 			go_ref.winner = StoneEnum.BLACK
 			valid_response = False
-
 		
 		while not go_ref.game_over and connected and valid_response:
 			try:
