@@ -162,7 +162,7 @@ class GoTournamentAdmin():
 				
 				winner, cheater = self.run_game(self.players[player1_name], self.players[player2_name])
 				
-				if cheater and self.n != 1:
+				if cheater:
 					print(cheater + " cheated :(")
 					self.penalize_cheaters(cheater)
 					replacement_name = "cheater-replacement-{}".format(cheater)
@@ -286,9 +286,11 @@ class GoTournamentAdmin():
 		# Validate Game Over for both players
 		if (go_ref.game_over and connected and valid_response) or not valid_response:
 			if not player1.game_over([GAME_OVER]):
+				print("Did not receive game_over from Player {}".format(player1.name))
 				go_ref.winner = StoneEnum.WHITE
 			else:
 				if not player2.game_over([GAME_OVER]):
+					print("Did not receive game_over from Player {}".format(player2.name))
 					go_ref.winner = StoneEnum.BLACK
 			winner = go_ref.get_winners()
 		elif not connected:

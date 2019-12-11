@@ -49,14 +49,16 @@ class GoReferee:
    ## Public Methods
    def referee_game(self):
       # Play game after registration complete 
+      self.current_player = StoneEnum.BLACK
       while not self.game_over:
+         print(self.current_player)
          p = self.players[self.current_player].choose_move(self.board_history)
          if p == PASS:
             print("{} ({}) makes move {}".format(self.players[self.current_player].name, make_stone(self.current_player).get_raw(), p))
             self.execute_move(PASS)
          else:          
-            self.execute_move(Point(p[0], p[1]))
             print("{} ({}) makes move {}".format(self.players[self.current_player].name, make_stone(self.current_player).get_raw(), get_raw(p)))
+            self.execute_move(Point(p[0], p[1]))
          print(format_pretty_json(format_one_board(self.board_history[0])))
 
 

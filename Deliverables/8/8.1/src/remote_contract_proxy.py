@@ -19,20 +19,14 @@ class RemoteContractProxy():
 
 
 	def register(self):
-		try:
-			p_name = self.remote_player_proxy.register()
-			self.name = p_name
-			return p_name
-		except:
-			raise OSError("Disconnected player")
+		p_name = self.remote_player_proxy.register()
+		self.name = p_name
+		return p_name
 
 
 	def receive_stone(self, stone_type):
-		try:
-			self.remote_player_proxy.receive_stone(stone_type)
-		except:
-			raise OSError("Disconnected player.")
-
+		self.remote_player_proxy.receive_stone(stone_type)
+		
 
 	def choose_move(self, boards):
 		try:
@@ -45,8 +39,6 @@ class RemoteContractProxy():
 				return (move_point.x, move_point.y)
 		except PointException:
 			raise PointException("Invalid move.")
-		except:
-			raise OSError("Disconnected player.")
 
 
 	def game_over(self, end_tag):

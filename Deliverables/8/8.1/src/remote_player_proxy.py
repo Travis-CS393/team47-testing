@@ -25,12 +25,19 @@ class RemotePlayerProxy():
 				break
 			except:
 				pass
-		self.name = player_name.decode("utf-8")
-		return player_name.decode("utf-8") 
+
+		if not player_name:
+			raise OSError("Disconnected player.")
+		else:
+			self.name = player_name.decode("utf-8")
+			return player_name.decode("utf-8") 
 
 
 	def receive_stone(self, stone_type):
-		self.connection.sendall(bytes(json.dumps([RECEIVE, make_stone(stone_type).get_raw()]), "utf-8"))
+		try:
+			self.connection.sendall(bytes(json.dumps([RECEIVE, make_stone(stone_type).get_raw()]), "utf-8"))
+		except:
+			raise OSError("Disconnected player.")
 
 
 	def choose_move(self, boards):
@@ -41,7 +48,11 @@ class RemotePlayerProxy():
 				break
 			except:
 				pass
-		return player_move.decode("utf-8")
+
+		if not player_move:
+			raise OSError("Disconnected player.")
+		else:
+			return player_move.decode("utf-8")
 		
 
 	def game_over(self, end_tag):
@@ -52,5 +63,9 @@ class RemotePlayerProxy():
 				break
 			except:
 				pass
-		return response.decode("utf-8")
+
+		if not response:
+			raise OSError("Disconnected player.")
+		else:
+			return response.decode("utf-8")
 

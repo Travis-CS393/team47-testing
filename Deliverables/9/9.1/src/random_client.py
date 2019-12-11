@@ -83,8 +83,8 @@ class GoRemotePlayer():
 			raise Exception("RC: Not a proper player stone.")
 
 	def make_a_move(self, board_history):
-		return input("choose_move:")
-		#return self.player.choose_move(board_history)
+		#return input("choose_move:")
+		return self.player.choose_move(board_history)
 
 if __name__ == "__main__":
 	print("launched")
@@ -97,6 +97,13 @@ if __name__ == "__main__":
 	player = GoRemotePlayer()
 	player.turn_on_socket((HOSTNAME, PORT))
 	while not player.game_over:
-		done = player.work_with_socket()
+		player.work_with_socket()
 		#player.game_over = True
+	"""
+	done = 0
+	while done != 0.05:
+		player.work_with_socket()
+		done += 1
+	"""
+
 	player.turn_off_socket()
