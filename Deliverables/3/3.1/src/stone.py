@@ -24,7 +24,7 @@ class Stone():
       elif s == BLACK_STONE:
          self.stone_type = StoneEnum.BLACK
       else:
-         raise Exception("Invalid MaybeStone input.")
+         raise Exception("STONE: Invalid MaybeStone input.")
    
    def set_type(self, stone_type):
       self.stone_type = stone_type
@@ -51,7 +51,7 @@ def make_stone(stone_type):
       print("hi")
       print(stone_type)
       print("bye")
-      raise Exception("Invalid stone type passed.")
+      raise Exception("STONE: Invalid stone type passed.")
 
 def get_other_type(stone_type):
    if stone_type == StoneEnum.WHITE:
@@ -59,4 +59,4 @@ def get_other_type(stone_type):
    elif stone_type == StoneEnum.BLACK:
       return StoneEnum.WHITE
    else:
-      raise Exception("Invalid input to get other type.")
+      raise Exception("STONE: Invalid input to get other type.")

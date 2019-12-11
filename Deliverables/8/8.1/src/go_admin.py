@@ -2,11 +2,11 @@ import sys, json, socket
 from socket import error as socket_error
 sys.path.append('../../../3/3.1/src/')
 from stone import StoneEnum
-from point import Point, str_to_point
+from point import Point, str_to_point, PointException
 sys.path.append('../../../6/6.2/src/')
 from go_referee import GoReferee
 sys.path.append('../src')
-from remote_player_proxy import RemotePlayerProxy
+from remote_contract_proxy import RemoteContractProxy
 
 
 class GoAdmin():
@@ -23,7 +23,6 @@ class GoAdmin():
 		self.default_name = default_name
 		self.local_player = local_player
 		self.remote_player = None
-		self.go_ref = GoReferee()
 
 	
 	def create_server(self, IP, port):
@@ -35,21 +34,17 @@ class GoAdmin():
 		return client_socket
 
 	def run_game(self):
+		go_ref = GoReferee(self.local_player, self.remote_player)
 		connected = True
 		valid_response = True
 		
 		#Set Player 1
-		self.go_ref.players[StoneEnum.BLACK] = self.local_player
 		player1_name = self.local_player.register()
 		self.local_player.receive_stone(StoneEnum.BLACK)
-		
-		#Server Creation
-		client_socket = self.create_server(self.IP, self.port)
-
-		self.remote_player = RemotePlayerProxy(connection=client_socket)
-		
+	
 		#Set Player 2
-		self.go_ref.players[StoneEnum.WHITE] = self.remote_player
+		client_socket = self.create_server(self.IP, self.port)
+		self.remote_player = RemoteContractProxy(connection=client_socket)
 		player2_name = self.remote_player.register()
 		self.remote_player.receive_stone(StoneEnum.WHITE)
 
@@ -60,7 +55,7 @@ class GoAdmin():
 			except socket_error:
 				connected = False
 				break
-			except TypeError:
+			except PointException:
 				valid_response = False
 				break
 
@@ -69,7 +64,7 @@ class GoAdmin():
 		elif not connected or not valid_response:
 			winner = [self.local_player.name]
 		else:
-			raise Exception("Game ended unexpectedly.")
+			raise Exception("GO ADMIN: Game ended unexpectedly.")
 
 		return winner
 

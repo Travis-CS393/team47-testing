@@ -1,5 +1,5 @@
 from stone import StoneEnum, Stone, get_other_type
-from point import Point
+from point import Point, PointException
 from constants import BOARD_DIM
 
 class Board():
@@ -9,7 +9,7 @@ class Board():
       def wrapper(*args, **kwargs):
          for arg in args:
             if isinstance(arg, Point) and not args[0].point_valid(arg):
-               raise Exception("Invalid point passed.")
+               raise PointException("BOARD: Invalid point passed.")
          return func(*args, **kwargs)
       return wrapper
    
@@ -17,7 +17,7 @@ class Board():
       def wrapper(*args, **kwargs):
          for arg in args:
             if not arg:
-               raise Exception("Cannot call this funciton with the empty stone.")
+               raise Exception("BOARD: Cannot call this funciton with the empty stone.")
          return func(*args, **kwargs)
       return wrapper
 

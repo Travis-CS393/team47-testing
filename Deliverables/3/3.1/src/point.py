@@ -12,8 +12,12 @@ def str_to_point(s):
       x, y = int(x_str) - 1, int(y_str) - 1
       return Point(x, y)
    except:
-      raise Exception("Invalid string input for point.")
+      raise PointException("POINT: Invalid string input for point.")
 
 def get_raw(tupl):
    x, y = tupl
    return "{}-{}".format(x + 1, y + 1)
+
+
+class PointException(Exception):
+   pass

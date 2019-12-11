@@ -2,4 +2,4 @@
 
 # run.sh: runs the actual submission
 
-python3 remote_player.py & python3 test_driver.py
+python3 ./src/remote_player.py & python3 ./src/test_driver.py

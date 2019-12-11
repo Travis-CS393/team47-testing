@@ -17,33 +17,6 @@ def format_board(matr):
 			return matr
 	return output
 
-	'''
-	if (len(matr) == 1):
-		try:
-			return [[[matr[0][i][j].get_raw() for i in range(len(matr[0]))] for j in range(len(matr[0]))]]
-		except (IndexError, AttributeError) as e:
-			return matr
-
-	elif (len(matr) == 2):
-		try:
-			return [[[matr[0][i][j].get_raw() for i in range(len(matr[0]))] for j in range(len(matr[0]))], [[matr[1][i][j].get_raw() for i in range(len(matr[1]))] for j in range(len(matr[1]))]]
-		except (IndexError, AttributeError) as e:
-			return matr
-
-	elif (len(matr) == 3):
-		try:
-			return [[[matr[0][i][j].get_raw() for i in range(len(matr[0]))] for j in range(len(matr[0]))], [[matr[1][i][j].get_raw() for i in range(len(matr[1]))] for j in range(len(matr[1]))], [[matr[2][i][j].get_raw() for i in range(len(matr[2]))] for j in range(len(matr[2]))]]
-		except (IndexError, AttributeError) as e:
-			return matr
-
-	else:
-		raise Exception("Board history can have length from 1 to 3.")
-	'''
-
-
-
-
-
 def format_board_if_valid(inpt):
 	if isinstance(inpt, str):
 		return inpt

@@ -10,7 +10,7 @@ class ScoreReferee:
    def validate_board(func):
       def wrapper(*args, **kwargs):
          if not isinstance(args[1], Board):
-            raise Exception("Invalid board passed")
+            raise Exception("SCORE REF: Invalid board passed")
          return func(*args, **kwargs)
       return wrapper
 

@@ -30,16 +30,13 @@ class RemotePlayerProxy():
 		self.connection.sendall(bytes(json.dumps([RECEIVE, make_stone(stone_type).get_raw()]), "utf-8"))
 
 	def choose_move(self, boards):
-		print("player making move?")
 		self.connection.sendall(bytes(json.dumps([MOVE, format_board(boards)]), "utf-8"))
-		print("player received board")
 		while True:
 			try:
 				player_move = self.connection.recv(8192)
 				break
 			except:
 				pass
-		print(player_move.decode("utf-8"))
 		return player_move.decode("utf-8")
 		
 

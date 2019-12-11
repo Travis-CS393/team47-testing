@@ -1,11 +1,11 @@
 import sys
 from copy import deepcopy
 sys.path.append('../../../3/3.1/src/')
-from stone import Stone, StoneEnum, get_other_type
+from stone import Stone, StoneEnum, get_other_type, make_stone
 from board import Board
-from point import Point, str_to_point
+from point import Point, str_to_point, get_raw
 from obj_parser import parse_board
-from output_formatter import format_board_if_valid, format_board, format_one_board
+from output_formatter import format_board_if_valid, format_board, format_one_board, format_pretty_json
 from constants import BOARD_DIM, PASS
 sys.path.append('../../../4/4.1/src/')
 from move_referee import MoveReferee
@@ -18,7 +18,7 @@ class GoReferee:
    def valid_stone(func):
       def wrapper(*args, **kwargs):
          if not args[1] or not isinstance(args[1], StoneEnum):
-            raise Exception("Invalid Parameter: Bad stone passed.")
+            raise Exception("GO REF: Invalid parameter, bad stone passed.")
          return func(*args, **kwargs)
       return wrapper
 
@@ -43,87 +43,23 @@ class GoReferee:
       self.game_over = False
       self.winner_declared = False
       self.winner = None
+      self.broke_rules = None
+
 
 
    ## Public Methods
    def referee_game(self):
       # Play game after registration complete 
-      self.play_black_move()
-
-      if self.game_over:
-         return
-
-      self.play_white_move()
-
-
-
-   def play_black_move(self):
-      p = self.players[StoneEnum.BLACK].choose_move(self.board_history)
-      if self.validate_player_move(p):
-         
-         if isinstance(p, str):
-            if p == "\"pass\"":
-               self.execute_move("pass")
-            else:            
-               p = p.replace("\"","").replace("\n","")
-               self.execute_move(str_to_point(p))
-         
-         elif isinstance(p, tuple):
+      while not self.game_over:
+         p = self.players[self.current_player].choose_move(self.board_history)
+         if p == PASS:
+            print("{} ({}) makes move {}".format(self.players[self.current_player].name, make_stone(self.current_player).get_raw(), p))
+            self.execute_move(PASS)
+         else:          
             self.execute_move(Point(p[0], p[1]))
-      else:
-         print("oh no")
-         raise TypeError("Invalid responded move.")
+            print("{} ({}) makes move {}".format(self.players[self.current_player].name, make_stone(self.current_player).get_raw(), get_raw(p)))
+         print(format_pretty_json(format_one_board(self.board_history[0])))
 
-
-
-   def play_white_move(self):
-      p = self.players[StoneEnum.WHITE].choose_move(self.board_history)
-      if self.validate_player_move(p):
-         print("a")
-         if isinstance(p, str):
-            print("b")
-            if p == "\"pass\"":
-               print("c")
-               self.execute_move(PASS)
-            else:
-               print("d")
-               p = p.replace("\"","").replace("\n","")
-               print("not a problem")
-               print(p)
-               #self.execute_move(str_to_point(p))
-         elif isinstance(p, tuple):
-            print("e")
-            print("disaster")
-            print(p)
-            self.execute_move(Point(p[0], p[1]))
-      else:
-         print("white cheated hello")
-         raise TypeError("Invalid responded move.")
-
-   def validate_player_move(self, check_response):
-      print("why")
-      print(check_response)
-      print(PASS)
-      if check_response == "\"pass\"":
-         print("no no")
-         return True
-      elif isinstance(check_response, tuple):
-         print("ye buddy ")
-         return True
-      elif isinstance(check_response, str):
-         print("cheeeee")
-         check_response_tmp = check_response.replace("\"","").replace("\n","").split("-")
-         if len(check_response_tmp) != 2:
-            print(1)
-            return False
-         elif int(check_response_tmp[0]) < 1 or int(check_response_tmp[0]) > 9:
-            print(2)
-            return False
-         elif int(check_response_tmp[1]) < 1 or int(check_response_tmp[1]) > 9:
-            print(3)
-            return False
-         else:
-            return True
 
    def execute_move(self, move):
       if (not self.game_over):
@@ -143,10 +79,11 @@ class GoReferee:
                self.update_history(add_board)
             else:
                self.game_over = True
+               self.broke_rules = self.current_player
                self.winner = get_other_type(self.current_player)
          
          else:
-            raise Exception("Not a valid move.")
+            raise Exception("GO REF: Not a valid move.")
          self.current_player = get_other_type(self.current_player)
          return old_history
 

@@ -12,8 +12,9 @@ from go_player_base import GoPlayerBase
 class GoRemotePlayer():
 
 	def __init__(self, n=1):
-		self.player = GoPlayerBase("\"player-no{}\"".format(random.randint(0, 750)))
+		self.player = GoPlayerBase("player-no{}".format(random.randint(0, 750)))
 		self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		self.game_over = False
 
 	def turn_on_socket(self, ip_and_port):
 		self.socket.connect(ip_and_port)
@@ -21,19 +22,16 @@ class GoRemotePlayer():
 	def work_with_socket(self):
 		try:
 			inpt = self.socket.recv(8192)
+			print("received")
 			print(inpt)
-			if inpt.decode("utf-8") == "done":
-				return "done"
+			output = self.work_JSON(json.loads(inpt.decode("utf-8")))
+			if not output:
+				pass
 			else:
-				output = self.work_JSON(json.loads(inpt.decode("utf-8")))
-				if not output:
-					pass
-				else:
-					print('sending')
-					print(output)
-					self.socket.sendall(bytes(output, "utf-8"))
-					print('sent')
-				return "not done"
+				print('sending')
+				print(output)
+				self.socket.sendall(bytes(output, "utf-8"))
+				print('sent')
 		except:
 			return "Error: no connection established"
 
@@ -52,25 +50,27 @@ class GoRemotePlayer():
 			elif obj[1] == WHITE_STONE:
 				stone_e = StoneEnum.WHITE
 			else:
-				raise Exception("Invalid stone type.")
+				raise Exception("RC: Invalid stone type.")
 			self.receive_stone(stone_e)
 			output = None
 		
 		elif obj[0] == MOVE:
 			boards_obj = parse_boards(obj[1])
 			print("trying")
-			#output = self.make_a_move(boards_obj)
-			x = random.randrange(1,9)
-			y = random.randrange(1,9)
-			output = (x, y)
+			output = self.make_a_move(boards_obj)
+			#x = random.randrange(1,9)
+			#y = random.randrange(1,9)
+			#output = (x, y)
 			print("found one")
-			output = get_raw(output)
-			output = "\"" + output + "\""
+			if isinstance(output, tuple):
+				output = get_raw(output)
 			print(output)
 		elif obj[0] == "end-game":
 			output = "OK"
+			#self.game_over = True
 		else:
-			raise Exception("Invalid JSON input.")
+			raise Exception("RC: Invalid JSON input.")
+		#output = "\"" + output + "\""
 		return output		
 
 	def register(self):
@@ -80,11 +80,11 @@ class GoRemotePlayer():
 		if isinstance(stone_type, StoneEnum):
 			self.player.receive_stone(stone_type)
 		else:
-			raise Exception("Not a proper player stone.")
+			raise Exception("RC: Not a proper player stone.")
 
 	def make_a_move(self, board_history):
-		#return input("choose_move")
-		return self.player.choose_move(board_history)
+		return input("choose_move")
+		#return self.player.choose_move(board_history)
 
 if __name__ == "__main__":
 	print("launched")
@@ -96,7 +96,7 @@ if __name__ == "__main__":
 	print("running")
 	player = GoRemotePlayer()
 	player.turn_on_socket((HOSTNAME, PORT))
-	done = "not done"
-	while done != "done":
+	while not player.game_over:
 		done = player.work_with_socket()
+		#player.game_over = True
 	player.turn_off_socket()

@@ -16,5 +16,9 @@ MOVE = "make-a-move"
 GAME_OVER = "end-game"
 GAME_OVER_RESPONSE = "OK"
 
-## Networked Play
+## For Tournament
 REGISTER_TIMEOUT = 300
+LEAGUE = "--league"
+CUP = "--cup"
+
+

@@ -12,7 +12,7 @@ class MoveReferee:
    def validate_stone(func):
       def wrapper(*args, **kwargs):
          if not args[1]:
-            raise Exception("Invalid stone passed.")
+            raise Exception("MOVE REF: Invalid stone passed.")
          return func(*args, **kwargs)
       return wrapper
 

@@ -16,7 +16,7 @@ def execute_input(arr):
       stone_type, move = parse_move(arr)
       return referee.valid_play(stone_type, move)
    else:
-      raise Exception("invalid input")
+      raise Exception("TD 4: Invalid input.")
 
 if __name__ == "__main__":
    objs = json_parse_stdin()

@@ -1,12 +1,13 @@
 import sys, socket, time, json
 sys.path.append('../../../3/3.1/src')
-from point import str_to_point
+from point import str_to_point, PointException
 from stone import Stone, make_stone
 from output_formatter import format_board
 from constants import REGISTER, RECEIVE, MOVE, PASS, GAME_OVER_RESPONSE
 from remote_player_proxy import RemotePlayerProxy
 
 class RemoteContractProxy():
+
 	def __init__(self, connection):
 		"""
 		This class implements a remote player proxy contract which
@@ -14,30 +15,42 @@ class RemoteContractProxy():
 		the sent and received messages for validity.
 		"""
 		self.name = None
-      self.remoteplayerproxy = RemotePlayerProxy(connection)
+		self.remote_player_proxy = RemotePlayerProxy(connection)
+
 
 	def register(self):
-		p_name = self.remoteplayerproxy.register()
-		if type(p_name) == str:
-         return p_name
-      else:
-         raise TypeError("Invalid type: name must be a string")
+		try:
+			p_name = self.remote_player_proxy.register()
+			self.name = p_name
+			return p_name
+		except:
+			raise OSError("Disconnected player")
+
 
 	def receive_stone(self, stone_type):
-		self.remoteplayerproxy.receive_stone(stone_type)
+		try:
+			self.remote_player_proxy.receive_stone(stone_type)
+		except:
+			raise OSError("Disconnected player.")
+
 
 	def choose_move(self, boards):
-		p_move = self.remoteplayerproxy.choose_move(boards)
-      if p_move == "\"pass\"":
-         return PASS
-      else:
-         move_point = str_to_point(p_move) # Exception will be here in point class
-		   return (move_point.x, move_point.y)
-		
+		try:
+			p_move = self.remote_player_proxy.choose_move(boards)
+			p_move = p_move.replace("\"","")
+			if p_move == PASS:
+				return PASS
+			else:
+				move_point = str_to_point(p_move)
+				return (move_point.x, move_point.y)
+		except PointException:
+			raise PointException("Invalid move.")
+		except:
+			raise OSError("Disconnected player.")
 
 	def game_over(self, end_tag):
-		response = self.remoteplayerproxy.game_over(end_tag)
-      if response == GAME_OVER_RESPONSE:
-         return response
-      else:
-         raise ValueError("Invalid response to Game Over.")
+		try:
+			response = self.remote_player_proxy.game_over(end_tag)
+			return (response == GAME_OVER_RESPONSE)
+		except:
+			return False
