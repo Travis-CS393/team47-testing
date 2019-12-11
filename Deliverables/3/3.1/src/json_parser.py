@@ -1,6 +1,7 @@
 import json, sys
 
 # Parses input from stdin into an array of python objects
+
 def json_parse_stdin():
     str_input = "".join(sys.stdin.readlines())
     objs, i = [], 0

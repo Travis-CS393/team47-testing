@@ -12,7 +12,6 @@ PASS = "pass"
 REGISTER = "register"
 RECEIVE = "receive-stones"
 MOVE = "make-a-move"
-
 GAME_OVER = "end-game"
 GAME_OVER_RESPONSE = "OK"
 

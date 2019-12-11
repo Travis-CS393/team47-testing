@@ -71,14 +71,17 @@ class GoRemotePlayer():
 	def register(self):
 		return self.player.register()
 			
+
 	def receive_stone(self, stone_type):
 		if isinstance(stone_type, StoneEnum):
 			self.player.receive_stone(stone_type)
 		else:
 			raise Exception("Not a proper player stone.")
 
+
 	def make_a_move(self, board_history):
 		return self.player.choose_move(board_history)
+
 
 if __name__ == "__main__":
 	go_config = json.load(open('go.config'))

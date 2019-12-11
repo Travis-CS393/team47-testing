@@ -5,6 +5,7 @@ from output_formatter import format_board
 from constants import REGISTER, RECEIVE, MOVE
 
 class RemotePlayerProxy():
+
 	def __init__(self, connection):
 		"""
 		This class implements a remote player proxy which
@@ -14,6 +15,7 @@ class RemotePlayerProxy():
 		"""
 		self.connection = connection
 		self.name = None
+
 
 	def register(self):
 		self.connection.sendall(bytes(json.dumps([REGISTER]), "utf-8"))
@@ -26,8 +28,10 @@ class RemotePlayerProxy():
 		self.name = player_name.decode("utf-8")
 		return player_name.decode("utf-8") 
 
+
 	def receive_stone(self, stone_type):
 		self.connection.sendall(bytes(json.dumps([RECEIVE, make_stone(stone_type).get_raw()]), "utf-8"))
+
 
 	def choose_move(self, boards):
 		self.connection.sendall(bytes(json.dumps([MOVE, format_board(boards)]), "utf-8"))

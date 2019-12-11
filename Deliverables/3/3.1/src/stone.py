@@ -10,7 +10,9 @@ class StoneEnum(Enum):
    WHITE = 1
    BLACK = 2
 
+
 class Stone():
+
    def __init__(self, s):
       """
       This class implements the Stone component where
@@ -26,11 +28,14 @@ class Stone():
       else:
          raise Exception("STONE: Invalid MaybeStone input.")
    
+
    def set_type(self, stone_type):
       self.stone_type = stone_type
 
+
    def get_type(self):
       return self.stone_type
+
 
    def get_raw(self):
       stone_type = self.get_type()
@@ -40,6 +45,7 @@ class Stone():
          return WHITE_STONE
       return BLACK_STONE
 
+
 def make_stone(stone_type):
    if stone_type == StoneEnum.WHITE:
       return Stone(WHITE_STONE)
@@ -48,10 +54,9 @@ def make_stone(stone_type):
    elif stone_type == None:
       return Stone(EMPTY_STONE)
    else:
-      print("hi")
       print(stone_type)
-      print("bye")
       raise Exception("STONE: Invalid stone type passed.")
+
 
 def get_other_type(stone_type):
    if stone_type == StoneEnum.WHITE:

@@ -31,6 +31,7 @@ def execute_input(input_array):
       stone_type = input_parser.get_stone()
       return format_points(board.get_points(stone_type))
 
+
 if __name__ == "__main__":
    objs = json_parse_stdin()
    output = list(map(execute_input, objs))

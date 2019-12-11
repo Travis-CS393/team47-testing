@@ -1,10 +1,12 @@
 class Point:
+   
    def __init__(self, x, y):
       """
       This class implements the Point class which describes 
       the coordinate position of a place on the Go Board
       """
       self.x, self.y = x, y
+
 
 def str_to_point(s):
    try:
@@ -13,6 +15,7 @@ def str_to_point(s):
       return Point(x, y)
    except:
       raise PointException("POINT: Invalid string input for point.")
+
 
 def get_raw(tupl):
    x, y = tupl

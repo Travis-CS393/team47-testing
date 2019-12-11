@@ -2,6 +2,9 @@ import sys, json
 sys.path.append('../../../9/9.1/src')
 from go_tournament_admin import GoTournamentAdmin
 
+## FINAL CODEWALK NOTES:
+# Jenny Lam IP: "10.105.46.243"
+# Daniel Bang IP: 
 
 #player import
 go_config = json.load(open('go.config'))

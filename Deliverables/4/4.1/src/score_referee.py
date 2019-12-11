@@ -29,6 +29,7 @@ class ScoreReferee:
    def _update_score_basic(self, board, score, stone_type):
       score[stone_type] += len(board.get_points(stone_type))
 
+
    def _update_score_empty_stones(self, board, score):
       seen = {}
       points = board.get_points(None)
@@ -45,6 +46,7 @@ class ScoreReferee:
                self._mark_adjacent(board, seen, tupl, None)
       self._update_by_seen(score, seen)
 
+
    def _mark_adjacent(self, board, seen, tupl, stone_type):
       x, y = tupl
       if tupl not in seen:
@@ -53,6 +55,7 @@ class ScoreReferee:
          neighbors = list(filter(lambda tupl: board.get_type(Point(tupl.x, tupl.y)) == None, neighbors))
          for adj_point in neighbors:
             self._mark_adjacent(board, seen, (adj_point.x, adj_point.y), stone_type)
+
 
    def _update_by_seen(self, score, seen):
       for key in seen: 

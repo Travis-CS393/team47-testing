@@ -48,6 +48,7 @@ class RemoteContractProxy():
 		except:
 			raise OSError("Disconnected player.")
 
+
 	def game_over(self, end_tag):
 		try:
 			response = self.remote_player_proxy.game_over(end_tag)

@@ -3,16 +3,17 @@ sys.path.append('../../../3/3.1/src/')
 from stone import Stone, make_stone
 from json_parser import json_parse_stdin
 from output_formatter import format_board
+from constants import REGISTER, RECEIVE, MOVE, BLACK_STONE, WHITE_STONE
 sys.path.append('../../../4/4.1/src/')
 from referee_formatter import format_pretty_json
 from referee_parser import parse_board
 sys.path.append('../../../8/8.1/')
-from remote_player_proxy import RemotePlayerProxy
+from remote_contract_proxy import RemoteContractProxy
 
 def valid_move_input(input):
    if len(input) != 2:
       return False
-   if input[0] != "make-a-move":
+   if input[0] != MOVE:
       return False
    if len(input[1]) > 3 or len(input[1]) < 1:
       return False
@@ -42,17 +43,17 @@ if __name__ == "__main__":
    server_socket.listen()
    client_socket, address = server_socket.accept()
 
-   remote_player = RemotePlayerProxy(client_socket)
+   remote_player = RemoteContractProxy(client_socket)
 
    with client_socket:
-      if objs[0] != ["register"]:
+      if objs[0] != [REGISTER]:
          output.append("GO has gone crazy!")
          game_terminated = True
       else:
          registered = True
          output.append(remote_player.register())
 
-      if (objs[1] != ["receive-stones", "B"]) and (objs[1] != ["receive-stones", "W"]) and not game_terminated:
+      if (objs[1] != [RECEIVE, BLACK_STONE]) and (objs[1] != [RECEIVE, WHITE_STONE]) and not game_terminated:
          output.append("GO has gone crazy!")
          game_terminated = True
       else:

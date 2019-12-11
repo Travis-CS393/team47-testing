@@ -4,7 +4,7 @@ from stone import StoneEnum, Stone, make_stone
 from point import get_raw
 from obj_parser import parse_stone, parse_boards
 from output_formatter import format_board
-from constants import REGISTER, RECEIVE, MOVE, EMPTY_STONE, WHITE_STONE, BLACK_STONE
+from constants import REGISTER, RECEIVE, MOVE, EMPTY_STONE, WHITE_STONE, BLACK_STONE, GAME_OVER, GAME_OVER_RESPONSE
 sys.path.append('../../../5/5.1/src/')
 from go_player_base import GoPlayerBase
 
@@ -65,8 +65,8 @@ class GoRemotePlayer():
 			if isinstance(output, tuple):
 				output = get_raw(output)
 			print(output)
-		elif obj[0] == "end-game":
-			output = "OK"
+		elif obj[0] == GAME_OVER:
+			output = GAME_OVER_RESPONSE
 			#self.game_over = True
 		else:
 			raise Exception("RC: Invalid JSON input.")
@@ -83,7 +83,7 @@ class GoRemotePlayer():
 			raise Exception("RC: Not a proper player stone.")
 
 	def make_a_move(self, board_history):
-		return input("choose_move")
+		return input("choose_move:")
 		#return self.player.choose_move(board_history)
 
 if __name__ == "__main__":

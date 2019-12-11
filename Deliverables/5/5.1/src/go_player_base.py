@@ -21,12 +21,14 @@ class GoPlayerBase:
          return func(*args, **kwargs)
       return wrapper
 
+
    def protocol_registered(func):
       def wrapper(*args, **kwargs):
          if not args[0].name:
             raise Exception("GPB: Invalid protocol, player must be registered first.")
          return func(*args, **kwargs)
       return wrapper
+
 
    def protocol_stone_set(func):
       def wrapper(*args, **kwargs):
@@ -55,10 +57,12 @@ class GoPlayerBase:
          self.name = self.default_name
       return self.name
 
+
    @valid_stone
    @protocol_registered
    def receive_stone(self, stone_type):
       self.stone_type = stone_type
+
 
    @protocol_registered
    @protocol_stone_set
@@ -77,6 +81,7 @@ class GoPlayerBase:
       
       else:   
          return PASS
+
 
    def game_over(self, end_tag):
       # Reset default player for next game

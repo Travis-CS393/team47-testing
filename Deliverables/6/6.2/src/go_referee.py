@@ -46,7 +46,6 @@ class GoReferee:
       self.broke_rules = None
 
 
-
    ## Public Methods
    def referee_game(self):
       # Play game after registration complete 
@@ -87,10 +86,12 @@ class GoReferee:
          self.current_player = get_other_type(self.current_player)
          return old_history
 
+
    def make_move(self, stone, point):
       last_board = deepcopy(self.board_history)[0]
       new_board = last_board.place_and_update(stone, point)
       return new_board
+
 
    def update_history(self, board):
       old_history = deepcopy(self.board_history)
@@ -100,6 +101,7 @@ class GoReferee:
       if ((len(old_history) == 2) or (len(old_history) == 3)):
          new_history = [board, old_history[0], old_history[1]]
          self.board_history = new_history
+
 
    def get_winners(self):
       if (self.winner != None):

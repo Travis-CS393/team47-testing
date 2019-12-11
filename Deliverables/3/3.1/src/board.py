@@ -13,6 +13,7 @@ class Board():
          return func(*args, **kwargs)
       return wrapper
    
+   
    def valid_stone(func):
       def wrapper(*args, **kwargs):
          for arg in args:
@@ -37,17 +38,22 @@ class Board():
          for j in range(self.board_dim):
             self.points[self.get_type(Point(i, j))].add((i,j))
 
+
    def __setitem__(self, index, value):
       self.board[index] = value
+
 
    def __getitem__(self, index):
       return self.board[index]
 
+
    def __iter__(self):
       return iter(self.board)
 
+
    def __len__(self):
       return self.board_dim
+
 
 
    ## Public Methods
@@ -55,11 +61,13 @@ class Board():
    def occupied(self, point):
       return self.get_type(point) is not None
 
+
    @valid_point 
    @valid_stone
    def occupies(self, test_type, point):
       actual_type = self.get_type(point)
       return actual_type is test_type
+
 
    @valid_point
    @valid_stone
@@ -69,6 +77,7 @@ class Board():
       else:
          self._update_stone(point, self.get_type(point), stone_type)
          return self.board
+
 
    @valid_point
    @valid_stone
@@ -84,6 +93,7 @@ class Board():
       
       return Board(self.board)
 
+
    @valid_point
    @valid_stone
    def remove_stone(self, stone_type, point):
@@ -93,6 +103,7 @@ class Board():
          self._update_stone(point, self.get_type(point), None)
          return self.board
 
+
    @valid_point
    def reachable(self, point, target_type):
       if self.get_type(point) == target_type:
@@ -100,12 +111,15 @@ class Board():
       visited = [[False for i in range(self.board_dim)] for j in range(self.board_dim)]
       return self._reachable(point, target_type, visited)
 
+
    def get_points(self, stone_type):
       return self.points[stone_type]
+
 
    @valid_point
    def get_type(self, point):
       return self._get_stone(point).get_type()
+
 
    @valid_point
    def get_neighbors(self, point):
@@ -113,6 +127,7 @@ class Board():
       neighbors = [Point(x-1, y), Point(x+1,y), Point(x, y+1), Point(x, y-1)]
       return list(filter(self.point_valid, neighbors))
    
+
    @valid_point
    def get_liberties(self, point):
       component = set()
@@ -120,30 +135,37 @@ class Board():
       self._get_liberties(point, component, liberties)
       return component, liberties
 
+
    def equal(self, board):
       for key in self.points:
          if self.points[key] != board.points[key]:
             return False
       return True
    
+
    def empty(self):
       return len(self.get_points(None)) == self.board_dim ** 2
+
 
 
    ## Private Methods
    def _get_stone(self, point):
       return self.board[point.x][point.y]
 
+
    def _filter_neighbors_by_visited(self, neighbors, visited):
       return list(filter(lambda point: not visited[point.x][point.y], neighbors))
 
+
    def _filter_neighbors_by_type(self, neighbors, stone_type):
       return list(filter(lambda point: self.get_type(point) == stone_type, neighbors))
+
 
    def _update_stone(self, point, old_type, new_type):
       self.points[old_type].remove((point.x, point.y))
       self.points[new_type].add((point.x, point.y))
       self._get_stone(point).set_type(new_type)
+
 
    def _reachable(self, point, target_type, visited):
       visited[point.x][point.y] = True
@@ -157,12 +179,14 @@ class Board():
             return True
       return False
 
+
    def _remove_component(self, stone_type, point):
       if self.get_type(point) == stone_type:
          self.remove_stone(stone_type, point)
          friends = self._filter_neighbors_by_type(self.get_neighbors(point), stone_type)
          for adj_point in friends:
             self._remove_component(stone_type, adj_point)
+
 
    def _get_liberties(self, point, component, liberties):
       component.add((point.x, point.y))
@@ -176,9 +200,11 @@ class Board():
             self._get_liberties(same_point, component, liberties)
 
 
+
    ## Board Related Point Helper Functions
    def point_valid(self, point):
       return self.coord_valid(point.x) and self.coord_valid(point.y)
+
 
    def coord_valid(self, coord):
       return 0 <= coord and coord < self.board_dim

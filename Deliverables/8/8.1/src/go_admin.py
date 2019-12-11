@@ -33,6 +33,7 @@ class GoAdmin():
 		client_socket, address = server_socket.accept()
 		return client_socket
 
+
 	def run_game(self):
 		go_ref = GoReferee(self.local_player, self.remote_player)
 		connected = True
