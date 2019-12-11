@@ -1,14 +1,6 @@
 import sys, json, socket
-sys.path.append('./../../3/3.1/src/')
-sys.path.append('./../../6/6.2/src')
 sys.path.append('./src')
-from stone import StoneEnum
-from point import Point, str_to_point
-from output_formatter import format_board
-from go_referee import GoReferee
 from go_admin import GoAdmin
-from remote_player_proxy import RemotePlayerProxy
-
 
 #local player import
 go_config = json.load(open('go.config'))
