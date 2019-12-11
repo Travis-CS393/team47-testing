@@ -1,10 +1,10 @@
 import sys
 sys.path.append('../../../3/3.1/src/')
+sys.path.append('../../../4/4.1/src/')
 from point import get_raw
 from json_parser import json_parse_stdin
 from obj_parser import parse_boards, parse_stone
 from constants import REGISTER, RECEIVE, MOVE
-sys.path.append('../../../4/4.1/src/')
 from referee_formatter import format_pretty_json
 from go_player_base import GoPlayerBase
 

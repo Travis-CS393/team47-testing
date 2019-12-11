@@ -1,5 +1,5 @@
 import sys, socket, time, json
-sys.path.append('../../../3/3.1/src')
+sys.path.append('./../../3/3.1/src')
 from point import str_to_point, PointException
 from stone import Stone, make_stone
 from output_formatter import format_board

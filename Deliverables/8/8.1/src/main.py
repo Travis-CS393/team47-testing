@@ -1,11 +1,11 @@
 import sys, json, socket
 sys.path.append('../../../3/3.1/src/')
+sys.path.append('../../../6/6.2/src')
+sys.path.append('../src')
 from stone import StoneEnum
 from point import Point, str_to_point
 from output_formatter import format_board
-sys.path.append('../../../6/6.2/src')
 from go_referee import GoReferee
-sys.path.append('../../../8/8.1/src')
 from go_admin import GoAdmin
 from remote_player_proxy import RemotePlayerProxy
 

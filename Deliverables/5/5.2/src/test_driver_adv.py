@@ -1,9 +1,9 @@
 import sys, multiprocessing, time
 sys.path.append('../../../3/3.1/src/')
-from json_parser import json_parse_stdin
 sys.path.append('../../../4/4.1/src/')
-from referee_formatter import format_pretty_json
 sys.path.append('../../../5/5.1/src/')
+from json_parser import json_parse_stdin
+from referee_formatter import format_pretty_json
 from test_driver_base import execute_input
 from go_player_adv import GoPlayerAdv
 

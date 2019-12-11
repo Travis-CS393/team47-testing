@@ -1,14 +1,14 @@
 import sys
 sys.path.append('../../../3/3.1/src/')
+sys.path.append('../../../4/4.1/src/')
+sys.path.append('../../../5/5.1/src/')
 from stone import StoneEnum
 from json_parser import json_parse_stdin
 from output_formatter import format_board_if_valid
 from constants import BLACK_STONE, WHITE_STONE
-sys.path.append('../../../4/4.1/src/')
 from referee_formatter import format_pretty_json
 from go_referee import GoReferee
 from play_parser import format_input
-sys.path.append('../../../5/5.1/src/')
 from go_player_base import GoPlayerBase
 
 def execute_input(play, referee):

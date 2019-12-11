@@ -1,13 +1,13 @@
 import sys, multiprocessing, time, socket, json
 sys.path.append('../../../3/3.1/src/')
+sys.path.append('../../../4/4.1/src/')
+sys.path.append('../../../8/8.1/')
 from stone import Stone, make_stone
 from json_parser import json_parse_stdin
 from output_formatter import format_board
 from constants import REGISTER, RECEIVE, MOVE, BLACK_STONE, WHITE_STONE
-sys.path.append('../../../4/4.1/src/')
 from referee_formatter import format_pretty_json
 from referee_parser import parse_board
-sys.path.append('../../../8/8.1/')
 from remote_contract_proxy import RemoteContractProxy
 
 def valid_move_input(input):

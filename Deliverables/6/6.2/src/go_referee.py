@@ -1,13 +1,13 @@
 import sys
 from copy import deepcopy
 sys.path.append('../../../3/3.1/src/')
+sys.path.append('../../../4/4.1/src/')
 from stone import Stone, StoneEnum, get_other_type, make_stone
 from board import Board
 from point import Point, str_to_point, get_raw
 from obj_parser import parse_board
 from output_formatter import format_board_if_valid, format_board, format_one_board, format_pretty_json
 from constants import BOARD_DIM, PASS
-sys.path.append('../../../4/4.1/src/')
 from move_referee import MoveReferee
 from score_referee import ScoreReferee
 from play_parser import get_board

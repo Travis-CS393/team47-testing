@@ -1,11 +1,11 @@
 import sys, json, socket, time, random
 sys.path.append('../../../3/3.1/src/')
+sys.path.append('../../../5/5.1/src/')
 from stone import StoneEnum, Stone, make_stone
 from point import get_raw
 from obj_parser import parse_stone, parse_boards
 from output_formatter import format_board
 from constants import REGISTER, RECEIVE, MOVE, EMPTY_STONE, WHITE_STONE, BLACK_STONE, GAME_OVER, GAME_OVER_RESPONSE
-sys.path.append('../../../5/5.1/src/')
 from go_player_base import GoPlayerBase
 
 
