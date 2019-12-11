@@ -34,9 +34,7 @@ class GoReferee:
       self.board_size = BOARD_DIM if board_size is None else board_size
       self.board_history = [get_board([[" "] * self.board_size for row in range(self.board_size)])]
 
-      self.player1 = player1
-      self.player2 = player2
-      self.players = {StoneEnum.BLACK: None, StoneEnum.WHITE: None}
+      self.players = {StoneEnum.BLACK: player1, StoneEnum.WHITE: player2}
       self.current_player = StoneEnum.BLACK
 
       self.move_ref = MoveReferee()
@@ -57,20 +55,26 @@ class GoReferee:
 
       self.play_white_move()
 
+
+
    def play_black_move(self):
       p = self.players[StoneEnum.BLACK].choose_move(self.board_history)
       if self.validate_player_move(p):
+         
          if isinstance(p, str):
             if p == "\"pass\"":
                self.execute_move("pass")
             else:            
                p = p.replace("\"","").replace("\n","")
                self.execute_move(str_to_point(p))
+         
          elif isinstance(p, tuple):
             self.execute_move(Point(p[0], p[1]))
       else:
          print("oh no")
          raise TypeError("Invalid responded move.")
+
+
 
    def play_white_move(self):
       p = self.players[StoneEnum.WHITE].choose_move(self.board_history)
@@ -80,7 +84,7 @@ class GoReferee:
             print("b")
             if p == "\"pass\"":
                print("c")
-               self.execute_move("pass")
+               self.execute_move(PASS)
             else:
                print("d")
                p = p.replace("\"","").replace("\n","")
@@ -115,7 +119,7 @@ class GoReferee:
          elif int(check_response_tmp[0]) < 1 or int(check_response_tmp[0]) > 9:
             print(2)
             return False
-         elif int(check_response_tmp[0]) < 1 or int(check_response_tmp[0]) > 9:
+         elif int(check_response_tmp[1]) < 1 or int(check_response_tmp[1]) > 9:
             print(3)
             return False
          else:
@@ -132,6 +136,7 @@ class GoReferee:
             if len(self.board_history) == 3:
                if self.board_history[0].equal(self.board_history[1]) and self.board_history[1].equal(self.board_history[2]):
                   self.game_over = True
+
          elif isinstance(move, Point):
             if (self.move_ref.valid_move(self.current_player, move, self.board_history, self.board_history[0])):
                add_board = self.make_move(self.current_player, move)
@@ -139,6 +144,7 @@ class GoReferee:
             else:
                self.game_over = True
                self.winner = get_other_type(self.current_player)
+         
          else:
             raise Exception("Not a valid move.")
          self.current_player = get_other_type(self.current_player)

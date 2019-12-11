@@ -111,9 +111,9 @@ class MoveReferee:
       return stone_type
 
    def _valid_step(self, curr_board, mover, next_board):
-      othr_mvr = get_other_type(mover)
+      #othr_mvr = get_other_type(mover)
       curr_mvr_pts, next_mvr_pts = curr_board.get_points(mover), next_board.get_points(mover)
-      curr_othr_pts, next_othr_pts = curr_board.get_points(othr_mvr), next_board.get_points(othr_mvr)
+      #curr_othr_pts, next_othr_pts = curr_board.get_points(othr_mvr), next_board.get_points(othr_mvr)
       move = next_mvr_pts.difference(curr_mvr_pts)
       if len(move) is 0:
          return curr_board.equal(next_board)

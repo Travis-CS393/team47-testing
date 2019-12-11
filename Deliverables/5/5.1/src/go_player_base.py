@@ -1,10 +1,12 @@
 import sys
+import random
 sys.path.append('../../3/3.1/src/')
 from stone import StoneEnum
 from point import Point
 from output_formatter import format_board
 sys.path.append('../../4/4.1/src/')
 from move_referee import MoveReferee
+from constants import GAME_OVER, GAME_OVER_RESPONSE
 
 
 
@@ -60,26 +62,28 @@ class GoPlayerBase:
    @protocol_registered
    @protocol_stone_set
    def choose_move(self, boards):
-      #import random
-      #epsilon = 0.3
-      #roll = random.random()
+      epsilon = 0.3
+      roll = random.random()
 
-      #if roll > epsilon:
-      if not self.move_referee.valid_history(self.stone_type, boards):
-         print(format_board(boards))
-         return "This history makes no sense!"
-      for x, y in sorted(list(boards[0].get_points(None))):
-         if self.move_referee.valid_move(self.stone_type, Point(x, y), boards, boards[0]):
-            print((x, y))
-            return (x, y)
+      if roll > epsilon:
+         if not self.move_referee.valid_history(self.stone_type, boards):
+            print(format_board(boards))
+            return "This history makes no sense!"
+         for x, y in sorted(list(boards[0].get_points(None))):
+            if self.move_referee.valid_move(self.stone_type, Point(x, y), boards, boards[0]):
+               print((x, y))
+               return (x, y)
+         else:   
+            return "\"pass\""
+      
       else:   
          return "\"pass\""
 
    def game_over(self, end_tag):
       # Reset default player for next game
-      if end_tag == ["end-game"]:
+      if end_tag == [GAME_OVER]:
          self.stone_type = None
          self.move_referee = MoveReferee()
-         return "OK"
+         return GAME_OVER_RESPONSE
       else:
          raise Exception("Invalid end_tag to end game.")

@@ -9,6 +9,15 @@ def format_one_board(matr):
 	return [[matr[i][j].get_raw() for i in range(len(matr))] for j in range(len(matr))]
 
 def format_board(matr):
+	output = []
+	for b_num in range(len(matr)):
+		try:
+			output.append([[matr[b_num][i][j].get_raw() for i in range(len(matr[b_num]))] for j in range(len(matr[b_num]))])
+		except (IndexError, AttributeError) as e:
+			return matr
+	return output
+
+	'''
 	if (len(matr) == 1):
 		try:
 			return [[[matr[0][i][j].get_raw() for i in range(len(matr[0]))] for j in range(len(matr[0]))]]
@@ -29,6 +38,11 @@ def format_board(matr):
 
 	else:
 		raise Exception("Board history can have length from 1 to 3.")
+	'''
+
+
+
+
 
 def format_board_if_valid(inpt):
 	if isinstance(inpt, str):

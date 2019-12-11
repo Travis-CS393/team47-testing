@@ -29,6 +29,7 @@ class GoTournAdmin():
 		self.n = n
 
 		self.players = {}
+		self.cheaters = []
 		self.standings = {}
 		self.beaten_opponents = {}
 
@@ -123,6 +124,11 @@ class GoTournAdmin():
 
 	def penalize_cheaters(self, cheater):
 		self.standings[cheater] = 0
+		self.cheaters.append(cheater)
+		if self.tourney == "--league":
+			for opponent in self.beaten_opponents[cheater]:
+				if opponent not in self.cheaters:
+					self.standings[opponent] += 1
 
 	# Round Robin: All players play everyone else once
 	# EX: [a, b, c, d, e, f, g, h]
@@ -201,19 +207,20 @@ class GoTournAdmin():
 		cheater = None
 		
 		
-		go_ref.players[StoneEnum.BLACK] = player1
+		player1_registered = False
 		try:
 			player1.receive_stone(StoneEnum.BLACK)
+			player1_registered = True
 		except:
 			go_ref.winner = StoneEnum.WHITE
 			valid_response = False
 		
-		go_ref.players[StoneEnum.WHITE] = player2
-		try:
-			player2.receive_stone(StoneEnum.WHITE)
-		except:
-			go_ref.winner = StoneEnum.BLACK
-			valid_response = False
+		if player1_registered:
+			try:
+				player2.receive_stone(StoneEnum.WHITE)
+			except:
+				go_ref.winner = StoneEnum.BLACK
+				valid_response = False
 		
 		while not go_ref.game_over and connected and valid_response:
 			try:

@@ -63,6 +63,12 @@ class TestBoard(unittest.TestCase):
       board.place_stone(StoneEnum.WHITE, Point(2,0))
       self.assertEqual(None, board.remove_stone(StoneEnum.WHITE, Point(2,0))[2][0].get_type())
    
+   def test_board_format(self):
+      board1, board2, board3 = self._get_empty_board(), self._get_empty_board(), self._get_empty_board()
+      self.assertEqual(format_board([board1, board2, board3]), [[[" " for i in range(BOARD_DIM)] for j in range(BOARD_DIM)] for x in range(3)])
+
+
+
    # For when BOARD_DIM = 19 
    """ 
    def test_board_get_points_19(self):
@@ -71,7 +77,7 @@ class TestBoard(unittest.TestCase):
          board.place_stone(StoneEnum.WHITE, Point(0, i))
       points = format_points(board.get_points(StoneEnum.WHITE))
       self.assertEqual(points, ["1-1", "1-10", "1-11", "1-12", "1-13", "1-14", "1-15", \
-       "1-16", "1-17", "1-18", "1-19", "1-2", "1-3", "1-4", "1-5", "1-6", "1-7", "1-8", "1-9"])
+      "1-16", "1-17", "1-18", "1-19", "1-2", "1-3", "1-4", "1-5", "1-6", "1-7", "1-8", "1-9"])
    """
 
    def test_board_get_points(self):
