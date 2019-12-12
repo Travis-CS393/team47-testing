@@ -13,7 +13,7 @@ from go_player_adv import GoPlayerAdv
 
 class GoRemotePlayer():
 
-	def __init__(self, n=2, player_type="supersuperbad"):
+	def __init__(self, n=2, player_type="always valid"):
 		self.player = GoPlayerAdv(n=2, name="player-no{}".format(random.randint(0, 750)))
 		self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.game_over = False
@@ -94,14 +94,14 @@ class GoRemotePlayer():
 
 	def make_a_move(self, board_history):
 		#return input("choose_move:")
-		if self.player_type == "good":
+		if self.player_type == "always valid":
 			espilon = random.uniform(0,1)
 			if espilon > .15:
 				return self.player.choose_move(board_history)
 			else:
 				return "pass"
 		
-		elif self.player_type == "ok":
+		elif self.player_type == "random point":
 			x = random.randrange(1,BOARD_DIM)
 			y = random.randrange(1,BOARD_DIM)
 			return (x, y)
@@ -109,15 +109,15 @@ class GoRemotePlayer():
 		elif self.player_type == "pass":
 			return "pass"
 		
-		elif self.player_type == "bad":
+		elif self.player_type == "mostly invalid":
 			x = random.randrange(1,BOARD_DIM*2)
 			y = random.randrange(1,BOARD_DIM*2)
 			return (x, y)
 
-		elif self.player_type == "superbad":
+		elif self.player_type == "1-1":
 			return (1, 1)
 		
-		elif self.player_type == "supersuperbad":
+		elif self.player_type == "always invalid":
 			return "whoopity scoop $@%$%!@56"
 
 
