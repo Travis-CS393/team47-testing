@@ -19,8 +19,6 @@ if __name__ == "__main__":
 	objs = json_parse_stdin()
 	output = []
 	referee = GoReferee(player1=GoPlayerBase(objs[0]), player2=GoPlayerBase(objs[1]))
-	referee.players[StoneEnum.BLACK] = referee.player1
-	referee.players[StoneEnum.WHITE] = referee.player2
 	output.append(BLACK_STONE)
 	output.append(WHITE_STONE)
 
