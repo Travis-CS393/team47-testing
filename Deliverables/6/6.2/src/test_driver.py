@@ -1,7 +1,7 @@
 import sys
-sys.path.append('../../../3/3.1/src/')
-sys.path.append('../../../4/4.1/src/')
-sys.path.append('../../../5/5.1/src/')
+sys.path.append('./../../3/3.1/src/')
+sys.path.append('./../../4/4.1/src/')
+sys.path.append('./../../5/5.1/src/')
 from stone import StoneEnum
 from json_parser import json_parse_stdin
 from output_formatter import format_board_if_valid
