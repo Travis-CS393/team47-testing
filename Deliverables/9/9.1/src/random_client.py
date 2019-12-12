@@ -13,7 +13,7 @@ from go_player_adv import GoPlayerAdv
 
 class GoRemotePlayer():
 
-	def __init__(self, n=2, player_type="superbad"):
+	def __init__(self, n=2, player_type="supersuperbad"):
 		self.player = GoPlayerAdv(n=2, name="player-no{}".format(random.randint(0, 750)))
 		self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.game_over = False
@@ -106,13 +106,19 @@ class GoRemotePlayer():
 			y = random.randrange(1,BOARD_DIM)
 			return (x, y)
 		
+		elif self.player_type == "pass":
+			return "pass"
+		
 		elif self.player_type == "bad":
 			x = random.randrange(1,BOARD_DIM*2)
 			y = random.randrange(1,BOARD_DIM*2)
 			return (x, y)
-		elif self.player_type == "superbad":
-			return "whoopity scoop $@%$%!@56"
 
+		elif self.player_type == "superbad":
+			return (1, 1)
+		
+		elif self.player_type == "supersuperbad":
+			return "whoopity scoop $@%$%!@56"
 
 
 if __name__ == "__main__":
