@@ -11,7 +11,7 @@ from go_player_base import GoPlayerBase
 
 class GoPlayerAdv(GoPlayerBase):
 
-   def __init__(self, name=None, n = 1,):
+   def __init__(self, name="no name", n = 1,): #"no name"
       """
       This class implements a Go Player who chooses
       moves using a less dumb strategy of the first move
