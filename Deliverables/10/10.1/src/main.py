@@ -1,4 +1,4 @@
-import sys, json, socket
+import sys, json, socket, time
 from tkinter import * 
 from tkmacosx import Button
 from PIL import ImageTk, Image
@@ -23,7 +23,8 @@ if __name__ == "__main__":
 	go_admin = GoAdmin(IP=HOSTNAME, port=PORT, local_player=GoGUIPlayer)
 	winner = go_admin.run_game()
 	print(winner)
-	
+	print("{} is the winner!".format(winner))
+	time.sleep(10)
 	
 
 

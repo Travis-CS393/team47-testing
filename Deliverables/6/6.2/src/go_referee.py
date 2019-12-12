@@ -50,7 +50,6 @@ class GoReferee:
    ## Public Methods
    def referee_game(self):
       # Play game after registration complete 
-      self.current_player = StoneEnum.BLACK
       while not self.game_over:
          print(self.players[self.current_player].name + "'s turn:")
          p = self.players[self.current_player].choose_move(self.board_history)

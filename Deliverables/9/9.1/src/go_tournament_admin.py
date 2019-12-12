@@ -32,14 +32,14 @@ class GoTournamentAdmin():
 		The following dictionaries map player names to their corresponding
 		- player object, 
 		- number of wins in the current tournament, 
-		- a list of the opponents they have beaten so far. 
+		- a name list of the opponents they have beaten so far. 
 		"""
 		self.players = {}
 		self.win_count = {}
 		self.beaten_opponents = {}
 
 		"""
-		Keep list of all players that cheated/were eliminated in tournament.
+		Keep list of all names of players that cheated/were eliminated in tournament.
 		"""
 		self.eliminated = []
 
@@ -313,17 +313,6 @@ class GoTournamentAdmin():
 	#################################################
 	### Helper Functions: Tournament Status Updates
 	#################################################
-	def get_tournament_status(self):
-		pass
-
-
-	def get_active_players(self):
-		active = []
-		for player in list(self.players.keys()):
-			if player not in self.eliminated:
-				active.append(player)
-		return active
-
 
 	def format_standings(self, win_count):
 		points_list = list(dict.fromkeys(win_count.values()))
@@ -350,5 +339,18 @@ class GoTournamentAdmin():
 			else:
 				output += str(players_arr[i]) + ", "
 		return output
+
+
+	def get_tournament_status(self):
+		pass
+
+
+	def get_active_players(self):
+		active = []
+		for player in list(self.players.keys()):
+			if player not in self.eliminated:
+				active.append(player)
+		return active
+
 
 
