@@ -1,8 +1,8 @@
 import sys, multiprocessing, time, socket, json
-sys.path.append('../../../3/3.1/src/')
-sys.path.append('../../../4/4.1/src/')
-sys.path.append('../../../8/8.1/src/')
-sys.path.append('../src/')
+sys.path.append('./../../3/3.1/src/')
+sys.path.append('./../../4/4.1/src/')
+sys.path.append('./../../8/8.1/src/')
+sys.path.append('./src/')
 from stone import Stone, make_stone
 from json_parser import json_parse_stdin
 from output_formatter import format_board
