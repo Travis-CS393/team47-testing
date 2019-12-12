@@ -23,7 +23,7 @@ def format_board(matr):
 def format_board_if_valid(inpt):
 	if isinstance(inpt, str):
 		return inpt
-	return format_board(inpt)
+	return format_one_board(inpt)
 
 
 def format_points(pts_set):
