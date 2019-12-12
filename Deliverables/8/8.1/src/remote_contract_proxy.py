@@ -44,6 +44,7 @@ class RemoteContractProxy():
 	def game_over(self, end_tag):
 		try:
 			response = self.remote_player_proxy.game_over(end_tag)
+			response = response.replace("\"","")
 			return (response == GAME_OVER_RESPONSE)
 		except:
 			return False

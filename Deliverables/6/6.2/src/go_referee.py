@@ -24,14 +24,14 @@ class GoReferee:
 
 
    ## Constructors 
-   def __init__(self, board_size=None, board=None, player1=None, player2=None):
+   def __init__(self, board_size=BOARD_DIM, board=None, player1=None, player2=None):
       """
       This class implements a referee component for the go game. 
       Internally it holds a Go board, board history, a rule checker, a
       score keeper, and then information on the two players and
       state of the game.
       """
-      self.board_size = BOARD_DIM if board_size is None else board_size
+      self.board_size = board_size
       self.board_history = [get_board([[" "] * self.board_size for row in range(self.board_size)])]
 
       self.players = {StoneEnum.BLACK: player1, StoneEnum.WHITE: player2}

@@ -1,18 +1,20 @@
 import sys, json, socket, time, random
 sys.path.append('../../../3/3.1/src/')
 sys.path.append('../../../5/5.1/src/')
+sys.path.append('../../../5/5.2/src/')
 from stone import StoneEnum, Stone, make_stone
 from point import get_raw
 from obj_parser import parse_stone, parse_boards
 from output_formatter import format_board
 from constants import REGISTER, RECEIVE, MOVE, EMPTY_STONE, WHITE_STONE, BLACK_STONE, GAME_OVER, GAME_OVER_RESPONSE
 from go_player_base import GoPlayerBase
+from go_player_adv import GoPlayerAdv
 
 
 class GoRemotePlayer():
 
 	def __init__(self, n=1):
-		self.player = GoPlayerBase("player-no{}".format(random.randint(0, 750)))
+		self.player = GoPlayerAdv(n=1, name="player-no{}".format(random.randint(0, 750)))
 		self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.game_over = False
 
@@ -64,13 +66,12 @@ class GoRemotePlayer():
 			print("found one")
 			if isinstance(output, tuple):
 				output = get_raw(output)
-			print(output)
 		elif obj[0] == GAME_OVER:
 			output = GAME_OVER_RESPONSE
 			#self.game_over = True
 		else:
 			raise Exception("RC: Invalid JSON input.")
-		#output = "\"" + output + "\""
+		output = "\"" + output + "\""
 		return output		
 
 	def register(self):
