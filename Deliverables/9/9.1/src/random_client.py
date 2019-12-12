@@ -14,7 +14,7 @@ from go_player_adv import GoPlayerAdv
 class GoRemotePlayer():
 
 	def __init__(self, n=1):
-		self.player = GoPlayerAdv(n=1, name="player-no{}".format(random.randint(0, 750)))
+		self.player = GoPlayerAdv(name="player-no{}".format(random.randint(0, 750)))
 		self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.game_over = False
 

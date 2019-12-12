@@ -14,20 +14,20 @@ from remote_player import GoRemotePlayer
 class TestBoard(unittest.TestCase):
 
 	def test_work_JSON_Register(self):
-		remote_player = GoRemotePlayer(n=2)
+		remote_player = GoRemotePlayer()
 		output = remote_player.work_JSON([REGISTER])
 		remote_player.turn_off_socket()
 		self.assertEqual("default_player", output)
 
 	def test_work_JSON_Receive(self):
-		remote_player = GoRemotePlayer(n=2)
+		remote_player = GoRemotePlayer()
 		remote_player.work_JSON([REGISTER])
 		output = remote_player.work_JSON([RECEIVE, BLACK_STONE])
 		remote_player.turn_off_socket()
 		self.assertEqual(None, output)
 
 	def test_work_JSON_Move(self):
-		remote_player = GoRemotePlayer(n=2)
+		remote_player = GoRemotePlayer()
 		remote_player.work_JSON([REGISTER])
 		remote_player.work_JSON([RECEIVE, BLACK_STONE])
 		board_history = get_simple_history()
@@ -36,17 +36,17 @@ class TestBoard(unittest.TestCase):
 		self.assertEqual("1-5", output)
 
 	def test_invalid_protocol(self):
-		remote_player = GoRemotePlayer(n=2)
+		remote_player = GoRemotePlayer()
 		remote_player.turn_off_socket()
 		self.assertRaisesAny(remote_player.work_JSON,[RECEIVE, BLACK_STONE])
 		
-		remote_player1 = GoRemotePlayer(n=2)
+		remote_player1 = GoRemotePlayer()
 		remote_player1.work_JSON([REGISTER])
 		board_history = get_simple_history()
 		self.assertRaisesAny(remote_player1.work_JSON,[MOVE, board_history])
 		remote_player1.turn_off_socket()
 
-		remote_player2 = GoRemotePlayer(n=2)
+		remote_player2 = GoRemotePlayer()
 		board_history = get_simple_history()
 		self.assertRaisesAny(remote_player2.work_JSON,[MOVE, board_history])
 		remote_player2.turn_off_socket()

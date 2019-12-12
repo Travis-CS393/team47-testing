@@ -24,7 +24,7 @@ class TestBoard(unittest.TestCase):
       self.assertEqual(score, score_ref.get_score(board))
       board.place_stone(StoneEnum.BLACK, Point(0, 0))
       score_ref._update_score_basic(board, score, StoneEnum.BLACK)
-      self.assertEqual({StoneEnum.WHITE: 0, StoneEnum.BLACK: 361}, score_ref.get_score(board))
+      self.assertEqual({StoneEnum.WHITE: 0, StoneEnum.BLACK: BOARD_DIM*BOARD_DIM}, score_ref.get_score(board))
       board.place_stone(StoneEnum.WHITE, Point(0, 1))
       score_ref._update_score_basic(board, score, StoneEnum.WHITE)
       self.assertEqual({StoneEnum.WHITE: 1, StoneEnum.BLACK: 1}, score_ref.get_score(board))

@@ -10,6 +10,7 @@ from go_player_base import GoPlayerBase
 
 
 class GoPlayerAdv(GoPlayerBase):
+   # Comment out random epsilon in order to test
 
    def __init__(self, name=None, n = 1,): #"no name"
       """

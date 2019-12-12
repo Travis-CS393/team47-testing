@@ -10,7 +10,8 @@ from go_player_base import GoPlayerBase
 
 
 class TestBoard(unittest.TestCase):
-
+   # Comment out random epsilon in order to test 
+   
    def test_register(self):
       player = GoPlayerBase()
       self.assertEqual("default_player", player.register())
@@ -40,12 +41,12 @@ class TestBoard(unittest.TestCase):
       player1 = init_player()
       player1.register()
       player1.receive_stone(StoneEnum.BLACK)
-      self.assertEqual("OK", player1.game_over(["end-game"]))
+      self.assertTrue(player1.game_over(["end-game"]))
 
       player2 = init_player()
       player2.register()
       player2.receive_stone(StoneEnum.WHITE)
-      self.assertRaisesAny(player2.game_over, ["game-over"])
+      self.assertFalse(player2.game_over(["game-over"]))
 
    def test_invalid_protocol(self):
       player1 = GoPlayerBase()

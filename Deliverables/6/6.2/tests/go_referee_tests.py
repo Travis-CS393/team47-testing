@@ -14,15 +14,6 @@ from go_referee import GoReferee
 
 class TestReferee(unittest.TestCase):
 
-   def test_validate(self):
-      go_ref = init_referee()
-      self.assertTrue(go_ref.validate_player_move("pass"))
-      self.assertTrue(go_ref.validate_player_move((0,0)))
-      self.assertFalse(go_ref.validate_player_move("hallelujah"))
-      self.assertFalse(go_ref.validate_player_move("30-1-3"))
-      self.assertFalse(go_ref.validate_player_move("1-30-2"))
-      self.assertTrue(go_ref.validate_player_move("2-2"))
-
    def test_make_move(self):
       go_ref = init_referee()
       go_ref.board_history = get_simple_history()
@@ -72,8 +63,6 @@ class TestReferee(unittest.TestCase):
 
 def init_referee():
    go_ref = GoReferee(player1=GoPlayerBase("player1"), player2=GoPlayerBase("player2"))
-   go_ref.players[StoneEnum.BLACK] = go_ref.player1
-   go_ref.players[StoneEnum.WHITE] = go_ref.player2
    return go_ref
 
 def get_simple_history():
