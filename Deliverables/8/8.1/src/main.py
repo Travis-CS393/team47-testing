@@ -1,5 +1,5 @@
 import sys, json, socket
-sys.path.append('../src')
+sys.path.append('./src')
 from go_admin import GoAdmin
 
 go_config = json.load(open('go.config'))
