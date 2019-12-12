@@ -1,12 +1,12 @@
 import sys, json, socket, threading
+sys.path.append("../../../3/3.1/src/")
+sys.path.append("../../../4/4.1/src/")
+sys.path.append("../../../8/8.1/src/")
 from tkinter import * 
 from tkmacosx import Button
 from PIL import ImageTk, Image
-sys.path.append("../../../3/3.1/src/")
 from point import str_to_point
-sys.path.append("../../../4/4.1/src/")
 from move_referee import MoveReferee
-sys.path.append("../../../8/8.1/src/")
 from go_admin import GoAdmin
 from constants import BOARD_DIM, BLACK_STONE, WHITE_STONE, PASS
 from stone import Stone, StoneEnum
@@ -22,6 +22,7 @@ from go_player_base import GoPlayerBase
 
 
 class GoGUIPlayer():
+
 	## Decorators
 	def valid_stone(func):
 		def wrapper(*args, **kwargs):
@@ -30,12 +31,14 @@ class GoGUIPlayer():
 				return func(*args, **kwargs)
 			return wrapper
 
+
 	def protocol_registered(func):
 		def wrapper(*args, **kwargs):
 			if not args[0].name:
 				raise Exception("GPB: Invalid protocol, player must be registered first.")
 				return func(*args, **kwargs)
 			return wrapper
+
 
 	def protocol_stone_set(func):
 		def wrapper(*args, **kwargs):
@@ -45,6 +48,7 @@ class GoGUIPlayer():
 			return wrapper
 
 
+	# Constructor
 	def __init__(self, name=None):
 		self.name = name
 		self.default_name = "Player 1"
@@ -89,7 +93,12 @@ class GoGUIPlayer():
 		myLabel = Label(self.root, text=hello)
 		myLabel.grid(row=0, column=0, columnspan=3)
 		self.button_register.configure(state=DISABLED)
-		
+	
+	def button_click(self, button_idx):
+		if self.name:
+			self.click = button_idx
+			self.buttons[self.click].configure(bg=self.color)
+
 
 
 	def myMove(self):
@@ -106,6 +115,7 @@ class GoGUIPlayer():
 			self.root.update()
 			self.root.update_idletasks()
 		return self.name
+
 
 	def receive_stone(self, stone_type):
 		self.stone_type = stone_type
@@ -141,11 +151,7 @@ class GoGUIPlayer():
 			self.click = None
 			return (ret.x, ret.y)
 
-	def button_click(self, button_idx):
-		if self.name:
-			self.click = button_idx
-			self.buttons[self.click].configure(bg=self.color)
-
+	
 
 
 if __name__ == "__main__":
@@ -158,3 +164,4 @@ if __name__ == "__main__":
 	
 
 
+	

@@ -59,6 +59,7 @@ class GoAdmin():
 				go_ref.game_over = True
 				print("{} disconnected.".format(go_ref.players[go_ref.current_player].name))
 				connected = False
+				go_ref.winner = get_other_type(go_ref.current_player)
 				break
 			except PointException:
 				go_ref.game_over = True
@@ -66,11 +67,11 @@ class GoAdmin():
 				print("{} played an invalid move.".format(go_ref.players[go_ref.current_player].name))
 				go_ref.winner = get_other_type(go_ref.current_player)
 				break
-		
+
 		if go_ref.broke_rules:
 			print("{} broke the rules.".format(go_ref.players[go_ref.broke_rules].name))
-		
-		if (go_ref.game_over and connected and valid_response) or not valid_response:
+
+		if connected:
 			winner = go_ref.get_winners()
 		elif not connected:
 			winner = [self.local_player.name]

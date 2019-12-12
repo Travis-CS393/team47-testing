@@ -1,6 +1,6 @@
 import sys
 from copy import copy, deepcopy
-sys.path.append('../../3/3.1/src/')
+sys.path.append('../../../3/3.1/src/')
 from constants import PASS
 from board import Board
 from stone import StoneEnum, get_other_type

@@ -1,5 +1,5 @@
 import sys
-sys.path.append('../../3/3.1/src/')
+sys.path.append('../../../3/3.1/src/')
 from constants import BOARD_DIM
 from board import Board
 from stone import Stone
@@ -11,14 +11,11 @@ from move_referee import MoveReferee
 def is_board(arr):
    return len(arr) == BOARD_DIM
 
-
 def is_move(arr):
    return len(arr) == 2
 
-
 def parse_board(matr):
    return Board([[Stone(matr[i][j]) for i in range(BOARD_DIM)] for j in range(BOARD_DIM)])
-
 
 def parse_move(arr):
    if isinstance(arr[1], str):

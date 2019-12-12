@@ -6,6 +6,7 @@ from go_tournament_admin import GoTournamentAdmin
 # Jenny Lam IP: "10.105.46.243"
 # Daniel Bang IP: 
 
+
 #player import
 go_config = json.load(open('go.config'))
 HOSTNAME = go_config['IP']

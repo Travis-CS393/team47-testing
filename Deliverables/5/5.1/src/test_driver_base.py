@@ -8,6 +8,7 @@ from constants import REGISTER, RECEIVE, MOVE
 from referee_formatter import format_pretty_json
 from go_player_base import GoPlayerBase
 
+
 def execute_input(player, arr):
    if arr[0] == REGISTER:
       return player.register()
@@ -22,6 +23,7 @@ def execute_input(player, arr):
       return get_raw(output)
    else:
       raise Exception("Invalid name given to execute input")
+
 
 if __name__ == "__main__":
    player = GoPlayerBase()

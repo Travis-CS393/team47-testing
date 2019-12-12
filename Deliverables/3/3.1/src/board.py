@@ -2,6 +2,7 @@ from stone import StoneEnum, Stone, get_other_type
 from point import Point, PointException
 from constants import BOARD_DIM
 
+
 class Board():
 
    ## Validators
@@ -21,6 +22,7 @@ class Board():
                raise Exception("BOARD: Cannot call this funciton with the empty stone.")
          return func(*args, **kwargs)
       return wrapper
+
 
 
    ## Constructor

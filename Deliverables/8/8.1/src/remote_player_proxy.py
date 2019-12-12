@@ -4,6 +4,7 @@ from stone import Stone, make_stone
 from output_formatter import format_board
 from constants import REGISTER, RECEIVE, MOVE
 
+
 class RemotePlayerProxy():
 
 	def __init__(self, connection):

@@ -21,10 +21,6 @@ from go_player_base import GoPlayerBase
 from go_gui import GoGUIPlayer
 
 if __name__ == "__main__":
-
-	# Main Event Loop
-	#root = GoGUIPlayer(BOARD_DIM)
-
 	go_admin = GoAdmin(IP=HOSTNAME, port=PORT, local_player=GoGUIPlayer)
 	winner = go_admin.run_game()
 	print(winner)

@@ -32,14 +32,14 @@ class GoTournamentAdmin():
 		The following dictionaries map player names to their corresponding
 		- player object, 
 		- number of wins in the current tournament, 
-		- a list of the opponents they have beaten so far. 
+		- a name list of the opponents they have beaten so far. 
 		"""
 		self.players = {}
 		self.win_count = {}
 		self.beaten_opponents = {}
 
 		"""
-		Keep list of all players that cheated/were eliminated in tournament.
+		Keep list of all names of players that cheated/were eliminated in tournament.
 		"""
 		self.eliminated = []
 
@@ -251,6 +251,9 @@ class GoTournamentAdmin():
 			go_ref.winner = StoneEnum.WHITE
 			cheater = player1.name
 			connected = False
+			cheater = player1.name
+			print("Unsuccessful receive stone for {}.".format(cheater))
+			go_ref.winner = StoneEnum.WHITE
 		if player1_received:
 			try:
 				player2.receive_stone(StoneEnum.WHITE)
@@ -258,6 +261,10 @@ class GoTournamentAdmin():
 				go_ref.winner = StoneEnum.BLACK
 				cheater = player2.name
 				connected = False
+				cheater = player2.name
+				print("Unsuccessful receive stone for {}.".format(cheater))
+				go_ref.winner = StoneEnum.BLACK
+
 		
 		# Referee game and check for cheating condition
 		# - Game over via breaking the rules. 
@@ -288,15 +295,16 @@ class GoTournamentAdmin():
 		# Validate Game Over for both players
 		if connected: #(go_ref.game_over and connected and valid_response) or not valid_response:
 			if not player1.game_over([GAME_OVER]):
+				cheater = player1.name
 				print("Did not receive game_over from Player {}".format(player1.name))
 				go_ref.winner = StoneEnum.WHITE
 			elif not player2.game_over([GAME_OVER]):
+				cheater = player2.name
 				print("Did not receive game_over from Player {}".format(player2.name))
 				go_ref.winner = StoneEnum.BLACK
 		
 		winner = go_ref.get_winners()
 		
-
 		# Randomly break ties if two winners
 		if len(winner) == 1:
 			return winner[0], cheater
@@ -309,17 +317,6 @@ class GoTournamentAdmin():
 	#################################################
 	### Helper Functions: Tournament Status Updates
 	#################################################
-	def get_tournament_status(self):
-		pass
-
-
-	def get_active_players(self):
-		active = []
-		for player in list(self.players.keys()):
-			if player not in self.eliminated:
-				active.append(player)
-		return active
-
 
 	def format_standings(self, win_count):
 		points_list = list(dict.fromkeys(win_count.values()))
@@ -346,5 +343,18 @@ class GoTournamentAdmin():
 			else:
 				output += str(players_arr[i]) + ", "
 		return output
+
+
+	def get_tournament_status(self):
+		pass
+
+
+	def get_active_players(self):
+		active = []
+		for player in list(self.players.keys()):
+			if player not in self.eliminated:
+				active.append(player)
+		return active
+
 
 

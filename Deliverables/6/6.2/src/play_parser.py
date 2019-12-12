@@ -9,7 +9,7 @@ from constants import PASS, BOARD_DIM
 
 def format_input(string):
 	if string == PASS:
-		return "pass"
+		return PASS
 	else:
 		return str_to_point(string)
 

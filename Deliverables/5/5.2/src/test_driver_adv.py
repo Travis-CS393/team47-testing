@@ -7,6 +7,7 @@ from referee_formatter import format_pretty_json
 from test_driver_base import execute_input
 from go_player_adv import GoPlayerAdv
 
+
 if __name__ == "__main__":
    def call_exec(obj):
       return execute_input(player, obj)

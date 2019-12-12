@@ -18,8 +18,10 @@ class GoRemotePlayer():
 		self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.game_over = False
 
+
 	def turn_on_socket(self, ip_and_port):
 		self.socket.connect(ip_and_port)
+
 
 	def work_with_socket(self):
 		try:
@@ -41,8 +43,8 @@ class GoRemotePlayer():
 	def turn_off_socket(self):
 		self.socket.close()
 
-	def work_JSON(self, input):
-		obj = input
+
+	def work_JSON(self, obj):
 		print("working with socket")
 		if obj[0] == REGISTER:
 			output = self.register()
@@ -78,15 +80,16 @@ class GoRemotePlayer():
 		
 		elif obj[0] == GAME_OVER:
 			output = GAME_OVER_RESPONSE
-			#self.game_over = True
 		else:
 			print("RC: Invalid JSON input.")
 			raise Exception()
 		output = "\"" + output + "\""
 		return output		
 
+
 	def register(self):
 		return self.player.register()
+
 
 	def receive_stone(self, stone_type):
 		if isinstance(stone_type, StoneEnum):
@@ -95,9 +98,11 @@ class GoRemotePlayer():
 			print("RC: Not a proper player stone.")
 			raise Exception()
 
+
 	def make_a_move(self, board_history):
 		#return input("choose_move:")
 		return self.player.choose_move(board_history)
+
 
 if __name__ == "__main__":
 	print("launched")
@@ -111,7 +116,7 @@ if __name__ == "__main__":
 	player.turn_on_socket((HOSTNAME, PORT))
 	while not player.game_over:
 		player.work_with_socket()
-		#player.game_over = True
+
 	"""
 	done = 0
 	while done != 0.05:
