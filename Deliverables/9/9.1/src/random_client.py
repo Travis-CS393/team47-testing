@@ -13,7 +13,7 @@ from go_player_adv import GoPlayerAdv
 
 class GoRemotePlayer():
 
-	def __init__(self, n=2, player_type="always valid"):
+	def __init__(self, n=2, player_type="disconnect"):
 		self.player = GoPlayerAdv(n=2, name="player-no{}".format(random.randint(0, 750)))
 		self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.game_over = False
@@ -119,6 +119,10 @@ class GoRemotePlayer():
 		
 		elif self.player_type == "always invalid":
 			return "whoopity scoop $@%$%!@56"
+
+		elif self.player_type == "disconnect":
+			self.turn_off_socket()
+			return
 
 
 if __name__ == "__main__":
