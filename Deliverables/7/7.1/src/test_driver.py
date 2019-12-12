@@ -1,7 +1,7 @@
 import sys, multiprocessing, time, socket, json
-sys.path.append('./../../3/3.1/src/')
-sys.path.append('./../../4/4.1/src/')
-sys.path.append('./../../8/8.1/src/')
+sys.path.append('../../../3/3.1/src/')
+sys.path.append('../../../4/4.1/src/')
+sys.path.append('../../../8/8.1/src/')
 sys.path.append('../src/')
 from stone import Stone, make_stone
 from json_parser import json_parse_stdin
@@ -37,6 +37,8 @@ if __name__ == "__main__":
    go_config = json.load(open('go.config'))
    HOSTNAME = go_config['IP']
    PORT = go_config['port']
+   print(HOSTNAME)
+   print(PORT)
 
    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
    server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
