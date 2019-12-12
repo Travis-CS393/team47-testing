@@ -3,7 +3,7 @@ sys.path.append('./../../3/3.1/src/')
 sys.path.append('./../../4/4.1/src/')
 sys.path.append('./../../5/5.1/src/')
 sys.path.append('./../../5/5.2/src/')
-sys.path.append('./src/')
+sys.path.append('../src/')
 from stone import StoneEnum, Stone, make_stone
 from point import get_raw
 from output_formatter import format_board
