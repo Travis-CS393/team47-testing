@@ -249,12 +249,14 @@ class GoTournamentAdmin():
 			player1_received = True
 		except:
 			go_ref.winner = StoneEnum.WHITE
+			cheater = player1.name
 			connected = False
 		if player1_received:
 			try:
 				player2.receive_stone(StoneEnum.WHITE)
 			except:
 				go_ref.winner = StoneEnum.BLACK
+				cheater = player2.name
 				connected = False
 		
 		# Referee game and check for cheating condition
@@ -284,19 +286,16 @@ class GoTournamentAdmin():
 			print("Player {} broke the rules.".format(cheater))
 
 		# Validate Game Over for both players
-		if (go_ref.game_over and connected and valid_response) or not valid_response:
+		if connected: #(go_ref.game_over and connected and valid_response) or not valid_response:
 			if not player1.game_over([GAME_OVER]):
 				print("Did not receive game_over from Player {}".format(player1.name))
 				go_ref.winner = StoneEnum.WHITE
-			else:
-				if not player2.game_over([GAME_OVER]):
-					print("Did not receive game_over from Player {}".format(player2.name))
-					go_ref.winner = StoneEnum.BLACK
-			winner = go_ref.get_winners()
-		elif not connected:
-			winner = go_ref.get_winners()
-		else:
-			raise Exception("GO TOURNAMENT ADMIN: Game ended unexpectedly.")
+			elif not player2.game_over([GAME_OVER]):
+				print("Did not receive game_over from Player {}".format(player2.name))
+				go_ref.winner = StoneEnum.BLACK
+		
+		winner = go_ref.get_winners()
+		
 
 		# Randomly break ties if two winners
 		if len(winner) == 1:

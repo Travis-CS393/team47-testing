@@ -13,8 +13,8 @@ from go_player_adv import GoPlayerAdv
 
 class GoRemotePlayer():
 
-	def __init__(self, n=1):
-		self.player = GoPlayerAdv(n=1, name="player-no{}".format(random.randint(0, 750)))
+	def __init__(self, n=4):
+		self.player = GoPlayerAdv(n=4, name="player-no{}".format(random.randint(0, 750)))
 		self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.game_over = False
 
@@ -63,7 +63,11 @@ class GoRemotePlayer():
 			boards_obj = parse_boards(obj[1])
 			print("trying")
 			
-			output = self.make_a_move(boards_obj)	
+			espilon = random.uniform(0,1)
+			if espilon > .15:
+				output = self.make_a_move(boards_obj)
+			else:
+				output = "pass"	
 			#x = random.randrange(1,9)
 			#y = random.randrange(1,9)
 			#output = (x, y)
