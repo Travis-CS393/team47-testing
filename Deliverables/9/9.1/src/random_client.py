@@ -13,8 +13,8 @@ from go_player_adv import GoPlayerAdv
 
 class GoRemotePlayer():
 
-	def __init__(self, n=2, player_type="disconnect"):
-		self.player = GoPlayerAdv(n=2, name="player-no{}".format(random.randint(0, 750)))
+	def __init__(self, n=1, player_type="disconnect"):
+		self.player = GoPlayerAdv(n=1, name="player-no{}".format(random.randint(0, 750)))
 		self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.game_over = False
 		self.player_type = player_type

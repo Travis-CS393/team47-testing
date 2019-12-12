@@ -4,7 +4,7 @@ from go_tournament_admin import GoTournamentAdmin
 
 ## FINAL CODEWALK NOTES:
 # Jenny Lam IP: "10.105.46.243"
-# Daniel Bang IP: 
+# Daniel Bang IP: "10.105.152.43"
 
 
 #player import
