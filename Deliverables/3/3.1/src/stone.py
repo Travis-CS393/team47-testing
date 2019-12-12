@@ -27,7 +27,9 @@ class Stone():
          self.stone_type = StoneEnum.BLACK
       else:
          raise Exception("STONE: Invalid MaybeStone input.")
-   
+
+   def __iter__(self):
+      return iter(self.stone_type)
 
    def set_type(self, stone_type):
       self.stone_type = stone_type
