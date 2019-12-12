@@ -6,17 +6,18 @@ from stone import StoneEnum, Stone, make_stone
 from point import get_raw
 from obj_parser import parse_stone, parse_boards
 from output_formatter import format_board
-from constants import REGISTER, RECEIVE, MOVE, EMPTY_STONE, WHITE_STONE, BLACK_STONE, GAME_OVER, GAME_OVER_RESPONSE
+from constants import REGISTER, RECEIVE, MOVE, EMPTY_STONE, WHITE_STONE, BLACK_STONE, GAME_OVER, GAME_OVER_RESPONSE, BOARD_DIM
 from go_player_base import GoPlayerBase
 from go_player_adv import GoPlayerAdv
 
 
 class GoRemotePlayer():
 
-	def __init__(self, n=4):
-		self.player = GoPlayerAdv(n=4, name="player-no{}".format(random.randint(0, 750)))
+	def __init__(self, n=2, player_type="superbad"):
+		self.player = GoPlayerAdv(n=2, name="player-no{}".format(random.randint(0, 750)))
 		self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.game_over = False
+		self.player_type = player_type
 
 
 	def turn_on_socket(self, ip_and_port):
@@ -64,15 +65,7 @@ class GoRemotePlayer():
 		elif obj[0] == MOVE:
 			boards_obj = parse_boards(obj[1])
 			print("trying")
-			
-			espilon = random.uniform(0,1)
-			if espilon > .15:
-				output = self.make_a_move(boards_obj)
-			else:
-				output = "pass"	
-			#x = random.randrange(1,9)
-			#y = random.randrange(1,9)
-			#output = (x, y)
+			output = self.make_a_move(boards_obj)
 			print("found one")
 			
 			if isinstance(output, tuple):
@@ -101,7 +94,25 @@ class GoRemotePlayer():
 
 	def make_a_move(self, board_history):
 		#return input("choose_move:")
-		return self.player.choose_move(board_history)
+		if self.player_type == "good":
+			espilon = random.uniform(0,1)
+			if espilon > .15:
+				return self.player.choose_move(board_history)
+			else:
+				return "pass"
+		
+		elif self.player_type == "ok":
+			x = random.randrange(1,BOARD_DIM)
+			y = random.randrange(1,BOARD_DIM)
+			return (x, y)
+		
+		elif self.player_type == "bad":
+			x = random.randrange(1,BOARD_DIM*2)
+			y = random.randrange(1,BOARD_DIM*2)
+			return (x, y)
+		elif self.player_type == "superbad":
+			return "whoopity scoop $@%$%!@56"
+
 
 
 if __name__ == "__main__":
