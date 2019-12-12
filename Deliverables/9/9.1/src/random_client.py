@@ -40,8 +40,7 @@ class GoRemotePlayer():
 	def turn_off_socket(self):
 		self.socket.close()
 
-	def work_JSON(self, input):
-		obj = input
+	def work_JSON(self, obj):
 		print("working with socket")
 		if obj[0] == REGISTER:
 			output = self.register()

@@ -3,12 +3,11 @@ sys.path.append('./../../3/3.1/src/')
 sys.path.append('./../../4/4.1/src/')
 sys.path.append('./../../5/5.1/src/')
 sys.path.append('./../../5/5.2/src/')
-sys.path.append('../src/')
 from stone import StoneEnum, Stone, make_stone
 from point import get_raw
 from output_formatter import format_board
 from obj_parser import parse_stone, parse_boards
-from constants import WHITE_STONE, BLACK_STONE, REGISTER, RECEIVE, MOVE
+from constants import WHITE_STONE, BLACK_STONE, REGISTER, RECEIVE, MOVE, GAME_OVER, GAME_OVER_RESPONSE
 from go_player_base import GoPlayerBase
 from go_player_adv import GoPlayerAdv
 
@@ -23,6 +22,7 @@ class GoRemotePlayer():
 		"""
 		self.player = GoPlayerAdv(n)
 		self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		self.game_over = False
 
 	def turn_on_socket(self, ip_and_port):
 		self.socket.connect(ip_and_port)
@@ -30,13 +30,11 @@ class GoRemotePlayer():
 	def work_with_socket(self):
 		try:
 			inpt = self.socket.recv(8192)
-			if inpt.decode("utf-8") == "done":
-				return "done"
+			output = self.work_JSON(json.loads(inpt.decode("utf-8")))
+			if not output:
+				pass
 			else:
-				output = self.work_JSON(json.loads(inpt.decode("utf-8")))
-				if output:
-					self.socket.sendall(bytes(output, "utf-8"))
-				return "not done"
+				self.socket.sendall(bytes(output, "utf-8"))
 		except:
 			return "Error: no connection established."
 
@@ -60,11 +58,10 @@ class GoRemotePlayer():
 			output = self.make_a_move(boards_obj)
 			if isinstance(output, tuple):
 				output = get_raw(output)
+		elif obj[0] == GAME_OVER:
+			output = GAME_OVER_RESPONSE
 		else:
 			raise Exception("Invalid JSON input.")
-
-		if not output: 
-			return output
 
 		return output
 
@@ -95,7 +92,6 @@ if __name__ == "__main__":
 	time.sleep(1)
 	player = GoRemotePlayer(N)
 	player.turn_on_socket((HOSTNAME, PORT))
-	done = "not done"
-	while done != "done":
-		done = player.work_with_socket()
+	while not player.game_over:
+		player.work_with_socket()
 	player.turn_off_socket()
