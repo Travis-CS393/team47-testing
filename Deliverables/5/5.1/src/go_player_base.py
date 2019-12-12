@@ -46,7 +46,7 @@ class GoPlayerBase:
       minimum column, minimum row position on the board.
       """
       self.name = name
-      self.default_name = "default_player"
+      self.default_name = "no name" #"default_player"
       self.stone_type = None
       self.move_referee = MoveReferee()
 
