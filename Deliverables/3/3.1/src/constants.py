@@ -1,6 +1,6 @@
 ## Board
 #BOARD_DIM = 19 # Used for testing 3.1, 4.1
-BOARD_DIM = 9
+BOARD_DIM = 19
 
 ## Stone
 WHITE_STONE = "W"
