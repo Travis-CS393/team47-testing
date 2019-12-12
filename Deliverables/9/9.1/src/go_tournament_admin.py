@@ -1,9 +1,9 @@
 import sys, socket, math, time, random
-sys.path.append('../../../3/3.1/src/')
-sys.path.append('../../../4/4.1/src/')
-sys.path.append('../../../5/5.1/src/')
-sys.path.append('../../../6/6.2/src')
-sys.path.append('../../../8/8.1/src')
+sys.path.append('./../../3/3.1/src/')
+sys.path.append('./../../4/4.1/src/')
+sys.path.append('./../../5/5.1/src/')
+sys.path.append('./../../6/6.2/src')
+sys.path.append('./../../8/8.1/src')
 from stone import StoneEnum, get_other_type
 from point import Point, str_to_point, PointException
 from output_formatter import format_board

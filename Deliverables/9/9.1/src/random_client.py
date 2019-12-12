@@ -1,7 +1,7 @@
 import sys, json, socket, time, random
-sys.path.append('../../../3/3.1/src/')
-sys.path.append('../../../5/5.1/src/')
-sys.path.append('../../../5/5.2/src/')
+sys.path.append('./../../3/3.1/src/')
+sys.path.append('./../../5/5.1/src/')
+sys.path.append('./../../5/5.2/src/')
 from stone import StoneEnum, Stone, make_stone
 from point import get_raw
 from obj_parser import parse_stone, parse_boards
