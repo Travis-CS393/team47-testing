@@ -45,7 +45,7 @@ class GoAdmin():
 		#Set Player 1
 		player1_name = self.local_player.register()
 		self.local_player.receive_stone(StoneEnum.BLACK)
-	
+
 		# Pass to Referee to start game
 		go_ref = GoReferee(player1=self.local_player, player2=self.remote_player)
 		connected = True
@@ -57,8 +57,8 @@ class GoAdmin():
 				go_ref.referee_game()
 			except socket_error:
 				go_ref.game_over = True
-				connected = False
 				print("{} disconnected.".format(go_ref.players[go_ref.current_player].name))
+				connected = False
 				go_ref.winner = get_other_type(go_ref.current_player)
 				break
 			except PointException:
@@ -77,7 +77,8 @@ class GoAdmin():
 			winner = [self.local_player.name]
 		else:
 			raise Exception("GO ADMIN: Game ended unexpectedly.")
-
+		
+		
 		return winner
 
 

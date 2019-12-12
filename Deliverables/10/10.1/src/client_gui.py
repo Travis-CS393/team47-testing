@@ -6,29 +6,27 @@ from stone import StoneEnum, Stone, make_stone
 from point import get_raw
 from obj_parser import parse_stone, parse_boards
 from output_formatter import format_board
-from constants import REGISTER, RECEIVE, MOVE, EMPTY_STONE, WHITE_STONE, BLACK_STONE, GAME_OVER, GAME_OVER_RESPONSE, BOARD_DIM
+from constants import REGISTER, RECEIVE, MOVE, EMPTY_STONE, WHITE_STONE, BLACK_STONE, GAME_OVER, GAME_OVER_RESPONSE
 from go_player_base import GoPlayerBase
 from go_player_adv import GoPlayerAdv
+from go_gui import GoGUIPlayer
 
 
 class GoRemotePlayer():
 
-	def __init__(self, n=1, player_type="always valid"):
-		self.player = GoPlayerAdv(n=1, name="player-no{}".format(random.randint(0, 750)))
+	def __init__(self):
+		self.player = GoGUIPlayer(name=None)
 		self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.game_over = False
-		self.player_type = player_type
-
 
 	def turn_on_socket(self, ip_and_port):
 		self.socket.connect(ip_and_port)
-
 
 	def work_with_socket(self):
 		try:
 			inpt = self.socket.recv(8192)
 			print("received")
-			print(inpt)
+			print(inpt.decode("utf-8"))
 			output = self.work_JSON(json.loads(inpt.decode("utf-8")))
 			if not output:
 				pass
@@ -39,16 +37,18 @@ class GoRemotePlayer():
 				print('sent')
 		except:
 			self.game_over = True
-			print("Error: something went wrong. Either disconnected, or received invalid input.")
+			print("Game is Over!")
 
 	def turn_off_socket(self):
 		self.socket.close()
 
-
-	def work_JSON(self, obj):
+	def work_JSON(self, input):
+		obj = input
 		print("working with socket")
+		print(obj)
 		if obj[0] == REGISTER:
 			output = self.register()
+		
 		
 		elif obj[0] == RECEIVE:
 			if obj[1] == BLACK_STONE:
@@ -62,27 +62,32 @@ class GoRemotePlayer():
 			output = None
 			return output
 		
+		
 		elif obj[0] == MOVE:
 			boards_obj = parse_boards(obj[1])
 			print("trying")
 			output = self.make_a_move(boards_obj)
+			#x = random.randrange(1,9)
+			#y = random.randrange(1,9)
+			#output = (x, y)
 			print("found one")
-			
 			if isinstance(output, tuple):
 				output = get_raw(output)
 		
+		
 		elif obj[0] == GAME_OVER:
 			output = GAME_OVER_RESPONSE
+			#self.game_over = True
+		
 		else:
 			print("RC: Invalid JSON input.")
 			raise Exception()
+		
 		output = "\"" + output + "\""
 		return output		
 
-
 	def register(self):
 		return self.player.register()
-
 
 	def receive_stone(self, stone_type):
 		if isinstance(stone_type, StoneEnum):
@@ -91,39 +96,9 @@ class GoRemotePlayer():
 			print("RC: Not a proper player stone.")
 			raise Exception()
 
-
 	def make_a_move(self, board_history):
 		#return input("choose_move:")
-		if self.player_type == "always valid":
-			espilon = random.uniform(0,1)
-			if espilon > .15:
-				return self.player.choose_move(board_history)
-			else:
-				return "pass"
-		
-		elif self.player_type == "random point":
-			x = random.randrange(1,BOARD_DIM)
-			y = random.randrange(1,BOARD_DIM)
-			return (x, y)
-		
-		elif self.player_type == "pass":
-			return "pass"
-		
-		elif self.player_type == "mostly invalid":
-			x = random.randrange(1,BOARD_DIM*2)
-			y = random.randrange(1,BOARD_DIM*2)
-			return (x, y)
-
-		elif self.player_type == "1-1":
-			return (1, 1)
-		
-		elif self.player_type == "always invalid":
-			return "whoopity scoop $@%$%!@56"
-
-		elif self.player_type == "disconnect":
-			self.turn_off_socket()
-			return
-
+		return self.player.choose_move(board_history)
 
 if __name__ == "__main__":
 	print("launched")
@@ -137,7 +112,7 @@ if __name__ == "__main__":
 	player.turn_on_socket((HOSTNAME, PORT))
 	while not player.game_over:
 		player.work_with_socket()
-
+		#player.game_over = True
 	"""
 	done = 0
 	while done != 0.05:

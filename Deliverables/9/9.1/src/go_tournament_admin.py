@@ -248,6 +248,8 @@ class GoTournamentAdmin():
 			player1.receive_stone(StoneEnum.BLACK)
 			player1_received = True
 		except:
+			go_ref.winner = StoneEnum.WHITE
+			cheater = player1.name
 			connected = False
 			cheater = player1.name
 			print("Unsuccessful receive stone for {}.".format(cheater))
@@ -256,6 +258,8 @@ class GoTournamentAdmin():
 			try:
 				player2.receive_stone(StoneEnum.WHITE)
 			except:
+				go_ref.winner = StoneEnum.BLACK
+				cheater = player2.name
 				connected = False
 				cheater = player2.name
 				print("Unsuccessful receive stone for {}.".format(cheater))
@@ -289,7 +293,7 @@ class GoTournamentAdmin():
 			print("Player {} broke the rules.".format(cheater))
 
 		# Validate Game Over for both players
-		if connected:
+		if connected: #(go_ref.game_over and connected and valid_response) or not valid_response:
 			if not player1.game_over([GAME_OVER]):
 				cheater = player1.name
 				print("Did not receive game_over from Player {}".format(player1.name))

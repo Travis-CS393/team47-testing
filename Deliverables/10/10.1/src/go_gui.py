@@ -11,8 +11,6 @@ from go_admin import GoAdmin
 from constants import BOARD_DIM, BLACK_STONE, WHITE_STONE, PASS
 from stone import Stone, StoneEnum
 from copy import deepcopy
-
-
 go_config = json.load(open('go.config'))
 #remote player import
 HOSTNAME = go_config['IP']
@@ -86,25 +84,27 @@ class GoGUIPlayer():
 				self.buttons["{}-{}".format(y,x)].grid(row=x, column=y, columnspan=1)
 
 
+		
+
+
 	def myClick(self):
 		self.name = self.e.get()
 		hello = "Welcome to Go, " + self.name
 		myLabel = Label(self.root, text=hello)
 		myLabel.grid(row=0, column=0, columnspan=3)
 		self.button_register.configure(state=DISABLED)
-
-
+	
 	def button_click(self, button_idx):
 		if self.name:
 			self.click = button_idx
 			self.buttons[self.click].configure(bg=self.color)
 
 
+
 	def myMove(self):
 		if self.name:
 			self.click = self.e1.get()
 	
-
 	def Pass(self):
 		if self.name:
 			self.click = "pass"
@@ -123,7 +123,6 @@ class GoGUIPlayer():
 			self.color = "black"
 		else:
 			self.color =  "white"
-
 
 	def choose_move(self, boards):
 		if not self.move_referee.valid_history(self.stone_type, boards):
@@ -152,6 +151,17 @@ class GoGUIPlayer():
 			self.click = None
 			return (ret.x, ret.y)
 
+	
+
+
+if __name__ == "__main__":
+
+	# Main Event Loop
+	root = GoGUIPlayer(BOARD_DIM)
+	root.root.mainloop()
+	
+	
+	
 
 
 	

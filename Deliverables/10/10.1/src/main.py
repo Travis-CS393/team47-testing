@@ -9,6 +9,7 @@ sys.path.append("../../../8/8.1/src/")
 from go_admin import GoAdmin
 from constants import BOARD_DIM
 
+
 go_config = json.load(open('go.config'))
 #remote player import
 HOSTNAME = go_config['IP']
@@ -25,6 +26,7 @@ if __name__ == "__main__":
 	print(winner)
 	print("{} is the winner!".format(winner))
 	time.sleep(10)
+	
 	
 
 
