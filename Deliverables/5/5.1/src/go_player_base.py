@@ -46,7 +46,7 @@ class GoPlayerBase:
       minimum column, minimum row position on the board.
       """
       self.name = name
-      self.default_name = "no name" #"default_player"
+      self.default_name = "default_player" #"no name"
       self.stone_type = None
       self.move_referee = MoveReferee()
 
@@ -67,6 +67,7 @@ class GoPlayerBase:
    @protocol_registered
    @protocol_stone_set
    def choose_move(self, boards):
+      """
       if not self.move_referee.valid_history(self.stone_type, boards):
             return "This history makes no sense!"
       for x, y in sorted(list(boards[0].get_points(None))):
@@ -89,7 +90,6 @@ class GoPlayerBase:
       
       else:   
          return PASS
-      """
 
 
    def game_over(self, end_tag):
