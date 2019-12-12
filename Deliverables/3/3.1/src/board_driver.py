@@ -3,6 +3,7 @@ from input_parser import InputParser
 from json_parser import json_parse_stdin
 from output_formatter import format_board, format_board_if_valid, format_points, format_pretty_json
 
+
 def execute_input(input_array):
    input_parser = InputParser(input_array)
    board, statement = input_parser.get_board(), input_parser.get_statement()

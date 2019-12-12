@@ -1,7 +1,7 @@
 import sys, json, socket, time, random
-sys.path.append('./../../3/3.1/src/')
-sys.path.append('./../../5/5.1/src/')
-sys.path.append('./../../5/5.2/src/')
+sys.path.append('../../../3/3.1/src/')
+sys.path.append('../../../5/5.1/src/')
+sys.path.append('../../../5/5.2/src/')
 from stone import StoneEnum, Stone, make_stone
 from point import get_raw
 from obj_parser import parse_stone, parse_boards
@@ -18,8 +18,10 @@ class GoRemotePlayer():
 		self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.game_over = False
 
+
 	def turn_on_socket(self, ip_and_port):
 		self.socket.connect(ip_and_port)
+
 
 	def work_with_socket(self):
 		try:
@@ -35,10 +37,14 @@ class GoRemotePlayer():
 				self.socket.sendall(bytes(output, "utf-8"))
 				print('sent')
 		except:
-			return "Error: no connection established"
+			self.game_over = True
+			print("The game is over.")
+			#print("ERROR: Something went wrong. Either disconnected or received invalid input.")
+
 
 	def turn_off_socket(self):
 		self.socket.close()
+
 
 	def work_JSON(self, obj):
 		print("working with socket")
@@ -51,9 +57,11 @@ class GoRemotePlayer():
 			elif obj[1] == WHITE_STONE:
 				stone_e = StoneEnum.WHITE
 			else:
+				print("RC: Invalid stone type.")
 				raise Exception("RC: Invalid stone type.")
 			self.receive_stone(stone_e)
 			output = None
+			return output
 		
 		elif obj[0] == MOVE:
 			boards_obj = parse_boards(obj[1])
@@ -67,24 +75,28 @@ class GoRemotePlayer():
 				output = get_raw(output)
 		elif obj[0] == GAME_OVER:
 			output = GAME_OVER_RESPONSE
-			#self.game_over = True
 		else:
 			raise Exception("RC: Invalid JSON input.")
 		output = "\"" + output + "\""
 		return output		
 
+
 	def register(self):
 		return self.player.register()
+
 
 	def receive_stone(self, stone_type):
 		if isinstance(stone_type, StoneEnum):
 			self.player.receive_stone(stone_type)
 		else:
+			print("RC: Not a proper player stone.")
 			raise Exception("RC: Not a proper player stone.")
+
 
 	def make_a_move(self, board_history):
 		#return input("choose_move:")
 		return self.player.choose_move(board_history)
+
 
 if __name__ == "__main__":
 	print("launched")
@@ -98,7 +110,7 @@ if __name__ == "__main__":
 	player.turn_on_socket((HOSTNAME, PORT))
 	while not player.game_over:
 		player.work_with_socket()
-		#player.game_over = True
+
 	"""
 	done = 0
 	while done != 0.05:

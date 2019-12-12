@@ -1,7 +1,7 @@
 import sys
 from copy import deepcopy
-sys.path.append('./../../3/3.1/src/')
-sys.path.append('./../../4/4.1/src/')
+sys.path.append('../../../3/3.1/src/')
+sys.path.append('../../../4/4.1/src/')
 from stone import Stone, StoneEnum, get_other_type, make_stone
 from board import Board
 from point import Point, str_to_point, get_raw
@@ -11,6 +11,7 @@ from constants import BOARD_DIM, PASS
 from move_referee import MoveReferee
 from score_referee import ScoreReferee
 from play_parser import get_board
+
 
 class GoReferee:
 
@@ -51,7 +52,7 @@ class GoReferee:
       # Play game after registration complete 
       self.current_player = StoneEnum.BLACK
       while not self.game_over:
-         print(self.current_player)
+         print(self.players[self.current_player].name + "'s turn:")
          p = self.players[self.current_player].choose_move(self.board_history)
          if p == PASS:
             print("{} ({}) makes move {}".format(self.players[self.current_player].name, make_stone(self.current_player).get_raw(), p))

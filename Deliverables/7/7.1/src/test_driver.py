@@ -11,6 +11,7 @@ from referee_formatter import format_pretty_json
 from referee_parser import parse_board
 from remote_contract_proxy import RemoteContractProxy
 
+
 def valid_move_input(input):
    if len(input) != 2:
       return False
@@ -26,6 +27,7 @@ def valid_move_input(input):
       return False
    
    return True 
+
 
 if __name__ == "__main__":
    game_terminated = False

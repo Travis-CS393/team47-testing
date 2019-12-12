@@ -11,9 +11,11 @@ from go_referee import GoReferee
 from play_parser import format_input
 from go_player_base import GoPlayerBase
 
+
 def execute_input(play, referee):
 	input_play = format_input(play)
 	return referee.execute_move(input_play)
+
 
 if __name__ == "__main__":
 	objs = json_parse_stdin()

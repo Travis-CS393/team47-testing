@@ -1,93 +1,118 @@
-import sys
-import random
+import sys, json, socket, time, random
 sys.path.append('../../../3/3.1/src/')
-sys.path.append('../../../4/4.1/src/')
-from stone import StoneEnum
-from point import Point
+sys.path.append('../../../5/5.1/src/')
+sys.path.append('../../../5/5.2/src/')
+from stone import StoneEnum, Stone, make_stone
+from point import get_raw
+from obj_parser import parse_stone, parse_boards
 from output_formatter import format_board
-from constants import PASS
-from move_referee import MoveReferee
-from constants import GAME_OVER, GAME_OVER_RESPONSE
+from constants import REGISTER, RECEIVE, MOVE, EMPTY_STONE, WHITE_STONE, BLACK_STONE, GAME_OVER, GAME_OVER_RESPONSE
+from go_player_base import GoPlayerBase
+from go_player_adv import GoPlayerAdv
+from go_gui import GoGUIPlayer
 
 
+class GoRemotePlayer():
 
-class GUIPlayerBase:
+   def __init__(self):
+      self.player = GoGUIPlayer(name=None)
+      self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+      self.game_over = False
 
-   ## Decorators
-   def valid_stone(func):
-      def wrapper(*args, **kwargs):
-         if not args[1] or not isinstance(args[1], StoneEnum):
-            raise Exception("GPB: Invalid parameter, bad stone passed.")
-         return func(*args, **kwargs)
-      return wrapper
+   def turn_on_socket(self, ip_and_port):
+      self.socket.connect(ip_and_port)
 
+   def work_with_socket(self):
+      try:
+         inpt = self.socket.recv(8192)
+         print("received")
+         print(inpt.decode("utf-8"))
+         output = self.work_JSON(json.loads(inpt.decode("utf-8")))
+         if not output:
+            pass
+         else:
+            print('sending')
+            print(output)
+            self.socket.sendall(bytes(output, "utf-8"))
+            print('sent')
+      except:
+         self.game_over = True
+         print("Game is Over!")
 
-   def protocol_registered(func):
-      def wrapper(*args, **kwargs):
-         if not args[0].name:
-            raise Exception("GPB: Invalid protocol, player must be registered first.")
-         return func(*args, **kwargs)
-      return wrapper
+   def turn_off_socket(self):
+      self.socket.close()
 
-
-   def protocol_stone_set(func):
-      def wrapper(*args, **kwargs):
-         if not args[0].stone_type:
-            raise Exception("GPB: Invalid protocol, stone must be received first.")
-         return func(*args, **kwargs)
-      return wrapper
-
-
-   ## Constructor
-   def __init__(self, name=None):
-      """
-      This class implements a Go Player who chooses
-      moves using a dumb strategy of the first valid
-      minimum column, minimum row position on the board.
-      """
-      self.name = name
-      self.default_name = "default_player"
-      self.stone_type = None
-      self.move_referee = MoveReferee()
-
-
-   ## Public Methods
-   def register(self):
-      if not self.name:
-         self.name = self.default_name
-      return self.name
-
-
-   @valid_stone
-   @protocol_registered
-   def receive_stone(self, stone_type):
-      self.stone_type = stone_type
-
-
-   @protocol_registered
-   @protocol_stone_set
-   def choose_move(self, boards):
-      epsilon = 0.3
-      roll = random.random()
-
-      if roll > epsilon:
-         if not self.move_referee.valid_history(self.stone_type, boards):
-            return "This history makes no sense!"
-         for x, y in sorted(list(boards[0].get_points(None))):
-            if self.move_referee.valid_move(self.stone_type, Point(x, y), boards, boards[0]):
-               return (x, y)
-         else:   
-            return PASS
+   def work_JSON(self, input):
+      obj = input
+      print("working with socket")
+      print(obj)
+      if obj[0] == REGISTER:
+         output = self.register()
       
-      else:   
-         return PASS
-
-
-   def game_over(self, end_tag):
-      # Reset default player for next game
-      if end_tag == [GAME_OVER]:
-         self.stone_type = None
-         self.move_referee = MoveReferee()
-         return True
+      
+      elif obj[0] == RECEIVE:
+         if obj[1] == BLACK_STONE:
+            stone_e = StoneEnum.BLACK
+         elif obj[1] == WHITE_STONE:
+            stone_e = StoneEnum.WHITE
+         else:
+            print("RC: Invalid stone type.")
+            raise Exception()
+         self.receive_stone(stone_e)
+         output = None
+         return output
+      
+      
+      elif obj[0] == MOVE:
+         boards_obj = parse_boards(obj[1])
+         print("trying")
+         output = self.make_a_move(boards_obj)
+         print("found one")
+         if isinstance(output, tuple):
+            output = get_raw(output)
+      
+      
+      elif obj[0] == GAME_OVER:
+         output = GAME_OVER_RESPONSE
+      
       else:
-         return False
+         print("RC: Invalid JSON input.")
+         raise Exception()
+      
+      output = "\"" + output + "\""
+      return output     
+
+   def register(self):
+      return self.player.register()
+
+   def receive_stone(self, stone_type):
+      if isinstance(stone_type, StoneEnum):
+         self.player.receive_stone(stone_type)
+      else:
+         print("RC: Not a proper player stone.")
+         raise Exception()
+
+   def make_a_move(self, board_history):
+      return self.player.choose_move(board_history)
+
+if __name__ == "__main__":
+   print("launched")
+   go_config = json.load(open('go.config'))
+   HOSTNAME = go_config['IP']
+   PORT = go_config['port']
+   
+   time.sleep(1)
+   print("running")
+   player = GoRemotePlayer()
+   player.turn_on_socket((HOSTNAME, PORT))
+   while not player.game_over:
+      player.work_with_socket()
+
+   """
+   done = 0
+   while done != 0.05:
+      player.work_with_socket()
+      done += 1
+   """
+
+   player.turn_off_socket()

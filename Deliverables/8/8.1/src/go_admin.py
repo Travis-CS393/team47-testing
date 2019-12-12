@@ -1,9 +1,9 @@
 import sys, json, socket
 from socket import error as socket_error
-sys.path.append('./../../3/3.1/src/')
-sys.path.append('./../../6/6.2/src/')
-sys.path.append('./src')
-from stone import StoneEnum
+sys.path.append('../../../3/3.1/src/')
+sys.path.append('../../../6/6.2/src/')
+sys.path.append('../src')
+from stone import StoneEnum, get_other_type
 from point import Point, str_to_point, PointException
 from go_referee import GoReferee
 from remote_contract_proxy import RemoteContractProxy
@@ -56,15 +56,24 @@ class GoAdmin():
 			try:
 				go_ref.referee_game()
 			except socket_error:
+				go_ref.game_over = True
 				connected = False
+				print("{} disconnected.".format(go_ref.players[go_ref.current_player].name))
+				go_ref.winner = get_other_type(go_ref.current_player)
 				break
 			except PointException:
+				go_ref.game_over = True
 				valid_response = False
+				print("{} played an invalid move.".format(go_ref.players[go_ref.current_player].name))
+				go_ref.winner = get_other_type(go_ref.current_player)
 				break
 
-		if go_ref.game_over and connected and valid_response:
+		if go_ref.broke_rules:
+			print("{} broke the rules.".format(go_ref.players[go_ref.broke_rules].name))
+
+		if connected:
 			winner = go_ref.get_winners()
-		elif not connected or not valid_response:
+		elif not connected:
 			winner = [self.local_player.name]
 		else:
 			raise Exception("GO ADMIN: Game ended unexpectedly.")

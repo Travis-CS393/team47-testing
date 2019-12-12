@@ -1,9 +1,9 @@
 import sys, socket, math, time, random
-sys.path.append('./../../3/3.1/src/')
-sys.path.append('./../../4/4.1/src/')
-sys.path.append('./../../5/5.1/src/')
-sys.path.append('./../../6/6.2/src')
-sys.path.append('./../../8/8.1/src')
+sys.path.append('../../../3/3.1/src/')
+sys.path.append('../../../4/4.1/src/')
+sys.path.append('../../../5/5.1/src/')
+sys.path.append('../../../6/6.2/src')
+sys.path.append('../../../8/8.1/src')
 from stone import StoneEnum, get_other_type
 from point import Point, str_to_point, PointException
 from output_formatter import format_board
@@ -248,14 +248,19 @@ class GoTournamentAdmin():
 			player1.receive_stone(StoneEnum.BLACK)
 			player1_received = True
 		except:
-			go_ref.winner = StoneEnum.WHITE
 			connected = False
+			cheater = player1.name
+			print("Unsuccessful receive stone for {}.".format(cheater))
+			go_ref.winner = StoneEnum.WHITE
 		if player1_received:
 			try:
 				player2.receive_stone(StoneEnum.WHITE)
 			except:
-				go_ref.winner = StoneEnum.BLACK
 				connected = False
+				cheater = player2.name
+				print("Unsuccessful receive stone for {}.".format(cheater))
+				go_ref.winner = StoneEnum.BLACK
+
 		
 		# Referee game and check for cheating condition
 		# - Game over via breaking the rules. 
@@ -284,20 +289,18 @@ class GoTournamentAdmin():
 			print("Player {} broke the rules.".format(cheater))
 
 		# Validate Game Over for both players
-		if (go_ref.game_over and connected and valid_response) or not valid_response:
+		if connected:
 			if not player1.game_over([GAME_OVER]):
+				cheater = player1.name
 				print("Did not receive game_over from Player {}".format(player1.name))
 				go_ref.winner = StoneEnum.WHITE
-			else:
-				if not player2.game_over([GAME_OVER]):
-					print("Did not receive game_over from Player {}".format(player2.name))
-					go_ref.winner = StoneEnum.BLACK
-			winner = go_ref.get_winners()
-		elif not connected:
-			winner = go_ref.get_winners()
-		else:
-			raise Exception("GO TOURNAMENT ADMIN: Game ended unexpectedly.")
-
+			elif not player2.game_over([GAME_OVER]):
+				cheater = player2.name
+				print("Did not receive game_over from Player {}".format(player2.name))
+				go_ref.winner = StoneEnum.BLACK
+		
+		winner = go_ref.get_winners()
+		
 		# Randomly break ties if two winners
 		if len(winner) == 1:
 			return winner[0], cheater

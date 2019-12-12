@@ -24,8 +24,10 @@ class GoRemotePlayer():
 		self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.game_over = False
 
+
 	def turn_on_socket(self, ip_and_port):
 		self.socket.connect(ip_and_port)
+
 
 	def work_with_socket(self):
 		try:
@@ -38,8 +40,10 @@ class GoRemotePlayer():
 		except:
 			return "Error: no connection established."
 
+
 	def turn_off_socket(self):
 		self.socket.close()
+
 
 	def work_JSON(self, obj):
 		if obj[0] == REGISTER:
@@ -79,6 +83,7 @@ class GoRemotePlayer():
 
 	def make_a_move(self, board_history):
 		return self.player.choose_move(board_history)
+
 
 
 if __name__ == "__main__":
