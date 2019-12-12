@@ -1,5 +1,5 @@
 import sys
-sys.path.append('../../3/3.1/src/')
+sys.path.append('../../../3/3.1/src/')
 from board import Board
 from stone import StoneEnum
 from point import Point

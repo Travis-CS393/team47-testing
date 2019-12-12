@@ -1,7 +1,7 @@
 import sys
 import random
-sys.path.append('./../../3/3.1/src/')
-sys.path.append('./../../4/4.1/src/')
+sys.path.append('../../../3/3.1/src/')
+sys.path.append('../../../4/4.1/src/')
 from stone import StoneEnum
 from point import Point
 from output_formatter import format_board
@@ -67,7 +67,7 @@ class GoPlayerBase:
    @protocol_registered
    @protocol_stone_set
    def choose_move(self, boards):
-      
+      """
       if not self.move_referee.valid_history(self.stone_type, boards):
             return "This history makes no sense!"
       for x, y in sorted(list(boards[0].get_points(None))):
@@ -75,8 +75,8 @@ class GoPlayerBase:
             return (x, y)
       else:   
          return PASS
-
       """
+
       epsilon = 0.3
       roll = random.random()
 
@@ -91,7 +91,6 @@ class GoPlayerBase:
       
       else:   
          return PASS
-      """
 
 
    def game_over(self, end_tag):

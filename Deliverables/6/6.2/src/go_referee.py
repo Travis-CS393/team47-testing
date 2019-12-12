@@ -1,7 +1,7 @@
 import sys
 from copy import deepcopy
-sys.path.append('./../../3/3.1/src/')
-sys.path.append('./../../4/4.1/src/')
+sys.path.append('../../../3/3.1/src/')
+sys.path.append('../../../4/4.1/src/')
 from stone import Stone, StoneEnum, get_other_type, make_stone
 from board import Board
 from point import Point, str_to_point, get_raw

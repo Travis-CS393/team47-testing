@@ -1,5 +1,5 @@
 import sys, json
-sys.path.append('../../3/3.1/src/')
+sys.path.append('../../../3/3.1/src/')
 from stone import StoneEnum
 
 # Referee Formatter helps format output for readability 

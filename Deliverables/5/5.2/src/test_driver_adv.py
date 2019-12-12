@@ -1,7 +1,7 @@
 import sys, multiprocessing, time
-sys.path.append('./../../3/3.1/src/')
-sys.path.append('./../../4/4.1/src/')
-sys.path.append('./../../5/5.1/src/')
+sys.path.append('../../../3/3.1/src/')
+sys.path.append('../../../4/4.1/src/')
+sys.path.append('../../../5/5.1/src/')
 from json_parser import json_parse_stdin
 from referee_formatter import format_pretty_json
 from test_driver_base import execute_input

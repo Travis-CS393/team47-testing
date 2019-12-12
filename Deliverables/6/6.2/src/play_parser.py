@@ -1,5 +1,5 @@
 import sys
-sys.path.append('./../../3/3.1/src/')
+sys.path.append('../../../3/3.1/src/')
 from point import Point, str_to_point
 from board import Board
 from stone import Stone
@@ -9,7 +9,7 @@ from constants import PASS, BOARD_DIM
 
 def format_input(string):
 	if string == PASS:
-		return "pass"
+		return PASS
 	else:
 		return str_to_point(string)
 
