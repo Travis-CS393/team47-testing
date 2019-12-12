@@ -51,7 +51,7 @@ class GoReferee:
       # Play game after registration complete 
       self.current_player = StoneEnum.BLACK
       while not self.game_over:
-         print(self.current_player)
+         print(self.players[self.current_player].name + "'s turn:")
          p = self.players[self.current_player].choose_move(self.board_history)
          if p == PASS:
             print("{} ({}) makes move {}".format(self.players[self.current_player].name, make_stone(self.current_player).get_raw(), p))

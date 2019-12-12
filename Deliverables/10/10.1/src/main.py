@@ -1,4 +1,4 @@
-import sys, json, socket
+import sys, json, socket, time
 from tkinter import * 
 from tkmacosx import Button
 from PIL import ImageTk, Image
@@ -8,6 +8,7 @@ from move_referee import MoveReferee
 sys.path.append("../../../8/8.1/src/")
 from go_admin import GoAdmin
 from constants import BOARD_DIM
+
 
 go_config = json.load(open('go.config'))
 #remote player import
@@ -27,6 +28,8 @@ if __name__ == "__main__":
 	go_admin = GoAdmin(IP=HOSTNAME, port=PORT, local_player=GoGUIPlayer)
 	winner = go_admin.run_game()
 	print(winner)
+	print("{} is the winner!".format(winner))
+	time.sleep(10)
 	
 	
 

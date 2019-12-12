@@ -9,12 +9,13 @@ from output_formatter import format_board
 from constants import REGISTER, RECEIVE, MOVE, EMPTY_STONE, WHITE_STONE, BLACK_STONE, GAME_OVER, GAME_OVER_RESPONSE
 from go_player_base import GoPlayerBase
 from go_player_adv import GoPlayerAdv
+from go_gui import GoGUIPlayer
 
 
 class GoRemotePlayer():
 
-	def __init__(self, n=1):
-		self.player = GoPlayerAdv(n=1, name="player-no{}".format(random.randint(0, 750)))
+	def __init__(self):
+		self.player = GoGUIPlayer(name=None)
 		self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.game_over = False
 
@@ -25,7 +26,7 @@ class GoRemotePlayer():
 		try:
 			inpt = self.socket.recv(8192)
 			print("received")
-			print(inpt)
+			print(inpt.decode("utf-8"))
 			output = self.work_JSON(json.loads(inpt.decode("utf-8")))
 			if not output:
 				pass
@@ -36,7 +37,7 @@ class GoRemotePlayer():
 				print('sent')
 		except:
 			self.game_over = True
-			print("Error: something went wrong. Either disconnected, or received invalid input.")
+			print("Game is Over!")
 
 	def turn_off_socket(self):
 		self.socket.close()
@@ -44,8 +45,10 @@ class GoRemotePlayer():
 	def work_JSON(self, input):
 		obj = input
 		print("working with socket")
+		print(obj)
 		if obj[0] == REGISTER:
 			output = self.register()
+		
 		
 		elif obj[0] == RECEIVE:
 			if obj[1] == BLACK_STONE:
@@ -59,25 +62,27 @@ class GoRemotePlayer():
 			output = None
 			return output
 		
+		
 		elif obj[0] == MOVE:
 			boards_obj = parse_boards(obj[1])
 			print("trying")
-			
-			output = self.make_a_move(boards_obj)	
+			output = self.make_a_move(boards_obj)
 			#x = random.randrange(1,9)
 			#y = random.randrange(1,9)
 			#output = (x, y)
 			print("found one")
-			
 			if isinstance(output, tuple):
 				output = get_raw(output)
+		
 		
 		elif obj[0] == GAME_OVER:
 			output = GAME_OVER_RESPONSE
 			#self.game_over = True
+		
 		else:
 			print("RC: Invalid JSON input.")
 			raise Exception()
+		
 		output = "\"" + output + "\""
 		return output		
 
