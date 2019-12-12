@@ -1,7 +1,7 @@
 import sys
 import random
-sys.path.append('../../../3/3.1/src/')
-sys.path.append('../../../4/4.1/src/')
+sys.path.append('./../../3/3.1/src/')
+sys.path.append('./../../4/4.1/src/')
 from stone import StoneEnum
 from point import Point
 from output_formatter import format_board
