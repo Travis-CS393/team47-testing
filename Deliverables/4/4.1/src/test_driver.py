@@ -1,5 +1,5 @@
 import sys, json, time, multiprocessing
-sys.path.append('../../../3/3.1/src/')
+sys.path.append('./../../3/3.1/src/')
 from json_parser import json_parse_stdin
 from referee_parser import is_board, is_move, parse_board, parse_move
 from referee_formatter import format_score, format_pretty_json
