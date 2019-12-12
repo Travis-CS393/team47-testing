@@ -4,7 +4,7 @@ sys.path.append('./../../4/4.1/src/')
 sys.path.append('./../../5/5.1/src/')
 from stone import StoneEnum
 from json_parser import json_parse_stdin
-from output_formatter import format_board_if_valid
+from output_formatter import format_boards_if_valid
 from constants import BLACK_STONE, WHITE_STONE
 from referee_formatter import format_pretty_json
 from go_referee import GoReferee
@@ -38,6 +38,6 @@ if __name__ == "__main__":
 
 	formatted_output = []
 	for item in output:
-		formatted_output.append(format_board_if_valid(item))
+		formatted_output.append(format_boards_if_valid(item))
 
 	print(format_pretty_json(formatted_output))

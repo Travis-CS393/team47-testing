@@ -25,6 +25,10 @@ def format_board_if_valid(inpt):
 		return inpt
 	return format_one_board(inpt)
 
+def format_boards_if_valid(inpt):
+	if isinstance(inpt, str):
+		return inpt
+	return format_board(inpt)
 
 def format_points(pts_set):
 	return sorted([get_raw(tupl) for tupl in list(pts_set)])
